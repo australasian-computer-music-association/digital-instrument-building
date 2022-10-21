@@ -1,0 +1,337 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><!-- InstanceBegin template="/Templates/tutorial files.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Digital Instrument Building</title>
+<!-- InstanceEndEditable --> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<META NAME="DC.Creator" CONTENT="PersonalName= Andrew R. Brown  ">
+<META NAME="DC.Creator.Email" CONTENT="algorithmicmusic@gmail.com,">
+<META NAME="DC.Rights" CONTENT="Andrew R. Brown ">
+<META NAME="DC.Title" CONTENT="Digital Instrument Building - Music software development with jMusic">
+<META NAME="DC.Title.Alternative" content ="Music software development with jMusic">
+<META NAME="DC.Subject" CONTENT="music, java, composition, algorithmic, digital music, generative music, instrument building, music analysing software development, Australia">
+<META NAME="DC.Description" CONTENT="This site is a tutorial resource designed to assist in the training and self education of up-and-coming digital instrument developers. The tutorials cover topics including music software design, audio synthesis, digital signal processing, compositional systems, and computer programming concepts. ">
+<META NAME="DC.Language" SCHEME="rfc1766" CONTENT="en-au">
+<META NAME="DC.Audience" CONTENT="All">
+<META NAME="DC.Date.Created" CONTENT="06-04-2003">
+<META NAME="DC.Availability" CONTENT="PersonalName= Andrew R. Brown; email= algorithmicmusic@gmail.com">
+<!-- ImageReady Preload Script (menubanner2.psd) -->
+<SCRIPT TYPE="text/javascript">
+<!--
+
+function newImage(arg) {
+	if (document.images) {
+		rslt = new Image();
+		rslt.src = arg;
+		return rslt;
+	}
+}
+
+function changeImages() {
+	if (document.images && (preloadFlag == true)) {
+		for (var i=0; i<changeImages.arguments.length; i+=2) {
+			document[changeImages.arguments[i]].src = changeImages.arguments[i+1];
+		}
+	}
+}
+
+var preloadFlag = false;
+function preloadImages() {
+	if (document.images) {
+		Music_algorithms_over = newImage("images/Music-algorithms-over.jpg");
+		Interfaces_over = newImage("images/Interfaces-over.jpg");
+		Programming_over = newImage("images/Programming-over.jpg");
+		Acoustics_over = newImage("images/Acoustics-over.jpg");
+		context_over = newImage("images/context-over.jpg");
+		audio_over = newImage("images/audio-over.jpg");
+		MIDI_over = newImage("images/MIDI-over.jpg");
+		preloadFlag = true;
+	}
+}
+
+// -->
+</SCRIPT>
+<!-- End Preload Script -->
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+//-->
+</script>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+
+function MM_nbGroup(event, grpName) { //v6.0
+  var i,img,nbArr,args=MM_nbGroup.arguments;
+  if (event == "init" && args.length > 2) {
+    if ((img = MM_findObj(args[2])) != null && !img.MM_init) {
+      img.MM_init = true; img.MM_up = args[3]; img.MM_dn = img.src;
+      if ((nbArr = document[grpName]) == null) nbArr = document[grpName] = new Array();
+      nbArr[nbArr.length] = img;
+      for (i=4; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+        if (!img.MM_up) img.MM_up = img.src;
+        img.src = img.MM_dn = args[i+1];
+        nbArr[nbArr.length] = img;
+    } }
+  } else if (event == "over") {
+    document.MM_nbOver = nbArr = new Array();
+    for (i=1; i < args.length-1; i+=3) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = (img.MM_dn && args[i+2]) ? args[i+2] : ((args[i+1])? args[i+1] : img.MM_up);
+      nbArr[nbArr.length] = img;
+    }
+  } else if (event == "out" ) {
+    for (i=0; i < document.MM_nbOver.length; i++) {
+      img = document.MM_nbOver[i]; img.src = (img.MM_dn) ? img.MM_dn : img.MM_up; }
+  } else if (event == "down") {
+    nbArr = document[grpName];
+    if (nbArr)
+      for (i=0; i < nbArr.length; i++) { img=nbArr[i]; img.src = img.MM_up; img.MM_dn = 0; }
+    document[grpName] = nbArr = new Array();
+    for (i=2; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = img.MM_dn = (args[i+1])? args[i+1] : img.MM_up;
+      nbArr[nbArr.length] = img;
+  } }
+}
+//-->
+</script>
+<link href="../../style/main.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+</head>
+<body leftmargin="3" topmargin="3" marginwidth="0" marginheight="0"  onLoad="MM_preloadImages('../../images/banner/audio-over.jpg','../../images/banner/MIDI-over.jpg','../../images/banner/Music-algorithms-over.jpg','../../images/banner/Interfaces-over.jpg','../../images/banner/Programming-over.jpg','../../images/banner/Acoustics-over.jpg','../../images/banner/context-over.jpg','../../images/banner/banner_08.gif')">
+<table width="691" border="0" align="center">
+  <tr> 
+    <td colspan="5" align="left"> <div align="center"> 
+        <table border="0" align="left" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td colspan="8"><img src="../../images/banner.jpg" alt="" width=758 height=57 border="0" usemap="#Map5"></td>
+          </tr>
+          <tr> 
+            <td width="50"><a href="../../Audio/audio.htm" target="_top" onClick="MM_nbGroup('down','group1','Audio','../../images/banner/audio-over.jpg',1)" onMouseOver="MM_nbGroup('over','Audio','../../images/banner/audio-over.jpg','../../images/banner/audio-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/audio.jpg" alt="audio" name="Audio" width="50" height="24" border="0" onload=""></a></td>
+            <td width="47"><a href="../../midi/midi.htm" target="_top" onClick="MM_nbGroup('down','group1','MIDI','../../images/banner/MIDI-over.jpg',1)" onMouseOver="MM_nbGroup('over','MIDI','../../images/banner/MIDI-over.jpg','../../images/banner/MIDI-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/MIDI.jpg" alt="MIDI" name="MIDI" width="47" height="24" border="0" onload=""></a></td>
+            <td width="117"><a href="../../musalgo/musalgo.htm" target="_top" onClick="MM_nbGroup('down','group1','musalgorithms','../../images/banner/Music-algorithms-over.jpg',1)" onMouseOver="MM_nbGroup('over','musalgorithms','../../images/banner/Music-algorithms-over.jpg','../../images/banner/Music-algorithms-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Music-algorithms.jpg" alt="Music Algorithms" name="musalgorithms" width="117" height="24" border="0" onload=""></a></td>
+            <td width="88"><a href="../../interfaces/interface.htm" target="_top" onClick="MM_nbGroup('down','group1','Interfaces','../../images/banner/Interfaces-over.jpg',1)" onMouseOver="MM_nbGroup('over','Interfaces','../../images/banner/Interfaces-over.jpg','../../images/banner/Interfaces-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Interfaces.jpg" alt="Interfaces" name="Interfaces" width="88" height="24" border="0" onload=""></a></td>
+            <td width="103"><a href="../../programming/programming.htm" target="_top" onClick="MM_nbGroup('down','group1','Programming','../../images/banner/Programming-over.jpg',1)" onMouseOver="MM_nbGroup('over','Programming','../../images/banner/Programming-over.jpg','../../images/banner/Programming-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Programming.jpg" alt="Programming" name="Programming" width="103" height="24" border="0" onload=""></a></td>
+            <td width="81"><a href="../../acoustics/acoustics.htm" target="_top" onClick="MM_nbGroup('down','group1','Acoustics','../../images/banner/Acoustics-over.jpg',1)" onMouseOver="MM_nbGroup('over','Acoustics','../../images/banner/Acoustics-over.jpg','../../images/banner/Acoustics-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Acoustics.jpg" alt="Acoustics" name="Acoustics" width="81" height="24" border="0" onload=""></a></td>
+            <td width="100"><a href="../../context/context.htm" target="_top" onClick="MM_nbGroup('down','group1','Context','../../images/banner/context-over.jpg',1)" onMouseOver="MM_nbGroup('over','Context','../../images/banner/context-over.jpg','../../images/banner/context-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/context.jpg" alt="Context" name="Context" width="100" height="24" border="0" onload=""></a></td>
+            <td width="156"><img src="../../images/banner/banner_09.gif" width="172" height="24"></td>
+          </tr>
+        </table>
+      </div></td>
+  </tr>
+  <tr> 
+    <td width="3" align="left"> <div align="right"></div>
+      <div align="right"></div>
+      <div align="right"></div></td>
+    <!-- InstanceBeginEditable name="tracker" -->
+    <td height="16" colspan="2" rowspan="2" align="left"><a href="../../Audio/audio.htm">&gt; 
+      Audio</a> &gt; <a href="../../Audio/synthesis.htm">Synthesis</a> &gt; <a href="RealtimeAudioSynth.html">Realtime 
+      audio in jMusic</a></td>
+    <!-- InstanceEndEditable -->
+    <td width="15" rowspan="2" align="left">&nbsp;</td>
+    <td width="214" rowspan="2" align="left">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="3" rowspan="3" align="left">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="66" align="left" valign="top">&nbsp;</td>
+    <td width="444" align="left" valign="top">&nbsp;</td>
+    <td colspan="2" align="left" valign="top"><strong></strong></td>
+  </tr>
+  <tr> <!-- InstanceBeginEditable name="content" --> 
+    <td colspan="4" rowspan="3" align="left" valign="top"> 
+      <div class="c1"> 
+        <div class="c1">
+          <h2 class="c2">Realtime audio in jMusic</h2>
+        </div>
+        <p class="c3">This tutorial provides an introduction to real time audio 
+          with jMusic. When producing audio in realtime, data is played back as 
+          soon as it's created. <br>
+          Usually data is not stored as a file so no record of the music in maintained. 
+          Realtime playback can go on forever and is not limited by file size. 
+          <br>
+          The complexity of the realtime audio production is limited by processing 
+          capacity, however, and so the number of parts and the sofistication 
+          of the <br>
+          audio processing varies from computer to computer.</p>
+        <p class="c3">The architecture of realtime audio in jMusic varies considerably 
+          from rendered audio in that the audio engine deals directly with notes, 
+          and they need<br>
+          not be encapsulated insdie phrases, parts, or a score. The composition 
+          can be generated in realtime also, note-by-note.<br>
+          This opens up new opportunities for interactive music. For realtime 
+          audio, notes are generated within an RTLine object. <br>
+          This class is conceptually not dissimilar to a phrase for realtime.</p>
+        <p class="c3">The tutorial is in two parts. First, the RTTest class is 
+          presented which sets up the instruments and the RTline. <br>
+          Second, the RealtimeMelody class is presented. <br>
+          This class is an extension of the RTLine class. Each realtime piece 
+          must create extensions of the RTLine class of each musical line (phrase).<br>
+          the RTTest class has the main() method.</p>
+        <p class="c3">Here is the source for these two files:</p>
+        <p class="c5"><a class="c4" href="../jmdemos/RTTest.java"
+ target="_top">RTTest source.</a></p>
+        <p class="c5"><a class="c4" href="../jmdemos/RealtimeMelody.java"
+ target="_top">RealtimeMelody source.</a></p>
+        <p class="c3">in addition you will need the RTPluckInst class availible 
+          from the jMusic instruments page, or directly from here:</p>
+        <p class="c5"><a class="c4" href="../inst/RTPluckInst.java"
+ target="_top">RTPluckInst source.</a></p>
+        <p class="c3">Lets have a closer look at the RTTest class</p>
+        <table border="0" width="100%" bgcolor="#e0e0e0">
+          <tbody>
+            <tr> 
+              <td> <pre><tt class="c6">import jm.JMC;<br>import jm.audio.RTMixer;<br>import jm.audio.Instrument;<br>import jm.music.rt.RTLine;</tt><br>            </pre> </td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="c3">As well as the familiar JMC class, we import a number of 
+          jMusic audio classes. <br>
+          The RTLine class is in the jm.music package because of its similarity 
+          to the other music data classes (Note, phrase, score etc.).<br>
+          <br>
+        </p>
+        <table border="0" width="100%" bgcolor="#e0e0e0">
+          <tbody>
+            <tr> 
+              <td> <pre class="c7">public class RTTest implements JMC{<br>	public static void main(String[] args){<br>	       int sampleRate = 44100;<br>	       int channels = 1;<br>	       double controlRate = 0.1;               <br>	       int bufferSize = (int)((sampleRate*channels)*controlRate);     <br></pre> </td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="c3">The class is short and so all the workings are in the main 
+          method.</p>
+        <p class="c3">The first four lines of the main(0 method set up the audio 
+          specifications for the music.<br>
+          The samplerate in this case is the same as CD quality audio, it will 
+          produce a monophonic audio stream, the control rate specifies how frequenctly<br>
+          adjustments to the sound are calculated (shorter = more precission), 
+          and the buffer size is calulated from those previous settings. <br>
+          The buffer size is the amount of sample data computed at a time - it 
+          effects the latency of the audio system. <br>
+          In practice it is good to have as small a control rate as possible to 
+          minimise the buffer size.<br>
+          <br>
+        </p>
+        <table border="0" width="100%" bgcolor="#e0e0e0">
+          <tbody>
+            <tr> 
+              <td> <pre class="c7">        Instrument inst = new RTPluckInst(sampleRate);<br> <br>	       Instrument[] insts = new Instrument[] {inst};<br> <br>	       RTLine[] rtlines = {new RealtimeMelody(insts, controlRate, bufferSize)};<br>	                               <br>	       RTMixer rtm = new RTMixer(rtlines, bufferSize,<br>                                  sampleRate, channels, controlRate);<br>	       rtm.begin();<br>	}<br>	       <br>}<br></pre> 
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="c3">An instrument to use for the music is decalred - the RTPluckInst.<br>
+          We only have one line in this piece so one instrument will suffice.<br>
+          Realtime instruments in jMusic are slightly different from rendered 
+          instruments in that they don't write a file to disk. it is usually better 
+          to have specific realtime and non-realtime versions of an instrument.</p>
+        <p class="c3">The instrument is added to an instrument array. <br>
+          This seems superfluous when we only have one instrument, but in cases 
+          where there are several this makes more sense.</p>
+        <p class="c3">An array of RTLines is decalared. in this case it only contains 
+          one line and uses our RealtimeMelosy class (see below).<br>
+          Notice that the RTLine takes the instruments, controlrate, and buffersize 
+          as arguments.</p>
+        <p class="c3">Each jMusic realtime audio piece has an RTMixer object. 
+          Its function is to combine all of the RTLines together and send the 
+          mix to the audio output. <br>
+          The processing is begun by calling the begin() method of the RTMixer 
+          object.</p>
+        <p class="c3"><br>
+          Now let's look at the note generation class - what are we going to play 
+          with this RTPluckInst?</p>
+        <table border="0" width="100%" bgcolor="#e0e0e0">
+          <tbody>
+            <tr> 
+              <td> <pre>import jm.music.rt.*;<br>import jm.audio.*;<br>import jm.music.data.*;<br> <br>public class RealtimeMelody extends RTLine {<br>	<br>	public RealtimeMelody(Instrument[] inst, double controlRate, int bufferSize) {<br>            super(inst, controlRate, bufferSize);<br>	}<br><br>	<span class="comment">// required method overrided	</span><br>	public Note getNote() {<br>	       return new Note((int)(Math.random() * 60 + 30), 0.25, <br>			       (int)(Math.random() * 100 + 27));<br>	}<br>           </pre> </td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="c3">The RealtimeMelody class has the job of providing notes 
+          as the music proceeds. <br>
+          It gets much of its functionality by extending the RTLine class.<br>
+          Each realtime audio program in jMusic must contain one or more classes 
+          that extend the RTLine class in this way.</p>
+        <p class="c3">The class imports the appropriate jMusic packages.</p>
+        <p class="c3">There are two clasess that are critical, the constructor 
+          and the getNote() method.</p>
+        <p class="c3">The constructor takes the necessary arguments allowing the 
+          appropriate audio data to be calulated. <br>
+          These are passed to the super class - RTLine - for use.</p>
+        <p class="c3">The getNote() method simply generates one note.<br>
+          When this has been rendered the method will be called again, and so 
+          on, until we quit the application. <br>
+          In this case a semiquaver of random pitch and dynamic is produced each 
+          time the method is called.<br>
+          Simplistic, but effective. <br>
+          You can put any compositional logic you want in this method - or have 
+          it call a method in another class - <br>
+          so long as the result is the next note to be played back.</p>
+      </div>
+      </td>
+    <!-- InstanceEndEditable --></tr>
+  <tr> 
+    <td align="left"> <div align="left"></div></td>
+  </tr>
+  <tr> 
+    <td align="left">&nbsp;</td>
+  </tr>
+</table>
+<blockquote> 
+  <p name="Map"> 
+    <map name="Map">
+      <area shape="rect" coords="4,4,41,29" href="http://jmusic.ci.qut.edu" target="_blank" alt="jMusic">
+      <area shape="rect" coords="43,5,80,31" href="http://www.ozco.gov.au" target="_blank" alt="Australia Council">
+      <area shape="rect" coords="83,4,108,29" href="http://www.qut.com" target="_blank" alt="Queensland University of Technology">
+    </map>
+    <map name="Map2">
+      <area shape="rect" coords="702,1,758,12" href="../../extras/sitemap.html" target="_self" alt="Sitemap">
+      <area shape="rect" coords="629,1,687,12" href="../../extras/contact.html" target="_self" alt="Contact">
+      <area shape="rect" coords="574,1,615,14" href="../../index.html" target="_self" alt="Home">
+    </map>
+    <map name="Map3">
+      <area shape="rect" coords="553,5,601,18" href="#" alt="Home">
+      <area shape="rect" coords="612,4,671,18" href="#">
+      <area shape="rect" coords="683,3,735,19" href="#">
+      <area shape="rect" coords="9,8,227,59" href="#" target="index.html">
+    </map>
+    <map name="Map4">
+      <area shape="rect" coords="6,9,40,41" href="http://www.qut.com" target="_blank" alt="http://www.qut.com">
+      <area shape="rect" coords="44,14,87,42" href="http://explodingart.com/jmusic" target="_blank" alt="http://explodingart.com/jmusic">
+      <area shape="rect" coords="90,9,138,43" href="http://www.ozco.gov.au" target="_parent" alt="http://www.ozco.gov.au">
+      <area shape="rect" coords="313,13,512,36" href="../../contact.html">
+    </map>
+  </p>
+</blockquote>
+<map name="Map5">
+  <area shape="rect" coords="-7,4,228,51" href="../../index.htm" target="_self" alt="Digital Instrument making">
+  <area shape="rect" coords="599,1,658,18" href="../../index.htm" alt="Home">
+  <area shape="rect" coords="677,3,755,18" href="../../extras/contact.htm" target="extras">
+</map>
+</body>
+<!-- InstanceEnd --></html>

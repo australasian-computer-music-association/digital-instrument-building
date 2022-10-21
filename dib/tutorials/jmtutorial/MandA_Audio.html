@@ -1,0 +1,290 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><!-- InstanceBegin template="/Templates/tutorial files.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Digital Instrument Building</title>
+<!-- InstanceEndEditable --> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<META NAME="DC.Creator" CONTENT="PersonalName= Andrew R. Brown  ">
+<META NAME="DC.Creator.Email" CONTENT="algorithmicmusic@gmail.com,">
+<META NAME="DC.Rights" CONTENT="Andrew R. Brown ">
+<META NAME="DC.Title" CONTENT="Digital Instrument Building - Music software development with jMusic">
+<META NAME="DC.Title.Alternative" content ="Music software development with jMusic">
+<META NAME="DC.Subject" CONTENT="music, java, composition, algorithmic, digital music, generative music, instrument building, music analysing software development, Australia">
+<META NAME="DC.Description" CONTENT="This site is a tutorial resource designed to assist in the training and self education of up-and-coming digital instrument developers. The tutorials cover topics including music software design, audio synthesis, digital signal processing, compositional systems, and computer programming concepts. ">
+<META NAME="DC.Language" SCHEME="rfc1766" CONTENT="en-au">
+<META NAME="DC.Audience" CONTENT="All">
+<META NAME="DC.Date.Created" CONTENT="06-04-2003">
+<META NAME="DC.Availability" CONTENT="PersonalName= Andrew R. Brown; email= algorithmicmusic@gmail.com">
+<!-- ImageReady Preload Script (menubanner2.psd) -->
+<SCRIPT TYPE="text/javascript">
+<!--
+
+function newImage(arg) {
+	if (document.images) {
+		rslt = new Image();
+		rslt.src = arg;
+		return rslt;
+	}
+}
+
+function changeImages() {
+	if (document.images && (preloadFlag == true)) {
+		for (var i=0; i<changeImages.arguments.length; i+=2) {
+			document[changeImages.arguments[i]].src = changeImages.arguments[i+1];
+		}
+	}
+}
+
+var preloadFlag = false;
+function preloadImages() {
+	if (document.images) {
+		Music_algorithms_over = newImage("images/Music-algorithms-over.jpg");
+		Interfaces_over = newImage("images/Interfaces-over.jpg");
+		Programming_over = newImage("images/Programming-over.jpg");
+		Acoustics_over = newImage("images/Acoustics-over.jpg");
+		context_over = newImage("images/context-over.jpg");
+		audio_over = newImage("images/audio-over.jpg");
+		MIDI_over = newImage("images/MIDI-over.jpg");
+		preloadFlag = true;
+	}
+}
+
+// -->
+</SCRIPT>
+<!-- End Preload Script -->
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+//-->
+</script>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+
+function MM_nbGroup(event, grpName) { //v6.0
+  var i,img,nbArr,args=MM_nbGroup.arguments;
+  if (event == "init" && args.length > 2) {
+    if ((img = MM_findObj(args[2])) != null && !img.MM_init) {
+      img.MM_init = true; img.MM_up = args[3]; img.MM_dn = img.src;
+      if ((nbArr = document[grpName]) == null) nbArr = document[grpName] = new Array();
+      nbArr[nbArr.length] = img;
+      for (i=4; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+        if (!img.MM_up) img.MM_up = img.src;
+        img.src = img.MM_dn = args[i+1];
+        nbArr[nbArr.length] = img;
+    } }
+  } else if (event == "over") {
+    document.MM_nbOver = nbArr = new Array();
+    for (i=1; i < args.length-1; i+=3) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = (img.MM_dn && args[i+2]) ? args[i+2] : ((args[i+1])? args[i+1] : img.MM_up);
+      nbArr[nbArr.length] = img;
+    }
+  } else if (event == "out" ) {
+    for (i=0; i < document.MM_nbOver.length; i++) {
+      img = document.MM_nbOver[i]; img.src = (img.MM_dn) ? img.MM_dn : img.MM_up; }
+  } else if (event == "down") {
+    nbArr = document[grpName];
+    if (nbArr)
+      for (i=0; i < nbArr.length; i++) { img=nbArr[i]; img.src = img.MM_up; img.MM_dn = 0; }
+    document[grpName] = nbArr = new Array();
+    for (i=2; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = img.MM_dn = (args[i+1])? args[i+1] : img.MM_up;
+      nbArr[nbArr.length] = img;
+  } }
+}
+//-->
+</script>
+<link href="../../style/main.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+</head>
+<body leftmargin="3" topmargin="3" marginwidth="0" marginheight="0"  onLoad="MM_preloadImages('../../images/banner/audio-over.jpg','../../images/banner/MIDI-over.jpg','../../images/banner/Music-algorithms-over.jpg','../../images/banner/Interfaces-over.jpg','../../images/banner/Programming-over.jpg','../../images/banner/Acoustics-over.jpg','../../images/banner/context-over.jpg','../../images/banner/banner_08.gif')">
+<table width="691" border="0" align="center">
+  <tr> 
+    <td colspan="5" align="left"> <div align="center"> 
+        <table border="0" align="left" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td colspan="8"><img src="../../images/banner.jpg" alt="" width=758 height=57 border="0" usemap="#Map5"></td>
+          </tr>
+          <tr> 
+            <td width="50"><a href="../../Audio/audio.htm" target="_top" onClick="MM_nbGroup('down','group1','Audio','../../images/banner/audio-over.jpg',1)" onMouseOver="MM_nbGroup('over','Audio','../../images/banner/audio-over.jpg','../../images/banner/audio-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/audio.jpg" alt="audio" name="Audio" width="50" height="24" border="0" onload=""></a></td>
+            <td width="47"><a href="../../midi/midi.htm" target="_top" onClick="MM_nbGroup('down','group1','MIDI','../../images/banner/MIDI-over.jpg',1)" onMouseOver="MM_nbGroup('over','MIDI','../../images/banner/MIDI-over.jpg','../../images/banner/MIDI-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/MIDI.jpg" alt="MIDI" name="MIDI" width="47" height="24" border="0" onload=""></a></td>
+            <td width="117"><a href="../../musalgo/musalgo.htm" target="_top" onClick="MM_nbGroup('down','group1','musalgorithms','../../images/banner/Music-algorithms-over.jpg',1)" onMouseOver="MM_nbGroup('over','musalgorithms','../../images/banner/Music-algorithms-over.jpg','../../images/banner/Music-algorithms-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Music-algorithms.jpg" alt="Music Algorithms" name="musalgorithms" width="117" height="24" border="0" onload=""></a></td>
+            <td width="88"><a href="../../interfaces/interface.htm" target="_top" onClick="MM_nbGroup('down','group1','Interfaces','../../images/banner/Interfaces-over.jpg',1)" onMouseOver="MM_nbGroup('over','Interfaces','../../images/banner/Interfaces-over.jpg','../../images/banner/Interfaces-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Interfaces.jpg" alt="Interfaces" name="Interfaces" width="88" height="24" border="0" onload=""></a></td>
+            <td width="103"><a href="../../programming/programming.htm" target="_top" onClick="MM_nbGroup('down','group1','Programming','../../images/banner/Programming-over.jpg',1)" onMouseOver="MM_nbGroup('over','Programming','../../images/banner/Programming-over.jpg','../../images/banner/Programming-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Programming.jpg" alt="Programming" name="Programming" width="103" height="24" border="0" onload=""></a></td>
+            <td width="81"><a href="../../acoustics/acoustics.htm" target="_top" onClick="MM_nbGroup('down','group1','Acoustics','../../images/banner/Acoustics-over.jpg',1)" onMouseOver="MM_nbGroup('over','Acoustics','../../images/banner/Acoustics-over.jpg','../../images/banner/Acoustics-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Acoustics.jpg" alt="Acoustics" name="Acoustics" width="81" height="24" border="0" onload=""></a></td>
+            <td width="100"><a href="../../context/context.htm" target="_top" onClick="MM_nbGroup('down','group1','Context','../../images/banner/context-over.jpg',1)" onMouseOver="MM_nbGroup('over','Context','../../images/banner/context-over.jpg','../../images/banner/context-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/context.jpg" alt="Context" name="Context" width="100" height="24" border="0" onload=""></a></td>
+            <td width="156"><img src="../../images/banner/banner_09.gif" width="172" height="24"></td>
+          </tr>
+        </table>
+      </div></td>
+  </tr>
+  <tr> 
+    <td width="3" align="left"> <div align="right"></div>
+      <div align="right"></div>
+      <div align="right"></div></td>
+    <!-- InstanceBeginEditable name="tracker" -->
+    <td height="16" colspan="2" rowspan="2" align="left"><a href="../../Audio/audio.htm">&gt; 
+      Audio</a> &gt; <a href="../../Audio/musicaldata.htm">Musical Data</a> &gt; 
+      <a href="MandA_Audio.html">Melody and Accompaniment </a></td>
+    <!-- InstanceEndEditable -->
+    <td width="15" rowspan="2" align="left">&nbsp;</td>
+    <td width="214" rowspan="2" align="left">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="3" rowspan="3" align="left">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="66" align="left" valign="top">&nbsp;</td>
+    <td width="444" align="left" valign="top">&nbsp;</td>
+    <td colspan="2" align="left" valign="top"><strong></strong></td>
+  </tr>
+  <tr> <!-- InstanceBeginEditable name="content" --> 
+    <td colspan="4" rowspan="3" align="left" valign="top">
+<div class="c1"> 
+        <h2>Melody and Accompaniment </h2>
+        <p>This tutorial will look at a file which uses two different synthesis 
+          instruments. <br>
+          One for a stochastic melody and the other for an chordal accompaniment. 
+          <br>
+        </p>
+          
+        <p>This is what the result of this tutorial file can sound like:</p>
+        <p>
+          <embed src="soundExamples/Melody_and_Accomp.au" width="150"
+ height="60"></embed></p>
+        <p><a
+ href="../jmdemos/MelodyAndAccomp.java" target="_top">Click here to view the source 
+          file..</a></p>
+        <p>Let's have a closer look: 
+        <table border="0"
+ style="width: 100%; background-color: rgb(255, 255, 255);">
+          <tbody>
+            <tr> 
+              <td
+ style="vertical-align: top; background-color: rgb(224, 224, 224);"> <pre style="background-color: rgb(224, 224, 224);"><span class="comment">/**<br> * An example of simple audio rendering of a non-trivial jMusic score<br> * @author Andrew R. Brown<br> */</span><br>&nbsp;<br>import jm.JMC;<br>import jm.music.data.*;<br>import jm.util.*;<br>import jm.audio.*;<br>&nbsp;<br>public class MelodyAndAccomp implements JMC{<br>	/<span class="comment">/----------------<br>	// Class Attributes<br>	//----------------</span><br>	private Score s = new Score("AU demo");	<br>	private Part p1 = new Part("Melody", 0);<br>	private Part p2 = new Part("Chords", 1);<br>	private int sampleRate = 8000;<br>	private Instrument[] insts = {new SineInst(sampleRate), <br>		    new TriangleInst(sampleRate)};<br>	private int bars = 4; //measures in American<br><span class="comment">	//---------------------<br>	// required main method<br>	//---------------------</span><br>	private static void main(String[] args) {	<br>		new MelodyAndAccomp();<br>	}</pre> </td>
+            </tr>
+            <tr style="font-family: helvetica,arial,sans-serif;"> 
+              <td style="vertical-align: top;"> <p><br>
+                  In this tutorial we define two instruments, the triangleInst 
+                  and SineInst<br>
+                  &nbsp;This is because we are going to use a different sound 
+                  for each of the two parts (SineInst for the melody and TriangleInst 
+                  for the chords). <br>
+                  &nbsp;When we declare these, we store them in an Instrument 
+                  array called insts. <br>
+                  &nbsp;This will be used later.</p>
+                <p>Note also that the Part constructors are different - they do 
+                  not specify a channel. <br>
+                  &nbsp;This is because we are not using MIDI in this program 
+                  (if we were using both MIDI as well as audio we could leave 
+                  them in there. Infact, <br>
+                  even if we aren't using MIDI at all, there's not difference 
+                  in the output if you specify a channel - it's irrelevant!).<br>
+                  &nbsp;The instrument numbers for these parts are relative to 
+                  the insts array - the SineInst being instrument 0, and the TriangleInst 
+                  being instrument 1.<br>
+                  &nbsp;We tell the audio render to use this array to define the 
+                  instruments later (when we actually 'render' ut, of course - 
+                  see the last section of this tutorial).<br>
+                  <br>
+                </p></td>
+            </tr>
+            <tr> 
+              <td
+ style="vertical-align: top; background-color: rgb(224, 224, 224);"> <pre><pre style="background-color: rgb(224, 224, 224);">	<span class="comment">//------------------<br>	// Constructor<br>	//------------------</span><br>	public MelodyAndAccomp() {<br>		makeMelody();<br>		makeChords();<br>		completeScore();<br>		renderAudio();<br>	}</pre></pre></td>
+            </tr>
+            <tr> 
+              <td style="vertical-align: top;">The constructor is extremely simple 
+                - it simply runs the following methods in the appropriate order.<br> </td>
+            </tr>
+            <tr> 
+              <td> <pre style="background-color: rgb(224, 224, 224);"><span class="comment">	//-------------------<br>	// Methods<br>	//-------------------</span><br>	<span class="comment"><br>	// Create the stochastic melodic phrase</span><br>	private void makeMelody() {<br>		Phrase phr = new Phrase();<br>		int temp, newPitch; //variable to store random number<br>		int[] mode = {0,2,4,5,7,9,11,12}; //major scale degrees<br>		int prevPitch = 60; //start on middle C<br>		<br>		<span class="comment">// create a melody of 25 randomly pitched quavers <br>		// within C major</span><br>		for(short i=0;i&lt;bars*8-3;){<br>		   <span class="comment"> // generate a random number up to two octaves <br>		    // (or so) above middle C</span><br>		    temp = (int)(Math.random()*14 - 7);<br>		  <span class="comment">  // smooth the melodic contour</span><br>		    newPitch = prevPitch + temp;<br>		   <span class="comment"> // check that it is a note in the mode <br>		    // (C major in this case)</span><br>    		    for (short j=0; j&lt; mode.length; j++) {<br>		        if ( newPitch%12 == mode[j]) {<br>			    <span class="comment">// if it is then add it to the <br>			    // phrase and move to the next <br>			    // note in the phrase</span><br>			    if(i == bars*8-4) {<br>				Note n = new Note(newPitch, M, <br>				    (int)(Math.random()*50+60));<br>				phr.addNote(n);<br>				} else {<br>				    Note n = new Note(newPitch, Q, <br>					(int)(Math.random()*50+60));<br>				    phr.addNote(n);<br>				}<br>				prevPitch = newPitch;<br>				i++;<br>			    }<br>			}<br>  		    }	<br>		<span class="comment">// add the phrase to part 1</span><br>		p1.addPhrase(phr);<br>	}<br>	<br>	<span class="comment">//make the chordal accompaniment</span><br>	private void makeChords() {<br>		<span class="comment">// create a CPhrase</span><br>		CPhrase cp = new CPhrase(0.0);<br>		<span class="comment">// Choose one of three minum chords at random, 5 times</span><br>		for(short i=0;i&lt;bars*2;i++) {<br>			int x = (int)(Math.random()*3);<br>			System.out.println("chord var x is " + x);<br>			if (x==0) {<br>				int[] pitchArray = {c3,e3,g3};<br>				cp.addChord(pitchArray, SQ);<br>				cp.addChord(pitchArray, Q);<br>				cp.addChord(pitchArray, C);<br>				cp.addChord(pitchArray, SQ);<br>			} else if (x==1) {<br>				 int[] pitchArray = {d3,f3,a3};<br>				 cp.addChord(pitchArray, M);<br>			} else {<br>				int[] pitchArray = {b2,d3,g3};<br>				cp.addChord(pitchArray, C);<br>				cp.addChord(pitchArray, C);<br>			}			<br>		}<br>		<span class="comment">// add the phrase to part 2</span><br>		p2.addCPhrase(cp);<br>	}<br>	<br>	<span class="comment">// combine parts into a score</span><br>	private void completeScore() {<br>		s.addPart(p1);<br>		s.addPart(p2);<br>	}
+ size="+1" face="Courier"><br></pre> </td>
+            </tr>
+            <tr> 
+              <td style="vertical-align: top;">The above methods should be relatively 
+                easy to understand, and are fairly well commented. <br>
+                &nbsp; After running these methods we will have a completed score....<br> 
+                <br> </td>
+            </tr>
+            <tr> 
+              <td height="77"
+ style="vertical-align: top; background-color: rgb(224, 224, 224);"> 
+                <pre><pre style="background-color: rgb(224, 224, 224);"><span class="comment">//save as an au audio file</span><br>	private void renderAudio() {<br>		Write.au(s, "Melody_and_Accomp.au", insts); <br>	}<br>}</pre></pre></td>
+            </tr>
+          </tbody>
+        </table>
+        <p></p>
+        <p>&nbsp;...which 
+          we can then send to Write.au(), specifying that it should use the Instruments 
+          in inststo 
+          render the appropriate sounds. &nbsp;<br>
+          This successfully gives us an .au file of our piece! &nbsp;Simple!</p>
+      </div>
+      </td>
+    <!-- InstanceEndEditable --></tr>
+  <tr> 
+    <td align="left"> <div align="left"></div></td>
+  </tr>
+  <tr> 
+    <td align="left">&nbsp;</td>
+  </tr>
+</table>
+<blockquote> 
+  <p name="Map"> 
+    <map name="Map">
+      <area shape="rect" coords="4,4,41,29" href="http://jmusic.ci.qut.edu" target="_blank" alt="jMusic">
+      <area shape="rect" coords="43,5,80,31" href="http://www.ozco.gov.au" target="_blank" alt="Australia Council">
+      <area shape="rect" coords="83,4,108,29" href="http://www.qut.com" target="_blank" alt="Queensland University of Technology">
+    </map>
+    <map name="Map2">
+      <area shape="rect" coords="702,1,758,12" href="../../extras/sitemap.html" target="_self" alt="Sitemap">
+      <area shape="rect" coords="629,1,687,12" href="../../extras/contact.html" target="_self" alt="Contact">
+      <area shape="rect" coords="574,1,615,14" href="../../index.html" target="_self" alt="Home">
+    </map>
+    <map name="Map3">
+      <area shape="rect" coords="553,5,601,18" href="#" alt="Home">
+      <area shape="rect" coords="612,4,671,18" href="#">
+      <area shape="rect" coords="683,3,735,19" href="#">
+      <area shape="rect" coords="9,8,227,59" href="#" target="index.html">
+    </map>
+    <map name="Map4">
+      <area shape="rect" coords="6,9,40,41" href="http://www.qut.com" target="_blank" alt="http://www.qut.com">
+      <area shape="rect" coords="44,14,87,42" href="http://explodingart.com/jmusic" target="_blank" alt="http://explodingart.com/jmusic">
+      <area shape="rect" coords="90,9,138,43" href="http://www.ozco.gov.au" target="_parent" alt="http://www.ozco.gov.au">
+      <area shape="rect" coords="313,13,512,36" href="../../contact.html">
+    </map>
+  </p>
+</blockquote>
+<map name="Map5">
+  <area shape="rect" coords="-7,4,228,51" href="../../index.htm" target="_self" alt="Digital Instrument making">
+  <area shape="rect" coords="599,1,658,18" href="../../index.htm" alt="Home">
+  <area shape="rect" coords="677,3,755,18" href="../../extras/contact.htm" target="extras">
+</map>
+</body>
+<!-- InstanceEnd --></html>

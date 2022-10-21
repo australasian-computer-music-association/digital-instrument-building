@@ -1,0 +1,345 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><!-- InstanceBegin template="/Templates/tutorial files.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="doctitle" --> 
+<title>Digital Instrument Building</title>
+<!-- InstanceEndEditable --> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<META NAME="DC.Creator" CONTENT="PersonalName= Andrew R. Brown  ">
+<META NAME="DC.Creator.Email" CONTENT="algorithmicmusic@gmail.com,">
+<META NAME="DC.Rights" CONTENT="Andrew R. Brown ">
+<META NAME="DC.Title" CONTENT="Digital Instrument Building - Music software development with jMusic">
+<META NAME="DC.Title.Alternative" content ="Music software development with jMusic">
+<META NAME="DC.Subject" CONTENT="music, java, composition, algorithmic, digital music, generative music, instrument building, music analysing software development, Australia">
+<META NAME="DC.Description" CONTENT="This site is a tutorial resource designed to assist in the training and self education of up-and-coming digital instrument developers. The tutorials cover topics including music software design, audio synthesis, digital signal processing, compositional systems, and computer programming concepts. ">
+<META NAME="DC.Language" SCHEME="rfc1766" CONTENT="en-au">
+<META NAME="DC.Audience" CONTENT="All">
+<META NAME="DC.Date.Created" CONTENT="06-04-2003">
+<META NAME="DC.Availability" CONTENT="PersonalName= Andrew R. Brown; email= algorithmicmusic@gmail.com">
+<!-- ImageReady Preload Script (menubanner2.psd) -->
+<SCRIPT TYPE="text/javascript">
+<!--
+
+function newImage(arg) {
+	if (document.images) {
+		rslt = new Image();
+		rslt.src = arg;
+		return rslt;
+	}
+}
+
+function changeImages() {
+	if (document.images && (preloadFlag == true)) {
+		for (var i=0; i<changeImages.arguments.length; i+=2) {
+			document[changeImages.arguments[i]].src = changeImages.arguments[i+1];
+		}
+	}
+}
+
+var preloadFlag = false;
+function preloadImages() {
+	if (document.images) {
+		Music_algorithms_over = newImage("images/Music-algorithms-over.jpg");
+		Interfaces_over = newImage("images/Interfaces-over.jpg");
+		Programming_over = newImage("images/Programming-over.jpg");
+		Acoustics_over = newImage("images/Acoustics-over.jpg");
+		context_over = newImage("images/context-over.jpg");
+		audio_over = newImage("images/audio-over.jpg");
+		MIDI_over = newImage("images/MIDI-over.jpg");
+		preloadFlag = true;
+	}
+}
+
+// -->
+</SCRIPT>
+<!-- End Preload Script -->
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+//-->
+</script>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+
+function MM_nbGroup(event, grpName) { //v6.0
+  var i,img,nbArr,args=MM_nbGroup.arguments;
+  if (event == "init" && args.length > 2) {
+    if ((img = MM_findObj(args[2])) != null && !img.MM_init) {
+      img.MM_init = true; img.MM_up = args[3]; img.MM_dn = img.src;
+      if ((nbArr = document[grpName]) == null) nbArr = document[grpName] = new Array();
+      nbArr[nbArr.length] = img;
+      for (i=4; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+        if (!img.MM_up) img.MM_up = img.src;
+        img.src = img.MM_dn = args[i+1];
+        nbArr[nbArr.length] = img;
+    } }
+  } else if (event == "over") {
+    document.MM_nbOver = nbArr = new Array();
+    for (i=1; i < args.length-1; i+=3) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = (img.MM_dn && args[i+2]) ? args[i+2] : ((args[i+1])? args[i+1] : img.MM_up);
+      nbArr[nbArr.length] = img;
+    }
+  } else if (event == "out" ) {
+    for (i=0; i < document.MM_nbOver.length; i++) {
+      img = document.MM_nbOver[i]; img.src = (img.MM_dn) ? img.MM_dn : img.MM_up; }
+  } else if (event == "down") {
+    nbArr = document[grpName];
+    if (nbArr)
+      for (i=0; i < nbArr.length; i++) { img=nbArr[i]; img.src = img.MM_up; img.MM_dn = 0; }
+    document[grpName] = nbArr = new Array();
+    for (i=2; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = img.MM_dn = (args[i+1])? args[i+1] : img.MM_up;
+      nbArr[nbArr.length] = img;
+  } }
+}
+//-->
+</script>
+<link href="../../style/main.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+</head>
+<body leftmargin="3" topmargin="3" marginwidth="0" marginheight="0"  onLoad="MM_preloadImages('../../images/banner/audio-over.jpg','../../images/banner/MIDI-over.jpg','../../images/banner/Music-algorithms-over.jpg','../../images/banner/Interfaces-over.jpg','../../images/banner/Programming-over.jpg','../../images/banner/Acoustics-over.jpg','../../images/banner/context-over.jpg','../../images/banner/banner_08.gif')">
+<table width="691" border="0" align="center">
+  <tr> 
+    <td colspan="5" align="left"> <div align="center"> 
+        <table border="0" align="left" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td colspan="8"><img src="../../images/banner.jpg" alt="" width=758 height=57 border="0" usemap="#Map5"></td>
+          </tr>
+          <tr> 
+            <td width="50"><a href="../../Audio/audio.htm" target="_top" onClick="MM_nbGroup('down','group1','Audio','../../images/banner/audio-over.jpg',1)" onMouseOver="MM_nbGroup('over','Audio','../../images/banner/audio-over.jpg','../../images/banner/audio-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/audio.jpg" alt="audio" name="Audio" width="50" height="24" border="0" onload=""></a></td>
+            <td width="47"><a href="../../midi/midi.htm" target="_top" onClick="MM_nbGroup('down','group1','MIDI','../../images/banner/MIDI-over.jpg',1)" onMouseOver="MM_nbGroup('over','MIDI','../../images/banner/MIDI-over.jpg','../../images/banner/MIDI-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/MIDI.jpg" alt="MIDI" name="MIDI" width="47" height="24" border="0" onload=""></a></td>
+            <td width="117"><a href="../../musalgo/musalgo.htm" target="_top" onClick="MM_nbGroup('down','group1','musalgorithms','../../images/banner/Music-algorithms-over.jpg',1)" onMouseOver="MM_nbGroup('over','musalgorithms','../../images/banner/Music-algorithms-over.jpg','../../images/banner/Music-algorithms-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Music-algorithms.jpg" alt="Music Algorithms" name="musalgorithms" width="117" height="24" border="0" onload=""></a></td>
+            <td width="88"><a href="../../interfaces/interface.htm" target="_top" onClick="MM_nbGroup('down','group1','Interfaces','../../images/banner/Interfaces-over.jpg',1)" onMouseOver="MM_nbGroup('over','Interfaces','../../images/banner/Interfaces-over.jpg','../../images/banner/Interfaces-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Interfaces.jpg" alt="Interfaces" name="Interfaces" width="88" height="24" border="0" onload=""></a></td>
+            <td width="103"><a href="../../programming/programming.htm" target="_top" onClick="MM_nbGroup('down','group1','Programming','../../images/banner/Programming-over.jpg',1)" onMouseOver="MM_nbGroup('over','Programming','../../images/banner/Programming-over.jpg','../../images/banner/Programming-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Programming.jpg" alt="Programming" name="Programming" width="103" height="24" border="0" onload=""></a></td>
+            <td width="81"><a href="../../acoustics/acoustics.htm" target="_top" onClick="MM_nbGroup('down','group1','Acoustics','../../images/banner/Acoustics-over.jpg',1)" onMouseOver="MM_nbGroup('over','Acoustics','../../images/banner/Acoustics-over.jpg','../../images/banner/Acoustics-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Acoustics.jpg" alt="Acoustics" name="Acoustics" width="81" height="24" border="0" onload=""></a></td>
+            <td width="100"><a href="../../context/context.htm" target="_top" onClick="MM_nbGroup('down','group1','Context','../../images/banner/context-over.jpg',1)" onMouseOver="MM_nbGroup('over','Context','../../images/banner/context-over.jpg','../../images/banner/context-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/context.jpg" alt="Context" name="Context" width="100" height="24" border="0" onload=""></a></td>
+            <td width="156"><img src="../../images/banner/banner_09.gif" width="172" height="24"></td>
+          </tr>
+        </table>
+      </div></td>
+  </tr>
+  <tr> 
+    <td width="3" align="left"> <div align="right"></div>
+      <div align="right"></div>
+      <div align="right"></div></td>
+    <!-- InstanceBeginEditable name="tracker" --> 
+    <td height="16" colspan="2" rowspan="2" align="left"><a href="../../musalgo/musalgo.htm">&gt; 
+      Music Algorithms </a>&gt; <a href="../../musalgo/generate.htm">Generating</a> 
+      &gt;<a href="RandomRhythmDemo.html"> </a> <a href="ModeDrunkDemo.html">Drunk 
+      (Random Walk) Melody</a> </td>
+    <!-- InstanceEndEditable -->
+    <td width="15" rowspan="2" align="left">&nbsp;</td>
+    <td width="214" rowspan="2" align="left">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="3" rowspan="3" align="left">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="66" align="left" valign="top">&nbsp;</td>
+    <td width="444" align="left" valign="top">&nbsp;</td>
+    <td colspan="2" align="left" valign="top"><strong></strong></td>
+  </tr>
+  <tr> <!-- InstanceBeginEditable name="content" --> 
+    <td colspan="4" rowspan="3" align="left" valign="top"> <h2>Drunk (Random Walk) 
+        Melody </h2>
+      <p>This demo creates a series of note pitches 
+        with small random intervals between them, notes are constrained to only 
+        those in a C major scale. </p>
+      <p>To hear the result play the MIDI file below.</p>
+      <p></p>
+      <embed src="soundExamples/modeDrunk.mid" width="150" height="60"
+ autoplay="false"></embed> 
+      <p></p>
+      <p><a
+ href="../jmdemos/ModeDrunk.java">View / download source</a></p>
+      <p>The totally random note series is relatively uninteresting, and even 
+        the modally constrained version does not sound musically convincing due 
+        to the wide range of pitches which can result. The random walk is a stochastic 
+        series but the constraint restricts overly large leaps in the melodic 
+        voice.<br>
+        This type of pattern is called a random walk and is common in computer 
+        music compositional techniques.</p>
+      <p>Charles Dodge and Thomas Jerse discuss random walks on pages 365-368 
+        of "Computer Music" (2nd Ed. 1997, Schirmer Books).<br>
+        They deal also with Markov processes in these pages, a more detailed version 
+        of which is availible in further jMusic demos.</p>
+      <p>In this demo two constraints on the randomness of the pitch selection 
+        are used. <br>
+        First the limiting of pitch intervalic voice leading, and secondly the 
+        restriction of pitches to the C major scale (mode). </p>
+      <p>Lets have a closer look.&nbsp; 
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>&nbsp;23&nbsp;&nbsp;&nbsp;&nbsp; import jm.JMC;
+&nbsp;24&nbsp;&nbsp;&nbsp;&nbsp; import jm.music.data.*;
+&nbsp;25&nbsp;&nbsp;&nbsp;&nbsp; import jm.midi.*;
+&nbsp;26&nbsp;&nbsp;&nbsp;&nbsp; import jm.util.*;</pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      Lines 1-4 import useful packages that we need to use in the program. The 
+      first import statement gets a standard Java class. The rest of the statements 
+      import the jMusic classes (to take another look at the package documentation 
+      or work out what gets imported from where look <a href="http://explodingart.com/jmusic/jmDocumentation/index.html" target="_blank">here</a>). 
+      <br>
+      <br>
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>&nbsp;34&nbsp;&nbsp;&nbsp;&nbsp; public final class ModeDrunk implements JMC {
+&nbsp;35&nbsp;&nbsp;&nbsp;&nbsp;     public static void main(String[] args){
+&nbsp;36&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     Score modeScore = new Score("Drunk walk demo");
+&nbsp;37&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Part inst = new Part("Bass", SYNTH_BASS, 0);
+&nbsp;38&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Phrase phr = new Phrase();&nbsp;
+&nbsp;39&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int pitch = C3; <span
+ class = "comment">// variable to store the calculated pitch </span><br>                                <span
+ class = "comment">// (initialized with a start pitch value)</span>
+&nbsp;40&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int offset;</pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      This section declares the class and sets class variables for most levels 
+      of the jMusic data structure. A Score object called "ModeScore" is created, 
+      as is a part object called "inst" and a phrase object to hold the melody 
+      called "phr" which is set to start at the beginning of the piece - beat 
+      0. 
+      <p></p>
+      <p>A variable called 'temp' is declared which 
+        will store the previous pitch value. The variable 'offset' stores the 
+        random number to be added to the previous note pitch. An array called 
+        'mode' is declared which holds the semitone steps of the degrees of the 
+        major scale - 0 being C. 
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>&nbsp;42&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ class = "comment">// create a phrase of 32 quavers following </span><br>               <span class = "comment"> // a random walk within C minor.</span>
+&nbsp;43&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for(short i=0;i&lt;32;) {
+&nbsp;44&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     <span
+ class = "comment">// next note within plus or minus a 5th.</span>
+&nbsp;45&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     offset = 0;
+&nbsp;46&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; while(offset == 0) {
+&nbsp;47&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     offset = (int)((Math.random()*14) - 7);&nbsp;
+&nbsp;48&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br><span
+ class = "comment">                    // add the offset to the pitch to find the next pitch:</span><br>&nbsp;49&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; pitch += offset;
+&nbsp;50&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;51&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ class = "comment">// check that it is a note in the mode using the isScale method.</span>
+&nbsp;52&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+ class = "comment">// several other scale constants are available in the JMC</span>
+&nbsp;53&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Note note = new Note(pitch, Q);
+&nbsp;54&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if(note.isScale(MINOR_SCALE)) {
+&nbsp;55&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     phr.addNote(note);
+&nbsp;56&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i++;
+&nbsp;57&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;58&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</pre> 
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      A series of 24 notes is created. Starting from middle C (note 60) a new 
+      note up to 7 semitones away from the previous note is randomly chosen. Following 
+      this the notes are checked to see if they are within the C major scale. 
+      <br>
+      <br>
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>&nbsp;61&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; inst.addPhrase(phr);
+&nbsp;62&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; modeScore.addPart(inst);</pre> 
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      The phrase is added to a part, which in turn is allocated to the score. 
+      A score object is required for passing to the MIDI file conversion class. 
+      <br>
+      <br>
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>&nbsp;65&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Write.midi(modeScore, "modeDrunk.mid");
+&nbsp;66&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+&nbsp;67&nbsp;&nbsp;&nbsp;&nbsp; }</pre> 
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      As with other jMusic demo files, this code creates a MIDI file from the 
+      score. <br>
+      Once created the modeDrunk.mid file can be played by any MIDI file player 
+      and will sound correctly using a General MIDI sound source, such as most 
+      PC sound cards, or Quicktime. The final line provides feedback during execution 
+      that the MIDI file has been successfully written. </td>
+    <!-- InstanceEndEditable --></tr>
+  <tr> 
+    <td align="left"> <div align="left"></div></td>
+  </tr>
+  <tr> 
+    <td align="left">&nbsp;</td>
+  </tr>
+</table>
+<blockquote> 
+  <p name="Map"> 
+    <map name="Map">
+      <area shape="rect" coords="4,4,41,29" href="http://jmusic.ci.qut.edu" target="_blank" alt="jMusic">
+      <area shape="rect" coords="43,5,80,31" href="http://www.ozco.gov.au" target="_blank" alt="Australia Council">
+      <area shape="rect" coords="83,4,108,29" href="http://www.qut.com" target="_blank" alt="Queensland University of Technology">
+    </map>
+    <map name="Map2">
+      <area shape="rect" coords="702,1,758,12" href="../../extras/sitemap.html" target="_self" alt="Sitemap">
+      <area shape="rect" coords="629,1,687,12" href="../../extras/contact.html" target="_self" alt="Contact">
+      <area shape="rect" coords="574,1,615,14" href="../../index.html" target="_self" alt="Home">
+    </map>
+    <map name="Map3">
+      <area shape="rect" coords="553,5,601,18" href="#" alt="Home">
+      <area shape="rect" coords="612,4,671,18" href="#">
+      <area shape="rect" coords="683,3,735,19" href="#">
+      <area shape="rect" coords="9,8,227,59" href="#" target="index.html">
+    </map>
+    <map name="Map4">
+      <area shape="rect" coords="6,9,40,41" href="http://www.qut.com" target="_blank" alt="http://www.qut.com">
+      <area shape="rect" coords="44,14,87,42" href="http://explodingart.com/jmusic" target="_blank" alt="http://explodingart.com/jmusic">
+      <area shape="rect" coords="90,9,138,43" href="http://www.ozco.gov.au" target="_parent" alt="http://www.ozco.gov.au">
+      <area shape="rect" coords="313,13,512,36" href="../../contact.html">
+    </map>
+  </p>
+</blockquote>
+<map name="Map5">
+  <area shape="rect" coords="-7,4,228,51" href="../../index.htm" target="_self" alt="Digital Instrument making">
+  <area shape="rect" coords="599,1,658,18" href="../../index.htm" alt="Home">
+  <area shape="rect" coords="677,3,755,18" href="../../extras/contact.htm" target="extras">
+</map>
+</body>
+<!-- InstanceEnd --></html>

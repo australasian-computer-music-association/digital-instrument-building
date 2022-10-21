@@ -1,0 +1,465 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><!-- InstanceBegin template="/Templates/tutorial files.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Digital Instrument Building</title>
+<!-- InstanceEndEditable --> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<META NAME="DC.Creator" CONTENT="PersonalName= Andrew R. Brown  ">
+<META NAME="DC.Creator.Email" CONTENT="algorithmicmusic@gmail.com,">
+<META NAME="DC.Rights" CONTENT="Andrew R. Brown ">
+<META NAME="DC.Title" CONTENT="Digital Instrument Building - Music software development with jMusic">
+<META NAME="DC.Title.Alternative" content ="Music software development with jMusic">
+<META NAME="DC.Subject" CONTENT="music, java, composition, algorithmic, digital music, generative music, instrument building, music analysing software development, Australia">
+<META NAME="DC.Description" CONTENT="This site is a tutorial resource designed to assist in the training and self education of up-and-coming digital instrument developers. The tutorials cover topics including music software design, audio synthesis, digital signal processing, compositional systems, and computer programming concepts. ">
+<META NAME="DC.Language" SCHEME="rfc1766" CONTENT="en-au">
+<META NAME="DC.Audience" CONTENT="All">
+<META NAME="DC.Date.Created" CONTENT="06-04-2003">
+<META NAME="DC.Availability" CONTENT="PersonalName= Andrew R. Brown; email= algorithmicmusic@gmail.com">
+<!-- ImageReady Preload Script (menubanner2.psd) -->
+<SCRIPT TYPE="text/javascript">
+<!--
+
+function newImage(arg) {
+	if (document.images) {
+		rslt = new Image();
+		rslt.src = arg;
+		return rslt;
+	}
+}
+
+function changeImages() {
+	if (document.images && (preloadFlag == true)) {
+		for (var i=0; i<changeImages.arguments.length; i+=2) {
+			document[changeImages.arguments[i]].src = changeImages.arguments[i+1];
+		}
+	}
+}
+
+var preloadFlag = false;
+function preloadImages() {
+	if (document.images) {
+		Music_algorithms_over = newImage("images/Music-algorithms-over.jpg");
+		Interfaces_over = newImage("images/Interfaces-over.jpg");
+		Programming_over = newImage("images/Programming-over.jpg");
+		Acoustics_over = newImage("images/Acoustics-over.jpg");
+		context_over = newImage("images/context-over.jpg");
+		audio_over = newImage("images/audio-over.jpg");
+		MIDI_over = newImage("images/MIDI-over.jpg");
+		preloadFlag = true;
+	}
+}
+
+// -->
+</SCRIPT>
+<!-- End Preload Script -->
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+//-->
+</script>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+
+function MM_nbGroup(event, grpName) { //v6.0
+  var i,img,nbArr,args=MM_nbGroup.arguments;
+  if (event == "init" && args.length > 2) {
+    if ((img = MM_findObj(args[2])) != null && !img.MM_init) {
+      img.MM_init = true; img.MM_up = args[3]; img.MM_dn = img.src;
+      if ((nbArr = document[grpName]) == null) nbArr = document[grpName] = new Array();
+      nbArr[nbArr.length] = img;
+      for (i=4; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+        if (!img.MM_up) img.MM_up = img.src;
+        img.src = img.MM_dn = args[i+1];
+        nbArr[nbArr.length] = img;
+    } }
+  } else if (event == "over") {
+    document.MM_nbOver = nbArr = new Array();
+    for (i=1; i < args.length-1; i+=3) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = (img.MM_dn && args[i+2]) ? args[i+2] : ((args[i+1])? args[i+1] : img.MM_up);
+      nbArr[nbArr.length] = img;
+    }
+  } else if (event == "out" ) {
+    for (i=0; i < document.MM_nbOver.length; i++) {
+      img = document.MM_nbOver[i]; img.src = (img.MM_dn) ? img.MM_dn : img.MM_up; }
+  } else if (event == "down") {
+    nbArr = document[grpName];
+    if (nbArr)
+      for (i=0; i < nbArr.length; i++) { img=nbArr[i]; img.src = img.MM_up; img.MM_dn = 0; }
+    document[grpName] = nbArr = new Array();
+    for (i=2; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = img.MM_dn = (args[i+1])? args[i+1] : img.MM_up;
+      nbArr[nbArr.length] = img;
+  } }
+}
+//-->
+</script>
+<link href="../../style/main.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+</head>
+<body leftmargin="3" topmargin="3" marginwidth="0" marginheight="0"  onLoad="MM_preloadImages('../../images/banner/audio-over.jpg','../../images/banner/MIDI-over.jpg','../../images/banner/Music-algorithms-over.jpg','../../images/banner/Interfaces-over.jpg','../../images/banner/Programming-over.jpg','../../images/banner/Acoustics-over.jpg','../../images/banner/context-over.jpg','../../images/banner/banner_08.gif')">
+<table width="691" border="0" align="center">
+  <tr> 
+    <td colspan="5" align="left"> <div align="center"> 
+        <table border="0" align="left" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td colspan="8"><img src="../../images/banner.jpg" alt="" width=758 height=57 border="0" usemap="#Map5"></td>
+          </tr>
+          <tr> 
+            <td width="50"><a href="../../Audio/audio.htm" target="_top" onClick="MM_nbGroup('down','group1','Audio','../../images/banner/audio-over.jpg',1)" onMouseOver="MM_nbGroup('over','Audio','../../images/banner/audio-over.jpg','../../images/banner/audio-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/audio.jpg" alt="audio" name="Audio" width="50" height="24" border="0" onload=""></a></td>
+            <td width="47"><a href="../../midi/midi.htm" target="_top" onClick="MM_nbGroup('down','group1','MIDI','../../images/banner/MIDI-over.jpg',1)" onMouseOver="MM_nbGroup('over','MIDI','../../images/banner/MIDI-over.jpg','../../images/banner/MIDI-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/MIDI.jpg" alt="MIDI" name="MIDI" width="47" height="24" border="0" onload=""></a></td>
+            <td width="117"><a href="../../musalgo/musalgo.htm" target="_top" onClick="MM_nbGroup('down','group1','musalgorithms','../../images/banner/Music-algorithms-over.jpg',1)" onMouseOver="MM_nbGroup('over','musalgorithms','../../images/banner/Music-algorithms-over.jpg','../../images/banner/Music-algorithms-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Music-algorithms.jpg" alt="Music Algorithms" name="musalgorithms" width="117" height="24" border="0" onload=""></a></td>
+            <td width="88"><a href="../../interfaces/interface.htm" target="_top" onClick="MM_nbGroup('down','group1','Interfaces','../../images/banner/Interfaces-over.jpg',1)" onMouseOver="MM_nbGroup('over','Interfaces','../../images/banner/Interfaces-over.jpg','../../images/banner/Interfaces-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Interfaces.jpg" alt="Interfaces" name="Interfaces" width="88" height="24" border="0" onload=""></a></td>
+            <td width="103"><a href="../../programming/programming.htm" target="_top" onClick="MM_nbGroup('down','group1','Programming','../../images/banner/Programming-over.jpg',1)" onMouseOver="MM_nbGroup('over','Programming','../../images/banner/Programming-over.jpg','../../images/banner/Programming-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Programming.jpg" alt="Programming" name="Programming" width="103" height="24" border="0" onload=""></a></td>
+            <td width="81"><a href="../../acoustics/acoustics.htm" target="_top" onClick="MM_nbGroup('down','group1','Acoustics','../../images/banner/Acoustics-over.jpg',1)" onMouseOver="MM_nbGroup('over','Acoustics','../../images/banner/Acoustics-over.jpg','../../images/banner/Acoustics-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Acoustics.jpg" alt="Acoustics" name="Acoustics" width="81" height="24" border="0" onload=""></a></td>
+            <td width="100"><a href="../../context/context.htm" target="_top" onClick="MM_nbGroup('down','group1','Context','../../images/banner/context-over.jpg',1)" onMouseOver="MM_nbGroup('over','Context','../../images/banner/context-over.jpg','../../images/banner/context-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/context.jpg" alt="Context" name="Context" width="100" height="24" border="0" onload=""></a></td>
+            <td width="156"><img src="../../images/banner/banner_09.gif" width="172" height="24"></td>
+          </tr>
+        </table>
+      </div></td>
+  </tr>
+  <tr> 
+    <td width="3" align="left"> <div align="right"></div>
+      <div align="right"></div>
+      <div align="right"></div></td>
+    <!-- InstanceBeginEditable name="tracker" -->
+    <td height="16" colspan="2" rowspan="2" align="left"><a href="../../interfaces/interface.htm">&gt; 
+      Interface </a>&gt; <a href="../../interfaces/guiconst.htm">GUI construction 
+      </a> &gt;<a href="jm808.html"> Jm-808 Drum Pattern Generator </a></td>
+    <!-- InstanceEndEditable -->
+    <td width="15" rowspan="2" align="left">&nbsp;</td>
+    <td width="214" rowspan="2" align="left">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="3" rowspan="3" align="left">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="66" align="left" valign="top">&nbsp;</td>
+    <td width="444" align="left" valign="top">&nbsp;</td>
+    <td colspan="2" align="left" valign="top"><strong></strong></td>
+  </tr>
+  <tr> <!-- InstanceBeginEditable name="content" --> 
+    <td colspan="4" rowspan="3" align="left" valign="top"> Jm-808 Drum Pattern 
+      Generator 
+      <p>This class creates stochastic drum patterns.<br>
+        Simple. It uses two classes, the jm808.java file does the composing and 
+        contains the main() method, and the jm808_GUI.java class draws the visual 
+        interface. Which looks like this:</p>
+      <p><img src="Images/jm808GUI.gif" alt="GUI"
+ width="337" height="77"
+ align="bottom" x-sas-useimagewidth="" x-sas-useimageheight=""></p>
+      <p>The number 7 indicates the number of loops (bars) the pattern should 
+        play. <br>
+        The string is the file name. The compose button generates a new MIDI file 
+        of the specified name.<br>
+        In this way several MIDI files can be created without having to reboot 
+        the program. </p>
+      <p>A final MIDI file can sound like this:</p>
+      <p> 
+        <embed src="soundExamples/jm808.mid" width="150" height="60"
+ controller="TRUE" loop="FALSE" autoplay="FALSE"></embed></p>
+      <p><a href="../jmdemos/Jm808.java"
+ target="_top">Click here to view jm808 source.</a></p>
+      <p><a
+ href="../jmdemos/Jm808_GUI.java" target="_top">Click here to view jm808_GUI source.</a></p>
+      <p>Lets have a closer look at the jm808 class.</p>
+      <p> 
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>import jm.JMC;<br>import jm.music.data.*;<br>import jm.music.tools.*;<br>import jm.util.*;<br></pre> 
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p></p>
+      <p>The import statements tell the class which 
+        additional classes or packages of classes this program needs. In this 
+        case all the imported classes are from the jMusic library. The JMC 
+        class contains the jMusic constants such as C4 for middle C. The jm.music.data package has the Note, Phrase, Score and so on. The jm.music.tools 
+        package has the classes that manipulate the jMusic data, in particular 
+        it contain the Mod class. Finally, the jm.util 
+        package is used to read, and write MIDI files, and contains various notational 
+        displaying classes as well as classes to play back midi and audio. </p>
+      <p> 
+      <table border="0"
+ style="width: 100%; background-color: rgb(224, 224, 224); text-align: left; margin-left: auto; margin-right: auto;">
+        <tbody>
+          <tr> 
+            <td> <pre>public final class Jm808 implements JMC{<br>	private int length = 16;<br>	Score pattern1 = new Score("jm-808"); <span
+  class = "comment"><br>	// 25 = TR808 General MIDI kit. 9 = MIDI channel 10</span><br>	Part drums = new Part("Drums",25, 9);<br>	Phrase phrBD = new Phrase();<br>	Phrase phrSD = new Phrase();<br>	Phrase phrHH = new Phrase();<br>	CPhrase phrEnd = new CPhrase();<br>		<br>	public static void main(String[] args){<br>		new Jm808();<br>	}</pre> 
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p></p>
+      <p>In this code segment the Jm808 class is declared as are a number of class 
+        variables.<br>
+        Those are ones that are available (visible and usable) throughout the 
+        entire class. The length is the number of semiquavers long one bar will 
+        be. The usual jMusic data objects, from Score to Phrase are declared. 
+        Note that to operate on General MIDI equipment drums have be allocated 
+        to MIDI channel 10. Because programming languages count from zero, jMusic 
+        channel 9 is the tenth channel.</p>
+      <p>The main() method simply creates an instance of this class, the Jm808 
+        class, by calling the constructor.</p>
+      <p> 
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre><span
+  class = "comment">    /* constructor */</span><br>	public Jm808() {	<span
+  class = "comment"><br>		//Show GUI</span><br>		new Jm808_GUI(this);<br>	}<br>&nbsp;</pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      <p></p>
+      <p>The constructor first makes an instance of the graphical user interface 
+        (GUI) class that does the pretty stuff for this program.<br>
+        &nbsp;In essence all the constructor does is start other processes. The 
+        Jm808_GUIclass in turn call the other methods of this class.<br>
+        This might all seem a little convoluted - and it is a bit - but it keeps 
+        the composition code separate from the visual display code, so that if 
+        there is a problem it is easier to locate.</p>
+      <p> 
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>	public void createScore(String fileName, int loopNum) {<span
+  class = "comment"><br>		//clean out the score and part for reuse</span><br>		pattern1.empty();<br>		drums.empty();<br>	<span
+  class = "comment"><br>		//create the appropriate length phrases filled </span><br>		//up with note objects<br>		int pitch = 36;<br>		phrBD = phraseFill(length, pitch);<br>		pitch = 38;	<br>		phrSD = phraseFill(length, pitch);<br>		pitch = 42;<br>		phrHH = phraseFill(length, pitch);<br>		phrEnd = EndPattern();<br>		<span
+  class = "comment"><br>		// get the on-off values</span><br>		for (int i=0;i&lt;length;i++) {<br>			if (Math.random() &gt; 0.3) {<br>				phrBD.getNote(i).setPitch(REST);<br>			} else phrBD.getNote(i).setPitch(36);<br>			if (Math.random() &gt; 0.5) {<br>				phrSD.getNote(i).setPitch(REST);<br>			} else phrSD.getNote(i).setPitch(38);<br>			if (Math.random() &gt; 0.8) {<br>				phrHH.getNote(i).setPitch(REST);<br>			} else phrHH.getNote(i).setPitch(42);<br>		}	<br>		<span
+  class = "comment"><br>		// loop the drum pattern</span><br>		Mod.repeat(phrBD, loopNum);<br>		Mod.repeat(phrSD, loopNum);<br>		Mod.repeat(phrHH, loopNum);<br>		<span
+  class = "comment"><br>		// add phrases to the instrument (part)</span><br>		drums.addPhrase(phrBD);<br>		drums.addPhrase(phrSD);<br>		drums.addPhrase(phrHH);<br>		drums.addCPhrase(phrEnd);<br>		<span
+  class = "comment"><br>		// add the drum part to a score.</span><br>		pattern1.addPart(drums);<br>		<span
+  class = "comment"><br>		// write the score to a MIDIfile</span><br>		Write.midi(pattern1, fileName);<br>	}</pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      <p></p>
+      <p>This createScore() method does all the musical work in this program. 
+        It could easily run without the GUI if required.<br>
+        Briefly, the process is to randomly generate kick drum, snare drum and 
+        hihat parts.<br>
+        The method takes arguments from the GUI class, first the name to call 
+        the resulting MIDI file and the number of bars long the drum pattern should 
+        be. <br>
+        Here's the process:</p>
+      <p>First the parts are emptied of data (this is 
+        only really necessary the second and subsequent times the method is run 
+        by pressing the 'compose' button on the GUI).</p>
+      <p>All three phrases (kick, snare, hihats) are 
+        filled with semiquaver notes. The endPattern() 
+        method is called to create a crash cymbal at the end (we'll see this in 
+        detail later). At this stage the drum pattern would sound really tiresome 
+        - 16ths everywhere!</p>
+      <p>To make it more interesting the next section 
+        goes through each phrase and randomly turns some notes into rests. This 
+        provides gaps in the music and gives it rhythmic interest. There is a 
+        different probability for each instrument so that we end up with fewer 
+        kick drums than snare drums hits and even more hihats.</p>
+      <p>We now have one bar of drum pattern, so we 
+        repeat each phrase a specified (in the GUI) number of times.</p>
+      <p>After this, the process is quite 'normal' to 
+        jMusic folk. All phrases are added to a part which is added to a score, 
+        which is written out to a MIDI file.</p>
+      <p> 
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>	private static Phrase phraseFill(int length, int pitch) {<br>		Phrase phrase = new Phrase(0.0);<br>		for(int i=0;i&lt;length;i++){<br>			Note note = new Note(pitch, SQ, <br>				(int)(Math.random()*70 + 50));<br>			phrase.addNote(note);<br>		}<br>		return phrase;<br>	}</pre> 
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p></p>
+      <p>In the previous section we mentioned that each 
+        phrase gets filled with semiquaver notes, well because this happens three 
+        times (once for kick, snare, and hats) we avoid repetition by creating 
+        a separate method which is called three times. This phraseFill() method takes two arguments, the number of semiquavers to 
+        fill (the length) and the pitch of the drum on the General MIDI drum map 
+        (the pitch).</p>
+      <p>Notice that the notes are created with a random 
+        dynamic value, this assists in providing additional musical interest to 
+        the drum pattern and helps it sound somewhat less mechanical.</p>
+      <p> 
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>	private static CPhrase EndPattern() {<span
+  class = "comment"><br>		// make crash ending </span><br>		CPhrase cphrase = new CPhrase();<br>		int[] pitchArray1a = {36,49}; <span
+  class = "comment">// kick and crash cymbal</span><br>		cphrase.addChord(pitchArray1a, SB);<br>		<br>		return cphrase;<br>	}<br>}<br>&nbsp;</pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      <p></p>
+      <p>The last method in this class is the one that 
+        creates the crash cymbal on the down beat after the last repeat of the 
+        pattern. This provides some musical conclusion to the patterns - trivial 
+        but perhaps better than listening to many unresolved beats :) </p>
+      <p> 
+      <hr>
+      
+      <p></p>
+      <p>OK. Now lets look at the graphical front end 
+        to the program. The Jm808_GUI class.</p>
+      <p> 
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>import java.awt.*;<br>import java.awt.event.*;<br>import jm.JMC;<br>import jm.music.data.*;</pre> 
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p></p>
+      <p>The import statements are used as described previously. However, different 
+        classes are required. The java.awt and java.awt.event packages are the 
+        built-in Java graphical interfaces classes. The letters 'awt' stand for 
+        Abstract Windowing Toolbox and these classes are used to draw windows, 
+        menus, buttons and so on. More recent versions of Java have added the 
+        javax.swing package that does even more fancy interfaces.</p>
+      <p> 
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>public class Jm808_GUI extends Frame implements ActionListener, JMC{<br>	<span
+  class = "comment">// Attributes shared within the class</span><br>	private TextField loopNumBox, fileNameBox;<br>	private Jm808 drumMachine;</pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      <p></p>
+      <p>Jm808_GUI is declared. There are some awt-releated 
+        aspects to this declaration. The class 'extends' the Frame 
+        class. That means it takes on all the attributes of the Frame class which basically allows it to become a window on the 
+        screen. It also 'implements' the ActionListener 
+        interface (along with the JMC that we're used to in jMusic classes). This means that the 
+        class can deal with user actions such as clicking an on screen button.</p>
+      <p>Some class variables are declared. textFields 
+        are awt components that create spaces for the user to type text, such 
+        as the MIDI file name. it also creates an object of type Jm808 called 
+        drumMachine. This allows it to have a reference to the Jm808 class and 
+        enable it to use the methods of that class, such as createScore().</p>
+      <p> 
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>	public Jm808_GUI(Jm808 drumMachine) {<br>		<span
+  class = "comment">//give the window a name</span><br>		super("JM 808 by Andrew R. Brown");<br>		<span
+  class = "comment">// make other class reference available to all </span><br>		// methods in this class<br>		this.drumMachine = drumMachine;<br>		<br>		<span
+  class = "comment">//create a panel to put objects on </span><br>		Panel p = new Panel();<br>		<br>		<span
+  class = "comment">//add the text field</span><br>&nbsp;<br>		loopNumBox = new TextField("7",5);<br>		p.add(loopNumBox);<br>&nbsp;<br>		fileNameBox = new TextField("jm808.mid",24);<br>		p.add(fileNameBox);<br>		<br>		<span
+  class = "comment">//add the button</span><br>		Button composeBtn = new Button("Compose");<br>		composeBtn.addActionListener(this);<br>		composeBtn.setActionCommand("Create");<br>		p.add(composeBtn);<br>		<br>		<span
+  class = "comment">//put the panel in the frame</span><br>		this.add(p);<br>		<br>		<span
+  class = "comment">//display the window</span><br>		this.pack();<br>		this.show();<br>	}</pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      <p></p>
+      <p>The constructor sets up the visual appearance 
+        of the frame and then displays it. Because this class is an extension 
+        of the Frame class, the Frame class its the 'super' class. The first line within the constructor 
+        asks the Frame class to run its constructor to create a window with the 
+        name provided in quotes.</p>
+      <p>The Jm808 class variable is made to reference the calling class which 
+        is passed through the variable 'drumMachine'.</p>
+      <p>An awt Panel is created, and two text fields and a button are created 
+        and added to the panel.</p>
+      <p>The button registers itself with the ActionListener 
+        using the method AddActionListener() - see a good book on Java for a fuller discussion about 
+        awt event 
+        handling.</p>
+      <p>The panel - p - is added to 'this' (the Frame), 
+        and it is packed (made to fit all its bits snugly) and then made visible 
+        on screen with the show() method.</p>
+      <p> 
+      <table border="0"
+ style="width: 100%; background-color: rgb(224, 224, 224); text-align: left; margin-left: auto; margin-right: auto;">
+        <tbody>
+          <tr> 
+            <td> <pre>	public void actionPerformed(ActionEvent ae){<br>		if (ae.getActionCommand().equals("Create")) {<br>			String fn = fileNameBox.getText();<br>			int numb = Integer.valueOf(<br>				loopNumBox.getText()).intValue();<br>				if (fn != null &amp;&amp; numb &gt;= 0){<br>					drumMachine.createScore(<br>						fn, numb);<br>				} else drumMachine.createScore(<br>					"jm808.mid", 3);<br>				<br>		}<br>	}<br>}<br>&nbsp;</pre> 
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p></p>
+      <p>Dealing with the user clicking on the 'compose' 
+        button is all that's left to do. The ActionListener 
+        interface, declared as part of the class, uses this actionPerformed() 
+        method whenever an object that is registered to it (such as the compose 
+        button) is actioned by the user.</p>
+      <p>We first check to see if it was the compose 
+        button (which has an action command "Create". Then we get the file name 
+        and number of loops that the user typed in the text fields. With these 
+        we call the createScore() method in Jm808 that generates a new drum pattern and saves 
+        it as a MIDI file.&nbsp; Simple :) &nbsp;This MIDI ile is saved in the same folder/directory that 
+        the class is running from, unless otherwised specified, so go have a listen! 
+      </p>
+    
+      </td>
+    <!-- InstanceEndEditable --></tr>
+  <tr> 
+    <td align="left"> <div align="left"></div></td>
+  </tr>
+  <tr> 
+    <td align="left">&nbsp;</td>
+  </tr>
+</table>
+<blockquote> 
+  <p name="Map"> 
+    <map name="Map">
+      <area shape="rect" coords="4,4,41,29" href="http://jmusic.ci.qut.edu" target="_blank" alt="jMusic">
+      <area shape="rect" coords="43,5,80,31" href="http://www.ozco.gov.au" target="_blank" alt="Australia Council">
+      <area shape="rect" coords="83,4,108,29" href="http://www.qut.com" target="_blank" alt="Queensland University of Technology">
+    </map>
+    <map name="Map2">
+      <area shape="rect" coords="702,1,758,12" href="../../extras/sitemap.html" target="_self" alt="Sitemap">
+      <area shape="rect" coords="629,1,687,12" href="../../extras/contact.html" target="_self" alt="Contact">
+      <area shape="rect" coords="574,1,615,14" href="../../index.html" target="_self" alt="Home">
+    </map>
+    <map name="Map3">
+      <area shape="rect" coords="553,5,601,18" href="#" alt="Home">
+      <area shape="rect" coords="612,4,671,18" href="#">
+      <area shape="rect" coords="683,3,735,19" href="#">
+      <area shape="rect" coords="9,8,227,59" href="#" target="index.html">
+    </map>
+    <map name="Map4">
+      <area shape="rect" coords="6,9,40,41" href="http://www.qut.com" target="_blank" alt="http://www.qut.com">
+      <area shape="rect" coords="44,14,87,42" href="http://explodingart.com/jmusic" target="_blank" alt="http://explodingart.com/jmusic">
+      <area shape="rect" coords="90,9,138,43" href="http://www.ozco.gov.au" target="_parent" alt="http://www.ozco.gov.au">
+      <area shape="rect" coords="313,13,512,36" href="../../contact.html">
+    </map>
+  </p>
+</blockquote>
+<map name="Map5">
+  <area shape="rect" coords="-7,4,228,51" href="../../index.htm" target="_self" alt="Digital Instrument making">
+  <area shape="rect" coords="599,1,658,18" href="../../index.htm" alt="Home">
+  <area shape="rect" coords="677,3,755,18" href="../../extras/contact.htm" target="extras">
+</map>
+</body>
+<!-- InstanceEnd --></html>

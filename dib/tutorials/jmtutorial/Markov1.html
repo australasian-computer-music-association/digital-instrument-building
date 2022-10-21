@@ -1,0 +1,452 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><!-- InstanceBegin template="/Templates/tutorial files.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Digital Instrument Building</title>
+<!-- InstanceEndEditable --> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<META NAME="DC.Creator" CONTENT="PersonalName= Andrew R. Brown  ">
+<META NAME="DC.Creator.Email" CONTENT="algorithmicmusic@gmail.com,">
+<META NAME="DC.Rights" CONTENT="Andrew R. Brown ">
+<META NAME="DC.Title" CONTENT="Digital Instrument Building - Music software development with jMusic">
+<META NAME="DC.Title.Alternative" content ="Music software development with jMusic">
+<META NAME="DC.Subject" CONTENT="music, java, composition, algorithmic, digital music, generative music, instrument building, music analysing software development, Australia">
+<META NAME="DC.Description" CONTENT="This site is a tutorial resource designed to assist in the training and self education of up-and-coming digital instrument developers. The tutorials cover topics including music software design, audio synthesis, digital signal processing, compositional systems, and computer programming concepts. ">
+<META NAME="DC.Language" SCHEME="rfc1766" CONTENT="en-au">
+<META NAME="DC.Audience" CONTENT="All">
+<META NAME="DC.Date.Created" CONTENT="06-04-2003">
+<META NAME="DC.Availability" CONTENT="PersonalName= Andrew R. Brown; email= algorithmicmusic@gmail.com">
+<!-- ImageReady Preload Script (menubanner2.psd) -->
+<SCRIPT TYPE="text/javascript">
+<!--
+
+function newImage(arg) {
+	if (document.images) {
+		rslt = new Image();
+		rslt.src = arg;
+		return rslt;
+	}
+}
+
+function changeImages() {
+	if (document.images && (preloadFlag == true)) {
+		for (var i=0; i<changeImages.arguments.length; i+=2) {
+			document[changeImages.arguments[i]].src = changeImages.arguments[i+1];
+		}
+	}
+}
+
+var preloadFlag = false;
+function preloadImages() {
+	if (document.images) {
+		Music_algorithms_over = newImage("images/Music-algorithms-over.jpg");
+		Interfaces_over = newImage("images/Interfaces-over.jpg");
+		Programming_over = newImage("images/Programming-over.jpg");
+		Acoustics_over = newImage("images/Acoustics-over.jpg");
+		context_over = newImage("images/context-over.jpg");
+		audio_over = newImage("images/audio-over.jpg");
+		MIDI_over = newImage("images/MIDI-over.jpg");
+		preloadFlag = true;
+	}
+}
+
+// -->
+</SCRIPT>
+<!-- End Preload Script -->
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+//-->
+</script>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+
+function MM_nbGroup(event, grpName) { //v6.0
+  var i,img,nbArr,args=MM_nbGroup.arguments;
+  if (event == "init" && args.length > 2) {
+    if ((img = MM_findObj(args[2])) != null && !img.MM_init) {
+      img.MM_init = true; img.MM_up = args[3]; img.MM_dn = img.src;
+      if ((nbArr = document[grpName]) == null) nbArr = document[grpName] = new Array();
+      nbArr[nbArr.length] = img;
+      for (i=4; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+        if (!img.MM_up) img.MM_up = img.src;
+        img.src = img.MM_dn = args[i+1];
+        nbArr[nbArr.length] = img;
+    } }
+  } else if (event == "over") {
+    document.MM_nbOver = nbArr = new Array();
+    for (i=1; i < args.length-1; i+=3) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = (img.MM_dn && args[i+2]) ? args[i+2] : ((args[i+1])? args[i+1] : img.MM_up);
+      nbArr[nbArr.length] = img;
+    }
+  } else if (event == "out" ) {
+    for (i=0; i < document.MM_nbOver.length; i++) {
+      img = document.MM_nbOver[i]; img.src = (img.MM_dn) ? img.MM_dn : img.MM_up; }
+  } else if (event == "down") {
+    nbArr = document[grpName];
+    if (nbArr)
+      for (i=0; i < nbArr.length; i++) { img=nbArr[i]; img.src = img.MM_up; img.MM_dn = 0; }
+    document[grpName] = nbArr = new Array();
+    for (i=2; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = img.MM_dn = (args[i+1])? args[i+1] : img.MM_up;
+      nbArr[nbArr.length] = img;
+  } }
+}
+//-->
+</script>
+<link href="../../style/main.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+</head>
+<body leftmargin="3" topmargin="3" marginwidth="0" marginheight="0"  onLoad="MM_preloadImages('../../images/banner/audio-over.jpg','../../images/banner/MIDI-over.jpg','../../images/banner/Music-algorithms-over.jpg','../../images/banner/Interfaces-over.jpg','../../images/banner/Programming-over.jpg','../../images/banner/Acoustics-over.jpg','../../images/banner/context-over.jpg','../../images/banner/banner_08.gif')">
+<table width="691" border="0" align="center">
+  <tr> 
+    <td colspan="5" align="left"> <div align="center"> 
+        <table border="0" align="left" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td colspan="8"><img src="../../images/banner.jpg" alt="" width=758 height=57 border="0" usemap="#Map5"></td>
+          </tr>
+          <tr> 
+            <td width="50"><a href="../../Audio/audio.htm" target="_top" onClick="MM_nbGroup('down','group1','Audio','../../images/banner/audio-over.jpg',1)" onMouseOver="MM_nbGroup('over','Audio','../../images/banner/audio-over.jpg','../../images/banner/audio-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/audio.jpg" alt="audio" name="Audio" width="50" height="24" border="0" onload=""></a></td>
+            <td width="47"><a href="../../midi/midi.htm" target="_top" onClick="MM_nbGroup('down','group1','MIDI','../../images/banner/MIDI-over.jpg',1)" onMouseOver="MM_nbGroup('over','MIDI','../../images/banner/MIDI-over.jpg','../../images/banner/MIDI-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/MIDI.jpg" alt="MIDI" name="MIDI" width="47" height="24" border="0" onload=""></a></td>
+            <td width="117"><a href="../../musalgo/musalgo.htm" target="_top" onClick="MM_nbGroup('down','group1','musalgorithms','../../images/banner/Music-algorithms-over.jpg',1)" onMouseOver="MM_nbGroup('over','musalgorithms','../../images/banner/Music-algorithms-over.jpg','../../images/banner/Music-algorithms-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Music-algorithms.jpg" alt="Music Algorithms" name="musalgorithms" width="117" height="24" border="0" onload=""></a></td>
+            <td width="88"><a href="../../interfaces/interface.htm" target="_top" onClick="MM_nbGroup('down','group1','Interfaces','../../images/banner/Interfaces-over.jpg',1)" onMouseOver="MM_nbGroup('over','Interfaces','../../images/banner/Interfaces-over.jpg','../../images/banner/Interfaces-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Interfaces.jpg" alt="Interfaces" name="Interfaces" width="88" height="24" border="0" onload=""></a></td>
+            <td width="103"><a href="../../programming/programming.htm" target="_top" onClick="MM_nbGroup('down','group1','Programming','../../images/banner/Programming-over.jpg',1)" onMouseOver="MM_nbGroup('over','Programming','../../images/banner/Programming-over.jpg','../../images/banner/Programming-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Programming.jpg" alt="Programming" name="Programming" width="103" height="24" border="0" onload=""></a></td>
+            <td width="81"><a href="../../acoustics/acoustics.htm" target="_top" onClick="MM_nbGroup('down','group1','Acoustics','../../images/banner/Acoustics-over.jpg',1)" onMouseOver="MM_nbGroup('over','Acoustics','../../images/banner/Acoustics-over.jpg','../../images/banner/Acoustics-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Acoustics.jpg" alt="Acoustics" name="Acoustics" width="81" height="24" border="0" onload=""></a></td>
+            <td width="100"><a href="../../context/context.htm" target="_top" onClick="MM_nbGroup('down','group1','Context','../../images/banner/context-over.jpg',1)" onMouseOver="MM_nbGroup('over','Context','../../images/banner/context-over.jpg','../../images/banner/context-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/context.jpg" alt="Context" name="Context" width="100" height="24" border="0" onload=""></a></td>
+            <td width="156"><img src="../../images/banner/banner_09.gif" width="172" height="24"></td>
+          </tr>
+        </table>
+      </div></td>
+  </tr>
+  <tr> 
+    <td width="3" align="left"> <div align="right"></div>
+      <div align="right"></div>
+      <div align="right"></div></td>
+    <!-- InstanceBeginEditable name="tracker" -->
+    <td height="16" colspan="2" rowspan="2" align="left"><a href="../../musalgo/musalgo.htm">&gt; 
+      Music Algorithms </a>&gt; <a href="../../musalgo/analys.htm">Analysing</a> 
+      &gt;<a href="Markov1.html"> Markov Chains 1</a></td>
+    <!-- InstanceEndEditable -->
+    <td width="15" rowspan="2" align="left">&nbsp;</td>
+    <td width="214" rowspan="2" align="left">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="3" rowspan="3" align="left">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="66" align="left" valign="top">&nbsp;</td>
+    <td width="444" align="left" valign="top">&nbsp;</td>
+    <td colspan="2" align="left" valign="top"><strong></strong></td>
+  </tr>
+  <tr> <!-- InstanceBeginEditable name="content" --> 
+    <td colspan="4" rowspan="3" align="left" valign="top"> <h2>Markov Chains 1 
+      </h2>
+      <p>Andrei Andreevich Markov was a Russian mathematician who discovered a 
+        technique for recording the dependencies between items in series. <br>
+        This technique has been named Markov Chains in honour of its inventor.</p>
+      <p>Markov Chains have a long and successful history in computer music research, 
+        and for good reason.<br>
+        Markov Chains provide an effective mechanism for creating and using stochastic 
+        matrices in musically satisfying ways.</p>
+      <p>Markov Chains work by analysing the chance of any given pitch (to put 
+        the example in a musical context) going directly to any other pitch.<br>
+        We can calculate this by checking a particular pitch every time it occurs 
+        in a composition and weighting the notes that follow it into a stochastic 
+        matrix.<br>
+        If we do this for every pitch value we build a stochastic matrix which 
+        resembles the composition that it is based on. Let's take a look at an 
+        example.</p>
+      <p>{64,62,60,62,64,64,64,62,62,62,64,67,67,64,62,60,62,64,64,64,64,62,62,64,62,60} 
+        <br>
+        This pitch array is the start of a very well known nursery rhyme and provides 
+        us with a perfect vehicle for investigating Markov Chains.<br>
+        If we identify each individual pitch in this array we get one row of a 
+        table like so:</p>
+      <p> 
+      <table border="1" width="100%">
+        <tbody>
+          <tr> 
+            <td> <p>60 </p></td>
+            <td> <p>62 </p></td>
+            <td> <p>64 </p></td>
+            <td> <p>67 </p></td>
+          </tr>
+        </tbody>
+      </table>
+      <p>If we now mark out all the notes that could proceed these few notes we 
+        can make a proper two dimensional matrix like so:</p>
+      <p> 
+      <table border="1" width="100%">
+        <tbody>
+          <tr> 
+            <td> <p> </p>
+              <br> </td>
+            <td> <p>60 </p></td>
+            <td> <p>62 </p></td>
+            <td> <p>64 </p></td>
+            <td> <p>67 </p></td>
+          </tr>
+          <tr> 
+            <td> <p>60 </p></td>
+            <td> <p> </p>
+              <br> </td>
+            <td> <p> </p>
+              <br> </td>
+            <td> <p> </p>
+              <br> </td>
+            <td> <p> </p>
+              <br> </td>
+          </tr>
+          <tr> 
+            <td> <p>62 </p></td>
+            <td> <p> </p>
+              <br> </td>
+            <td> <p> </p>
+              <br> </td>
+            <td> <p> </p>
+              <br> </td>
+            <td> <p> </p>
+              <br> </td>
+          </tr>
+          <tr> 
+            <td> <p>64 </p></td>
+            <td> <p> </p>
+              <br> </td>
+            <td> <p> </p>
+              <br> </td>
+            <td> <p> </p>
+              <br> </td>
+            <td> <p> </p>
+              <br> </td>
+          </tr>
+          <tr> 
+            <td> <p>67 </p></td>
+            <td> <p> </p>
+              <br> </td>
+            <td> <p> </p>
+              <br> </td>
+            <td> <p> </p>
+              <br> </td>
+            <td> <p> </p>
+              <br> </td>
+          </tr>
+        </tbody>
+      </table>
+      <p></p>
+      <p></p>
+      <p>Now all we need to do is fill matrix in. How do we do this.<br>
+        Well for the first stage let's just count up all the times that a pitch 
+        in the left column is followed by any pitch in the top column.<br>
+        The left column of "bold" numbers is known as the 'state' or 'seed', and 
+        the top row of "bold" numbers is known as the 'transition' or 'output'.<br>
+        It is the 'seed' that is the difference between a normal stochastic matrix 
+        and a Markov matrix.</p>
+      <p> 
+      <table border="1" width="100%">
+        <tbody>
+          <tr> 
+            <td> <p> </p>
+              <br> </td>
+            <td> <p>60 </p></td>
+            <td> <p>62 </p></td>
+            <td> <p>64 </p></td>
+            <td> <p>67 </p></td>
+          </tr>
+          <tr> 
+            <td> <p>60 </p></td>
+            <td> <p>0 </p></td>
+            <td> <p>2 </p></td>
+            <td> <p>0 </p></td>
+            <td> <p>0 </p></td>
+          </tr>
+          <tr> 
+            <td> <p>62 </p></td>
+            <td> <p>3 </p></td>
+            <td> <p>3 </p></td>
+            <td> <p>4 </p></td>
+            <td> <p>0 </p></td>
+          </tr>
+          <tr> 
+            <td> <p>64 </p></td>
+            <td> <p>0 </p></td>
+            <td> <p>5 </p></td>
+            <td> <p>5 </p></td>
+            <td> <p>1 </p></td>
+          </tr>
+          <tr> 
+            <td> <p>67 </p></td>
+            <td> <p>0 </p></td>
+            <td> <p>0 </p></td>
+            <td> <p>1 </p></td>
+            <td> <p>1 </p></td>
+          </tr>
+        </tbody>
+      </table>
+      <p></p>
+      <p></p>
+      <p>To turn this table into a working Markov matrix we need to weight the 
+        totals so that there sum is equal to 1.0 (give the totals a percentage).<br>
+        Once we have completed that step the matrix should look like the following.</p>
+      <p> 
+      <table border="1" width="100%">
+        <tbody>
+          <tr> 
+            <td> <p> </p>
+              <br> </td>
+            <td> <p>60 </p></td>
+            <td> <p>62 </p></td>
+            <td> <p>64 </p></td>
+            <td> <p>67 </p></td>
+          </tr>
+          <tr> 
+            <td> <p>60 </p></td>
+            <td> <p>0 </p></td>
+            <td> <p>1.0 </p></td>
+            <td> <p>0 </p></td>
+            <td> <p>0 </p></td>
+          </tr>
+          <tr> 
+            <td> <p>62 </p></td>
+            <td> <p>0.3 </p></td>
+            <td> <p>0.3 </p></td>
+            <td> <p>0.4 </p></td>
+            <td> <p>0 </p></td>
+          </tr>
+          <tr> 
+            <td> <p>64 </p></td>
+            <td> <p>0 </p></td>
+            <td> <p>0.45454545 </p></td>
+            <td> <p>0.45454545 </p></td>
+            <td> <p>0.09090909 </p></td>
+          </tr>
+          <tr> 
+            <td> <p>67 </p></td>
+            <td> <p>0 </p></td>
+            <td> <p>0 </p></td>
+            <td> <p>0.5 </p></td>
+            <td> <p>0.5 </p></td>
+          </tr>
+        </tbody>
+      </table>
+      <p></p>
+      <p></p>
+      <p>The final detail in our discussion of basic Markov matrices brings us 
+        back to the 'seed'. Stochastic matrices can only provide us with output.<br>
+        A Markov matrix provides the far more useful ability to find an output 
+        based on an input. The input is known as a seed. In the example above<br>
+        we can deduce that provided a seed of 67 there is 50% likelihood that 
+        the output will be 64 and a 50% likelihood that the output will be 67. 
+        <br>
+        Following this one step further we can use the output of this choice as 
+        the seed of the next choice.</p>
+      <p>Let's work through a paper example. We will choose to use a seed of 60 
+        for this example.<br>
+        We will use the prefix's s=seed r=random number o=output //for comments.<br>
+        Remember from the tutorial on stochastic matrices that the choice of output 
+        is based on the random number being smaller than the sum of weighings 
+        <br>
+        going left to right across the row.</p>
+      <p>s60 r0.4 o62 //Note that there is no choice but to choose o62 from s60</p>
+      <p>s62 r0.9 o64 //See that o62 is now s62</p>
+      <p>s64 r0.6 o64</p>
+      <p>s64 r0.2 o62</p>
+      <p>s62 r0.1 o60</p>
+      <p>s60 r0.8 o62</p>
+      <p>s62 r0.5 o62</p>
+      <p>s62 r0.8 o64</p>
+      <p>s64 r0.99 o67</p>
+      <p>...</p>
+      <p>&nbsp;</p>
+      <p>Getting the picture :-) Remember that this process can go on for ever!</p>
+      <p>This very simple application builds on the application presented in the 
+        preceding stochastic matrix tutorial.<br>
+        It is reasonably commented and should not be to hard to follow. <br>
+        Notice that the code uses the same data table as the one used in this 
+        example.<br>
+        Try changing some of the weighings and see how the results change. Be 
+        aware that all other not parameters are defaults. <br>
+        Only the pitch will change.</p>
+      <p><a href="../jmdemos/BasicMarkov.java">Click here to view/download the 
+        source.</a></p>
+      <p> 
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>  1: import jm.music.data.*;<br>  2: import jm.util.Write;<br>&nbsp;<br>  4: public final class BasicMarkov{<br>  5:         public static void main(String[] args){<br>  6:                 <span class="comment">//A map for our musical pitches</span><br>  7:                 int[] map = {60,62,64,67};<br>  8:                 <span class="comment">//A multidimensional array representing our markov matrix</span>        <br>  9:                 double[][] markovMatrix = {{0.0,1.0,0.0,0.0},<br> 10:                                           {0.3,0.3,0.4,0.0},<br> 11:                                           {0.0,0.45454545,0.45454545,0.09090909},<br> 12:                                           {0.0,0.0,0.5,0.5}};<br> 13:                 <span class="comment">//The seed for generating output</span><br> 14:                 int seed = 2; <span
+ class="comment">//checking that our map says 64 is at index 2</span><br> 15:                 <span class="comment">//The output as an index value </span><br> 16:                 int output = 0;  <span
+ class="comment">//there are no outputs yet</span><br> 17:                 <span
+ class="comment">//Score, part and phrase to contain the output</span><br> 18:                 Score scr = new Score();<br> 19:                 Part part = new Part();<br> 20:                 Phrase phrase = new Phrase();<br>&nbsp;<br> 22:                 <span class="comment">//Add the seed note to the phrase first</span><br> 23:                 Note n = new Note();<br> 24:                 n.setPitch(map[seed]);<br> 25:                 phrase.addNote(n);<br> 26: <br> 27:                 <span
+ class="comment">//Generate notes and add them to a phrase</span><br> 28:                 for(int i=0;i&lt;30;i++){<br> 29:                         <span class="comment">//Retrieve a random number between 0.0 and 1.0</span><br> 30:                         double choice = Math.random();<br> 31:                         <span class="comment">//The current sum of weightings left to right</span><br> 32:                         double currentSum = 0.0;<br> 33:                         <span class="comment">//Check matrix left to right</span><br> 34:                         for(;output&lt;markovMatrix.length;output++){<br> 35:                                 currentSum += markovMatrix[seed][output];<br> 36:                                 if(choice &lt;= currentSum){<br> 37:                                         break; <span
+ class="comment">//break when we've chosen right number</span><br> 38:                                 }<br> 39:                         }<br> 40:                         Note note = new Note();<br> 41:                         note.setPitch(map[output]);<br> 42:                         phrase.addNote(note);<br> 43:                         <span class="comment">//Change the seed to equal the output</span><br> 44:                         seed = output;<br> 45:                         <span class="comment">//Reset the output for the next pass </span><br> 46:                         output = 0;<br> 47:                 }<br> 48:                 part.addPhrase(phrase);<br> 49:                 scr.addPart(part);<br> 50:                 Write.midi(scr,"basic_markov.mid");<br> 51:         }<br> 52: }</pre> 
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+    </td>
+    <!-- InstanceEndEditable --></tr>
+  <tr> 
+    <td align="left"> <div align="left"></div></td>
+  </tr>
+  <tr> 
+    <td align="left">&nbsp;</td>
+  </tr>
+</table>
+<blockquote> 
+  <p name="Map"> 
+    <map name="Map">
+      <area shape="rect" coords="4,4,41,29" href="http://jmusic.ci.qut.edu" target="_blank" alt="jMusic">
+      <area shape="rect" coords="43,5,80,31" href="http://www.ozco.gov.au" target="_blank" alt="Australia Council">
+      <area shape="rect" coords="83,4,108,29" href="http://www.qut.com" target="_blank" alt="Queensland University of Technology">
+    </map>
+    <map name="Map2">
+      <area shape="rect" coords="702,1,758,12" href="../../extras/sitemap.html" target="_self" alt="Sitemap">
+      <area shape="rect" coords="629,1,687,12" href="../../extras/contact.html" target="_self" alt="Contact">
+      <area shape="rect" coords="574,1,615,14" href="../../index.html" target="_self" alt="Home">
+    </map>
+    <map name="Map3">
+      <area shape="rect" coords="553,5,601,18" href="#" alt="Home">
+      <area shape="rect" coords="612,4,671,18" href="#">
+      <area shape="rect" coords="683,3,735,19" href="#">
+      <area shape="rect" coords="9,8,227,59" href="#" target="index.html">
+    </map>
+    <map name="Map4">
+      <area shape="rect" coords="6,9,40,41" href="http://www.qut.com" target="_blank" alt="http://www.qut.com">
+      <area shape="rect" coords="44,14,87,42" href="http://explodingart.com/jmusic" target="_blank" alt="http://explodingart.com/jmusic">
+      <area shape="rect" coords="90,9,138,43" href="http://www.ozco.gov.au" target="_parent" alt="http://www.ozco.gov.au">
+      <area shape="rect" coords="313,13,512,36" href="../../contact.html">
+    </map>
+  </p>
+</blockquote>
+<map name="Map5">
+  <area shape="rect" coords="-7,4,228,51" href="../../index.htm" target="_self" alt="Digital Instrument making">
+  <area shape="rect" coords="599,1,658,18" href="../../index.htm" alt="Home">
+  <area shape="rect" coords="677,3,755,18" href="../../extras/contact.htm" target="extras">
+</map>
+</body>
+<!-- InstanceEnd --></html>

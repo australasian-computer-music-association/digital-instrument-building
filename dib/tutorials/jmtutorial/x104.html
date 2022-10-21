@@ -1,0 +1,460 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><!-- InstanceBegin template="/Templates/tutorial files.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Digital Instrument Building</title>
+<!-- InstanceEndEditable --> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<META NAME="DC.Creator" CONTENT="PersonalName= Andrew R. Brown  ">
+<META NAME="DC.Creator.Email" CONTENT="algorithmicmusic@gmail.com,">
+<META NAME="DC.Rights" CONTENT="Andrew R. Brown ">
+<META NAME="DC.Title" CONTENT="Digital Instrument Building - Music software development with jMusic">
+<META NAME="DC.Title.Alternative" content ="Music software development with jMusic">
+<META NAME="DC.Subject" CONTENT="music, java, composition, algorithmic, digital music, generative music, instrument building, music analysing software development, Australia">
+<META NAME="DC.Description" CONTENT="This site is a tutorial resource designed to assist in the training and self education of up-and-coming digital instrument developers. The tutorials cover topics including music software design, audio synthesis, digital signal processing, compositional systems, and computer programming concepts. ">
+<META NAME="DC.Language" SCHEME="rfc1766" CONTENT="en-au">
+<META NAME="DC.Audience" CONTENT="All">
+<META NAME="DC.Date.Created" CONTENT="06-04-2003">
+<META NAME="DC.Availability" CONTENT="PersonalName= Andrew R. Brown; email= algorithmicmusic@gmail.com">
+<!-- ImageReady Preload Script (menubanner2.psd) -->
+<SCRIPT TYPE="text/javascript">
+<!--
+
+function newImage(arg) {
+	if (document.images) {
+		rslt = new Image();
+		rslt.src = arg;
+		return rslt;
+	}
+}
+
+function changeImages() {
+	if (document.images && (preloadFlag == true)) {
+		for (var i=0; i<changeImages.arguments.length; i+=2) {
+			document[changeImages.arguments[i]].src = changeImages.arguments[i+1];
+		}
+	}
+}
+
+var preloadFlag = false;
+function preloadImages() {
+	if (document.images) {
+		Music_algorithms_over = newImage("images/Music-algorithms-over.jpg");
+		Interfaces_over = newImage("images/Interfaces-over.jpg");
+		Programming_over = newImage("images/Programming-over.jpg");
+		Acoustics_over = newImage("images/Acoustics-over.jpg");
+		context_over = newImage("images/context-over.jpg");
+		audio_over = newImage("images/audio-over.jpg");
+		MIDI_over = newImage("images/MIDI-over.jpg");
+		preloadFlag = true;
+	}
+}
+
+// -->
+</SCRIPT>
+<!-- End Preload Script -->
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+//-->
+</script>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+
+function MM_nbGroup(event, grpName) { //v6.0
+  var i,img,nbArr,args=MM_nbGroup.arguments;
+  if (event == "init" && args.length > 2) {
+    if ((img = MM_findObj(args[2])) != null && !img.MM_init) {
+      img.MM_init = true; img.MM_up = args[3]; img.MM_dn = img.src;
+      if ((nbArr = document[grpName]) == null) nbArr = document[grpName] = new Array();
+      nbArr[nbArr.length] = img;
+      for (i=4; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+        if (!img.MM_up) img.MM_up = img.src;
+        img.src = img.MM_dn = args[i+1];
+        nbArr[nbArr.length] = img;
+    } }
+  } else if (event == "over") {
+    document.MM_nbOver = nbArr = new Array();
+    for (i=1; i < args.length-1; i+=3) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = (img.MM_dn && args[i+2]) ? args[i+2] : ((args[i+1])? args[i+1] : img.MM_up);
+      nbArr[nbArr.length] = img;
+    }
+  } else if (event == "out" ) {
+    for (i=0; i < document.MM_nbOver.length; i++) {
+      img = document.MM_nbOver[i]; img.src = (img.MM_dn) ? img.MM_dn : img.MM_up; }
+  } else if (event == "down") {
+    nbArr = document[grpName];
+    if (nbArr)
+      for (i=0; i < nbArr.length; i++) { img=nbArr[i]; img.src = img.MM_up; img.MM_dn = 0; }
+    document[grpName] = nbArr = new Array();
+    for (i=2; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = img.MM_dn = (args[i+1])? args[i+1] : img.MM_up;
+      nbArr[nbArr.length] = img;
+  } }
+}
+//-->
+</script>
+<link href="../../style/main.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+</head>
+<body leftmargin="3" topmargin="3" marginwidth="0" marginheight="0"  onLoad="MM_preloadImages('../../images/banner/audio-over.jpg','../../images/banner/MIDI-over.jpg','../../images/banner/Music-algorithms-over.jpg','../../images/banner/Interfaces-over.jpg','../../images/banner/Programming-over.jpg','../../images/banner/Acoustics-over.jpg','../../images/banner/context-over.jpg','../../images/banner/banner_08.gif')">
+<table width="691" border="0" align="center">
+  <tr> 
+    <td colspan="5" align="left"> <div align="center"> 
+        <table border="0" align="left" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td colspan="8"><img src="../../images/banner.jpg" alt="" width=758 height=57 border="0" usemap="#Map5"></td>
+          </tr>
+          <tr> 
+            <td width="50"><a href="../../Audio/audio.htm" target="_top" onClick="MM_nbGroup('down','group1','Audio','../../images/banner/audio-over.jpg',1)" onMouseOver="MM_nbGroup('over','Audio','../../images/banner/audio-over.jpg','../../images/banner/audio-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/audio.jpg" alt="audio" name="Audio" width="50" height="24" border="0" onload=""></a></td>
+            <td width="47"><a href="../../midi/midi.htm" target="_top" onClick="MM_nbGroup('down','group1','MIDI','../../images/banner/MIDI-over.jpg',1)" onMouseOver="MM_nbGroup('over','MIDI','../../images/banner/MIDI-over.jpg','../../images/banner/MIDI-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/MIDI.jpg" alt="MIDI" name="MIDI" width="47" height="24" border="0" onload=""></a></td>
+            <td width="117"><a href="../../musalgo/musalgo.htm" target="_top" onClick="MM_nbGroup('down','group1','musalgorithms','../../images/banner/Music-algorithms-over.jpg',1)" onMouseOver="MM_nbGroup('over','musalgorithms','../../images/banner/Music-algorithms-over.jpg','../../images/banner/Music-algorithms-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Music-algorithms.jpg" alt="Music Algorithms" name="musalgorithms" width="117" height="24" border="0" onload=""></a></td>
+            <td width="88"><a href="../../interfaces/interface.htm" target="_top" onClick="MM_nbGroup('down','group1','Interfaces','../../images/banner/Interfaces-over.jpg',1)" onMouseOver="MM_nbGroup('over','Interfaces','../../images/banner/Interfaces-over.jpg','../../images/banner/Interfaces-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Interfaces.jpg" alt="Interfaces" name="Interfaces" width="88" height="24" border="0" onload=""></a></td>
+            <td width="103"><a href="../../programming/programming.htm" target="_top" onClick="MM_nbGroup('down','group1','Programming','../../images/banner/Programming-over.jpg',1)" onMouseOver="MM_nbGroup('over','Programming','../../images/banner/Programming-over.jpg','../../images/banner/Programming-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Programming.jpg" alt="Programming" name="Programming" width="103" height="24" border="0" onload=""></a></td>
+            <td width="81"><a href="../../acoustics/acoustics.htm" target="_top" onClick="MM_nbGroup('down','group1','Acoustics','../../images/banner/Acoustics-over.jpg',1)" onMouseOver="MM_nbGroup('over','Acoustics','../../images/banner/Acoustics-over.jpg','../../images/banner/Acoustics-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Acoustics.jpg" alt="Acoustics" name="Acoustics" width="81" height="24" border="0" onload=""></a></td>
+            <td width="100"><a href="../../context/context.htm" target="_top" onClick="MM_nbGroup('down','group1','Context','../../images/banner/context-over.jpg',1)" onMouseOver="MM_nbGroup('over','Context','../../images/banner/context-over.jpg','../../images/banner/context-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/context.jpg" alt="Context" name="Context" width="100" height="24" border="0" onload=""></a></td>
+            <td width="156"><img src="../../images/banner/banner_09.gif" width="172" height="24"></td>
+          </tr>
+        </table>
+      </div></td>
+  </tr>
+  <tr> 
+    <td width="3" align="left"> <div align="right"></div>
+      <div align="right"></div>
+      <div align="right"></div></td>
+    <!-- InstanceBeginEditable name="tracker" -->
+    <td height="16" colspan="2" rowspan="2" align="left"><a href="../../midi/midi.htm">&gt; 
+      MIDI </a> &gt; <a href="../../midi/musdata.htm">Musical Data</a> &gt;<a href="x104.html"> 
+      Lets make a noise</a></td>
+    <!-- InstanceEndEditable -->
+    <td width="15" rowspan="2" align="left">&nbsp;</td>
+    <td width="214" rowspan="2" align="left">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="3" rowspan="3" align="left">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="66" align="left" valign="top">&nbsp;</td>
+    <td width="444" align="left" valign="top">&nbsp;</td>
+    <td colspan="2" align="left" valign="top"><strong></strong></td>
+  </tr>
+  <tr> <!-- InstanceBeginEditable name="content" --> 
+    <td colspan="4" rowspan="3" align="left" valign="top"><h2 class="c1">Lets 
+        make a noise</h2>
+      <p>Enough already I hear you say, lets make some noise. <br>
+        What follows is a simple program that plays a scale and saves it to a 
+        Standard MIDI File (SMF).<br>
+        To try this example download the code from the link below, it results 
+        in a file named 'Scale.java'.<br>
+        Don't worry if you don't understand the code, we haven't explained it 
+        to you yet! Just take a look...<br>
+        <br>
+        <a class="c3" href="../jmdemos/Scale.java"
+ target="_top">Click here to view source</a></p> <br>
+        <br>
+        To hear the result play the MIDI file below</p> </p>
+      <p> 
+        <embed src="soundExamples/Scale.mid"
+ pluginspage="http://quicktime.apple.com" width="150" height="60"
+ controller="TRUE" loop="FALSE" autoplay="FALSE"></embed><br>
+        .Lets have a closer look at what just happened.</p> <br>
+        <br></p>
+        </p>
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>import jm.JMC;<br>import jm.music.data.*;<br>import jm.util.*;
+            </pre> 
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      Lines 1-3 import useful packages that we need to use in the Scale.java program. 
+      <br>
+      The first import statement gets a class called the jMusic Constants (hence 
+      JMC).<br>
+      The second line imports the data structure classes including Score, Part, 
+      Phrase, and Note.<br>
+      The third import statement gives us access to jMusic utilities, and we will 
+      use the Write utility to save the composition to disk as a MIDI file. <br> <br> 
+      <p>&nbsp;</p>
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre><span class="c8"><span class="comment">/**<br>* A short example which generates a one octave c chromatic scale<br>* and writes to a MIDI file called ChromaticScale.mid<br>* @author Andrew Sorensen and Andrew R. Brown<br>*/</span>
+            </pre> 
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      This is a comment. Important to read but has no impact on the way the program 
+      runs.<br>
+      When the java file is compiled all the comments are disregarded - they have 
+      no impact on the .class file that is generated<br>
+      . But they are very useful for humans like us, and it is good programming 
+      practice to include comments in your code.<br> <br> <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre class="c10"><br>	public final class Scale implements JMC{<br><br></pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      This line defines our Scale class. If you're new to Java then the 'public 
+      final' words might be mysterious.<br>
+      The public statement enables this class to potentially be used by all other 
+      classes, and to be run. <br>
+      The final keyword means that the class may never be subclassed. . . and 
+      sublclassed means . . . (later folks). <br> <br>
+      <p>In this line the class implements the interface JMC<br>
+        . All you need to understand about interfaces for the moment is that whenever 
+        you want to be able to use CROTCHET (or just C) to represent crotchet 
+        (instead of 1.0) or C4 to represent the pitch middle C (instead of 60) 
+        then you need your class to implement the JMC interface.</p>
+      Have another look at JMC.java to see what constants are defined in there.<br>
+      Constants are variables that are set once and never change. All constants 
+      in jMusic are in upper case.</p> <br>
+      <br>
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td height="17"> <pre><br>		public static void main(String[] args){<br>&nbsp;</pre> 
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      This line describes a method and is the starting point of our little program.<br>
+      All Java programs start in a main() method like the one defined above, but 
+      if you didn't already know that you probably need to take a quick look at 
+      a short <br>
+      java tutorial before going on.<br>
+      (There are several online java tutorials that will show more than enough 
+      to understand the basics of jMusic.<br>
+      Try looking <a class="c3"
+ href="http://www.java.sun.com/" target="_blank">here</a> for a good place to 
+      bookmark.)<br> <br>
+      <p>A brief description of the keywords follows: The public keyword makes 
+        this method 'visible' (able to be used) anywhere the class is visible. 
+        <br>
+        The static keyword indicates that there can only be one copy of this method, 
+        and this being the 'main' method where all Java applications start running 
+        we<br>
+        (of course) only want one starting place. <br>
+        The void keyword indicates that this method does not return any results 
+        to a calling method (again of course in this case considering that the 
+        main() method is the first method of all to be called!).<br>
+      </p>
+      <p>The main() method in Java must take one argument, a string array - in this case 
+        called args (short for 
+        arguments). The [] brackets 
+        after String means that 
+        args is an array (a list) of String objects. 
+        (Strings are text objects i.e., words). F</p>
+      <p>Finally the curly bracket at the end of the line 
+        { announces the start of a block 
+        of code, which in this case will contain the rest of the method. At the 
+        end of the method, as well see below, a matching bracket marks the end 
+        of the method.</p>
+      Anyway, all that may have been either trivial or confusing to you. In any 
+      case it was all standard Java, let's get onto more specific jMusic stuff.</p> 
+      <br>
+      <br>
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre><br>			Score s = new Score("JMDemo1 - Scale");<b
+ >	   </b> <br>			Part p = new Part("Flute", FLUTE, 0);<br>Phrase phr = new Phrase("Chromatic Scale", 0.0);<br>&nbsp;</pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      Now we are starting to get to the meat of the program. The three lines above 
+      are used to initialise the jMusic data types used in Scale.<br>
+      Scores, Parts, and Phrases can take a string as a constructor argument which 
+      sets a title for them, this is rarely used in composing but would be useful 
+      in<br>
+      notational extensions to jMusic which might use the title to display at 
+      the top of the score or beside each part in the margin.<br> 
+      <br>
+      <p>The Score created in this program is declared as (named) 's'. So, whenever 
+        we want to refer to that score we will use its name.<br>
+        For example, View.show(s);</p>
+      <p>The word new is a special Java command. It is regularly used, so get a feel for 
+        it. In this line it means than we are creating a new object that is an 
+        instance of the Score class; generating a new score. Classes can be like 
+        templates from which you can make new versions, called instances; the 
+        Score, Part and Phrase Classes are like this. So we create a new Score 
+        object, called s that has a title JMDemo1 - Scale.</p>
+      The Part object also takes two more arguments after the title, an instrument 
+      (in this case using one of th JMC constants for General MIDI sounds), and 
+      the channel. Notice that we use channel zero, which corresponds to MIDI 
+      channel one, because computer programming languages always count from zero.</p> 
+      The Phrase object takes a title and a start time which indicates how far 
+      into the piece this Phrase should start playing. 0.0 indicates that it should 
+      start playing right from the start.</p> <br>
+      <br>
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre class="c10">			for(int i=0;i&lt;12;i++){<br>				Note n = new Note(C4+i, CROTCHET);<br>				phr.addNote(n);<br>			}<br></pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      This is the work horse section of the program, the part where we actually 
+      do something.<br>
+      This is a simple loop that increments the pitch by one semitone on each 
+      iteration. <br> <br>
+      On each iteration a new note, named n, is created. The new note object has 
+      two values set; its pitch and rhythm value.<br>
+      The pitch of the note is C4 plus the number of times we've been around the 
+      loop. C4 is a constant value set in JMC class which represents the MIDI 
+      pitch 60 (don't you think that C4 is easier to remember than 60!).<br>
+      You could just have easily used 60 instead of C4. Because the pitch changes 
+      each cycle around the for-loop we end up with a chromatic scale starting 
+      from middle C and growing up to the B below C5 in semitone steps.</p> After 
+      the comma the word CROTCHET represents the note's rhythmic value. <br>
+      The constant CROTCHET (equals a double value 1.0) represents a crotchet 
+      [Americans may like to use the QUARTER_NOTE constant instead].<br>
+      Every note in this program will be a CROTCHET in length.</p> <p>After we 
+        create each note <i
+ class="c13">Note n = new Note(...)</i> we place it into the phrase object <i class="c13">phr.addNote(n)</i> 
+        that we created earlier. <br>
+        Phrases hold notes (and rests) in the order you enter them.</p>
+      The for-loop syntax can look a little odd at first. In time you will see 
+      this used so often that it will become second nature.<br>
+      For now it might be useful to see the loop expressed a different way - this 
+      code has the same result but its structure is more English-like.</p> 
+      <pre>int i = 0;<br>while(i&lt;12) {
+      </pre> <blockquote> 
+        <pre class="c10">Note n = new Note(C4+i, CROTCHET);<br>phr.addNote(n);<br>i++;<br></pre>
+      </blockquote>
+      <pre class="c10">}<br></pre>
+      You can read this as: " i starts as zero. While i is less than 12 execute 
+      the loop. Make a new note with a pitch of middle C+i of a crotchet (quarter 
+      note) value. Add the note to the phr phrase. Increase the value of i by 
+      adding 1 to it. Continue."</p> <br>
+      <br>
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre class="c10">			p.addPhrase(phr);<br>			s.addPart(p);<br></pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      Just as we added new note objects into the phrase object 
+      we must enter our newly filled phrase into a part <i
+ class="c13">p.addPhrase(phr)</i> and then add the part to our 
+      score <i class="c13">s.addPart(p)</i> .<br> <br> <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre class="c10">			Write.midi(s, "ChromaticScale.mid");<br></pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      The final section of our scale program creates a MIDI file called <i class="c13">ChromaticScale.mid</i> 
+      from the Score <i class="c13">s</i>. <br>
+      <br>
+      This line uses the Write class. The Write class has methods for saving jMusic 
+      compositions as files to disk. In this case we are using the midi() method 
+      of the Write class. This is what the 'dot' indicates; Write.midi() which 
+      we saw also in s.addPart() <br> <br> <p>The Write.midi() 
+        method takes two arguments, firstly, the score for exploring exporting 
+        to an SMF and, secondly, the name to save the file as (the file name).</p>
+      <p>The last two elements of the class (not shown) are two curly brackets. 
+        One to close the method, the second to close the class.</p> Whew. . . 
+        . There was quite a lot to take in for those new to Java. Following the 
+        instructions below to compile and run the application and if you need 
+        to re-read the tutorial a few times to take it all in. Then move on.</p> 
+      </p>
+      <p><strong>Compiling and Running </strong></p>
+      <p>Once you have saved this code into a file called <i class="c13">Scale.java</i> 
+        you can compile it using the Javac application and produce a <i
+ class="c13">Scale.class</i> file.<br>
+        Once the program is compiled you can run the program using the Java application 
+        (on a Macintosh drop the .class file on the JBindery application icon)<br>
+        and a SMF called <i class="c13">ChromaticScale.mid</i> should appear in 
+        your current directory. You can then load the SMF into a sequencer and 
+        play the file.<br>
+        If you don't have a MIDI sequencer try using QuickTime's Movieplayer or 
+        the Microsoft media player, or on a UNIX machine try typing <i class="c13">playmidi 
+        scale.mid</i> on the command line.</p>
+      Congratulations, you have just made your first jMusic piece. Of course jMusic 
+      is capable of generating much more complicated music than this, <br>
+      as complicated as you can imagine in fact, and we shall explore some of 
+      these options in further tutorials.</p><br>
+      If you are don't understand how everything in this program worked don't 
+      worry at all, there are plenty more easy examples to follow and a great 
+      way to learn to program is to learn by example. <br>
+      Do what you can and copy the rest, that's the way we like to program! The 
+      important thing is to use the examples as templates for your own explorations. 
+      Try using the above example to make a descending scale for example.</p> 
+      <p>If you are inexperienced at programming, you should have an introductory 
+        text on programming, ideally one that focuses on the Java language.<br>
+        If you have a copy of the <i
+ class="c13">Computer Music Tutorial</i> (Roads 1996) then read Chapter 2 starting 
+        on page 50 for an introduction to computer programming for musicians.</p>
+      Welcome to jMusic.</td>
+    <!-- InstanceEndEditable --></tr>
+  <tr> 
+    <td align="left"> <div align="left"></div></td>
+  </tr>
+  <tr> 
+    <td align="left">&nbsp;</td>
+  </tr>
+</table>
+<blockquote> 
+  <p name="Map"> 
+    <map name="Map">
+      <area shape="rect" coords="4,4,41,29" href="http://jmusic.ci.qut.edu" target="_blank" alt="jMusic">
+      <area shape="rect" coords="43,5,80,31" href="http://www.ozco.gov.au" target="_blank" alt="Australia Council">
+      <area shape="rect" coords="83,4,108,29" href="http://www.qut.com" target="_blank" alt="Queensland University of Technology">
+    </map>
+    <map name="Map2">
+      <area shape="rect" coords="702,1,758,12" href="../../extras/sitemap.html" target="_self" alt="Sitemap">
+      <area shape="rect" coords="629,1,687,12" href="../../extras/contact.html" target="_self" alt="Contact">
+      <area shape="rect" coords="574,1,615,14" href="../../index.html" target="_self" alt="Home">
+    </map>
+    <map name="Map3">
+      <area shape="rect" coords="553,5,601,18" href="#" alt="Home">
+      <area shape="rect" coords="612,4,671,18" href="#">
+      <area shape="rect" coords="683,3,735,19" href="#">
+      <area shape="rect" coords="9,8,227,59" href="#" target="index.html">
+    </map>
+    <map name="Map4">
+      <area shape="rect" coords="6,9,40,41" href="http://www.qut.com" target="_blank" alt="http://www.qut.com">
+      <area shape="rect" coords="44,14,87,42" href="http://explodingart.com/jmusic" target="_blank" alt="http://explodingart.com/jmusic">
+      <area shape="rect" coords="90,9,138,43" href="http://www.ozco.gov.au" target="_parent" alt="http://www.ozco.gov.au">
+      <area shape="rect" coords="313,13,512,36" href="../../contact.html">
+    </map>
+  </p>
+</blockquote>
+<map name="Map5">
+  <area shape="rect" coords="-7,4,228,51" href="../../index.htm" target="_self" alt="Digital Instrument making">
+  <area shape="rect" coords="599,1,658,18" href="../../index.htm" alt="Home">
+  <area shape="rect" coords="677,3,755,18" href="../../extras/contact.htm" target="extras">
+</map>
+</body>
+<!-- InstanceEnd --></html>

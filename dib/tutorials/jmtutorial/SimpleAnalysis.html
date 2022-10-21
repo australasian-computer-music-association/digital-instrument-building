@@ -1,0 +1,392 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><!-- InstanceBegin template="/Templates/tutorial files.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Digital Instrument Building</title>
+<!-- InstanceEndEditable --> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<META NAME="DC.Creator" CONTENT="PersonalName= Andrew R. Brown  ">
+<META NAME="DC.Creator.Email" CONTENT="algorithmicmusic@gmail.com,">
+<META NAME="DC.Rights" CONTENT="Andrew R. Brown ">
+<META NAME="DC.Title" CONTENT="Digital Instrument Building - Music software development with jMusic">
+<META NAME="DC.Title.Alternative" content ="Music software development with jMusic">
+<META NAME="DC.Subject" CONTENT="music, java, composition, algorithmic, digital music, generative music, instrument building, music analysing software development, Australia">
+<META NAME="DC.Description" CONTENT="This site is a tutorial resource designed to assist in the training and self education of up-and-coming digital instrument developers. The tutorials cover topics including music software design, audio synthesis, digital signal processing, compositional systems, and computer programming concepts. ">
+<META NAME="DC.Language" SCHEME="rfc1766" CONTENT="en-au">
+<META NAME="DC.Audience" CONTENT="All">
+<META NAME="DC.Date.Created" CONTENT="06-04-2003">
+<META NAME="DC.Availability" CONTENT="PersonalName= Andrew R. Brown; email= algorithmicmusic@gmail.com">
+<!-- ImageReady Preload Script (menubanner2.psd) -->
+<SCRIPT TYPE="text/javascript">
+<!--
+
+function newImage(arg) {
+	if (document.images) {
+		rslt = new Image();
+		rslt.src = arg;
+		return rslt;
+	}
+}
+
+function changeImages() {
+	if (document.images && (preloadFlag == true)) {
+		for (var i=0; i<changeImages.arguments.length; i+=2) {
+			document[changeImages.arguments[i]].src = changeImages.arguments[i+1];
+		}
+	}
+}
+
+var preloadFlag = false;
+function preloadImages() {
+	if (document.images) {
+		Music_algorithms_over = newImage("images/Music-algorithms-over.jpg");
+		Interfaces_over = newImage("images/Interfaces-over.jpg");
+		Programming_over = newImage("images/Programming-over.jpg");
+		Acoustics_over = newImage("images/Acoustics-over.jpg");
+		context_over = newImage("images/context-over.jpg");
+		audio_over = newImage("images/audio-over.jpg");
+		MIDI_over = newImage("images/MIDI-over.jpg");
+		preloadFlag = true;
+	}
+}
+
+// -->
+</SCRIPT>
+<!-- End Preload Script -->
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+//-->
+</script>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+
+function MM_nbGroup(event, grpName) { //v6.0
+  var i,img,nbArr,args=MM_nbGroup.arguments;
+  if (event == "init" && args.length > 2) {
+    if ((img = MM_findObj(args[2])) != null && !img.MM_init) {
+      img.MM_init = true; img.MM_up = args[3]; img.MM_dn = img.src;
+      if ((nbArr = document[grpName]) == null) nbArr = document[grpName] = new Array();
+      nbArr[nbArr.length] = img;
+      for (i=4; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+        if (!img.MM_up) img.MM_up = img.src;
+        img.src = img.MM_dn = args[i+1];
+        nbArr[nbArr.length] = img;
+    } }
+  } else if (event == "over") {
+    document.MM_nbOver = nbArr = new Array();
+    for (i=1; i < args.length-1; i+=3) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = (img.MM_dn && args[i+2]) ? args[i+2] : ((args[i+1])? args[i+1] : img.MM_up);
+      nbArr[nbArr.length] = img;
+    }
+  } else if (event == "out" ) {
+    for (i=0; i < document.MM_nbOver.length; i++) {
+      img = document.MM_nbOver[i]; img.src = (img.MM_dn) ? img.MM_dn : img.MM_up; }
+  } else if (event == "down") {
+    nbArr = document[grpName];
+    if (nbArr)
+      for (i=0; i < nbArr.length; i++) { img=nbArr[i]; img.src = img.MM_up; img.MM_dn = 0; }
+    document[grpName] = nbArr = new Array();
+    for (i=2; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = img.MM_dn = (args[i+1])? args[i+1] : img.MM_up;
+      nbArr[nbArr.length] = img;
+  } }
+}
+//-->
+</script>
+<link href="../../style/main.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+</head>
+<body leftmargin="3" topmargin="3" marginwidth="0" marginheight="0"  onLoad="MM_preloadImages('../../images/banner/audio-over.jpg','../../images/banner/MIDI-over.jpg','../../images/banner/Music-algorithms-over.jpg','../../images/banner/Interfaces-over.jpg','../../images/banner/Programming-over.jpg','../../images/banner/Acoustics-over.jpg','../../images/banner/context-over.jpg','../../images/banner/banner_08.gif')">
+<table width="691" border="0" align="center">
+  <tr> 
+    <td colspan="5" align="left"> <div align="center"> 
+        <table border="0" align="left" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td colspan="8"><img src="../../images/banner.jpg" alt="" width=758 height=57 border="0" usemap="#Map5"></td>
+          </tr>
+          <tr> 
+            <td width="50"><a href="../../Audio/audio.htm" target="_top" onClick="MM_nbGroup('down','group1','Audio','../../images/banner/audio-over.jpg',1)" onMouseOver="MM_nbGroup('over','Audio','../../images/banner/audio-over.jpg','../../images/banner/audio-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/audio.jpg" alt="audio" name="Audio" width="50" height="24" border="0" onload=""></a></td>
+            <td width="47"><a href="../../midi/midi.htm" target="_top" onClick="MM_nbGroup('down','group1','MIDI','../../images/banner/MIDI-over.jpg',1)" onMouseOver="MM_nbGroup('over','MIDI','../../images/banner/MIDI-over.jpg','../../images/banner/MIDI-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/MIDI.jpg" alt="MIDI" name="MIDI" width="47" height="24" border="0" onload=""></a></td>
+            <td width="117"><a href="../../musalgo/musalgo.htm" target="_top" onClick="MM_nbGroup('down','group1','musalgorithms','../../images/banner/Music-algorithms-over.jpg',1)" onMouseOver="MM_nbGroup('over','musalgorithms','../../images/banner/Music-algorithms-over.jpg','../../images/banner/Music-algorithms-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Music-algorithms.jpg" alt="Music Algorithms" name="musalgorithms" width="117" height="24" border="0" onload=""></a></td>
+            <td width="88"><a href="../../interfaces/interface.htm" target="_top" onClick="MM_nbGroup('down','group1','Interfaces','../../images/banner/Interfaces-over.jpg',1)" onMouseOver="MM_nbGroup('over','Interfaces','../../images/banner/Interfaces-over.jpg','../../images/banner/Interfaces-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Interfaces.jpg" alt="Interfaces" name="Interfaces" width="88" height="24" border="0" onload=""></a></td>
+            <td width="103"><a href="../../programming/programming.htm" target="_top" onClick="MM_nbGroup('down','group1','Programming','../../images/banner/Programming-over.jpg',1)" onMouseOver="MM_nbGroup('over','Programming','../../images/banner/Programming-over.jpg','../../images/banner/Programming-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Programming.jpg" alt="Programming" name="Programming" width="103" height="24" border="0" onload=""></a></td>
+            <td width="81"><a href="../../acoustics/acoustics.htm" target="_top" onClick="MM_nbGroup('down','group1','Acoustics','../../images/banner/Acoustics-over.jpg',1)" onMouseOver="MM_nbGroup('over','Acoustics','../../images/banner/Acoustics-over.jpg','../../images/banner/Acoustics-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Acoustics.jpg" alt="Acoustics" name="Acoustics" width="81" height="24" border="0" onload=""></a></td>
+            <td width="100"><a href="../../context/context.htm" target="_top" onClick="MM_nbGroup('down','group1','Context','../../images/banner/context-over.jpg',1)" onMouseOver="MM_nbGroup('over','Context','../../images/banner/context-over.jpg','../../images/banner/context-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/context.jpg" alt="Context" name="Context" width="100" height="24" border="0" onload=""></a></td>
+            <td width="156"><img src="../../images/banner/banner_09.gif" width="172" height="24"></td>
+          </tr>
+        </table>
+      </div></td>
+  </tr>
+  <tr> 
+    <td width="3" align="left"> <div align="right"></div>
+      <div align="right"></div>
+      <div align="right"></div></td>
+    <!-- InstanceBeginEditable name="tracker" -->
+    <td height="16" colspan="2" rowspan="2" align="left"><a href="../../musalgo/musalgo.htm">&gt; 
+      Music Algorithms </a>&gt; <a href="../../musalgo/analys.htm">Analysing</a> 
+      &gt;<a href="SimpleAnalysis.html"> Simple Analysis of MIDI files </a></td>
+    <!-- InstanceEndEditable -->
+    <td width="15" rowspan="2" align="left">&nbsp;</td>
+    <td width="214" rowspan="2" align="left">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="3" rowspan="3" align="left">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="66" align="left" valign="top">&nbsp;</td>
+    <td width="444" align="left" valign="top">&nbsp;</td>
+    <td colspan="2" align="left" valign="top"><strong></strong></td>
+  </tr>
+  <tr> <!-- InstanceBeginEditable name="content" --> 
+    <td colspan="4" rowspan="3" align="left" valign="top"> <h2>Simple Analysis 
+        of MIDI files </h2>
+      <p>In this example we'll look at how to read in a MIDI file (created by 
+        jMusic or some other program) and perform a basic statistical analysis 
+        on it.<br>
+        We'll check the pitch and rhythm value range, the score length, and elements 
+        of the melodic contour.<br>
+        From this starting point you should be able to extend this example to 
+        check other aspects of the music you're interested in.</p>
+      <p>Here is an example of the output from this program:</p>
+      <pre>========================================================<br>STATS after 2 files. Last score called allemande a.mid<br>========================================================<br>Lowest note is 60<br>Highest note is 79<br>----------------------------------------<br>Shortest note is 0.5<br>Longest note is 3.8046875<br>----------------------------------------<br>Smallest score contains 26 notes<br>Largest score contains 44 notes<br>----------------------------------------<br>Upward movements were 24<br>Downward movements were 44<br>----------------------------------------<br></pre> 
+      <p><a class="c5" href="../jmdemos/SimpleAnalysis.java"
+ target="_top">Click here to view the source file.</a></p>
+      <p>Let's have a closer look.</p>
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>import jm.JMC;<br>import jm.music.data.*;<br>import jm.music.tools.*;<br>import jm.util.*;<br>import java.util.Vector;<br>import java.awt.event.*;<br>import java.awt.*;<br>import java.util.Enumeration;<br></pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Lots of stuff is imported in this class. the jm classes as 
+        usual, as well the vector and Enumeration classes for unpacking the jMusic 
+        score structure so we can then analyse the notes information, and the 
+        awt class is required because we do some simple GUI moves to make the 
+        selecting of MIDI files easier.<br>
+        <br>
+      </p>
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>public final class SimpleAnalysis extends Frame implements JMC{<br>	static int highNote = 0;<br>	static int lowNote = 127;<br>	static double longestRhythm = 0.0;<br>	static double shortestRhythm  = 1000.0;<br>	static int shortLength = 1000000;<br>	static int longLength = 0;<br>	static int ascending = 0;<br>	static int descending = 0;<br>	static int prev = 60;<br>	static Score s = new Score();<br>	static int scoreCount = 0;<br></pre> 
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>The class is declared. Notice that is extends the Frame class, this is 
+        used for the dialogue box from which MIDI files are selected.<br>
+        We don't actually build a window that we see. We declare variables for 
+        each of the attributes we want to collect data on.<br>
+        <br>
+      </p>
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>	public static void main(String[] args){<br>	       	new SimpleAnalysis();<br>	}<br></pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      The main() method is very short, it simply calls the constructor.<br>
+     <br> <br> <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre class="c7">	public SimpleAnalysis() {<br>	       	FileDialog fd;<br>	       	Frame f = new Frame();<br></pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      The constructor takes no arguments. A dialog box for reading 
+      files is declared as well as an instance of the frame class which it requires.<br>
+      <br> <br> <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>         for(;;) {               <br></span> 	<span
+ class="comment">	//open a MIDI file</span>	               <br>		fd = new FileDialog(f,"Open MIDI file or choose cancel to finish.",<br>                  		    FileDialog.LOAD);<br>	        fd.show();<br>	      	</span><span
+ class="comment">//break out when user presses cancel</span>	               <br>		if(fd.getFile() == null) break;<br>	               <br>	        Read.midi(s, fd.getDirectory()+fd.getFile());<br>	        s.setTitle(fd.getFile());              </span>
+            </pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>The for loop goes forever - well until the Cancel button on the file 
+        dialog causes a null file to be returned at which point we break out of 
+        the loop. <br>
+        The last two lines of this segment place a jMusic score into 's' by reading 
+        an converting the selected MIDI file. <br>
+        The score's title is set to the the name of the file. This is used later 
+        in printing the analysis to identify the file.<br>
+        <br>
+      </p>
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>  </span> <span class="comment">		//keep track of the number of scores analysed</span>    <br>		scoreCount++;<br></span> <span class="comment">		//reset melody length</span>    <br>		int tempLength = 0;<br></span> 		<span
+ class="comment">// iterate through each note</span>   </span> <br>		<span
+ class="comment">//find the highest and lowest notes</span>    <br>		Enumeration enum = s.getPartList().elements();<br>    		while(enum.hasMoreElements()){<br>        		Part nextPt = (Part)enum.nextElement();<br>        		Enumeration enum2 = nextPt.getPhraseList().elements();<br>        		while(enum2.hasMoreElements()){<br>            			Phrase nextPhr = (Phrase)enum2.nextElement();<br>            			Enumeration enum3 = nextPhr.getNoteList().elements();<br>            			while(enum3.hasMoreElements()){<br>                			Note nextNote = (Note)enum3.nextElement();<br>                			int pitch = nextNote.getPitch();<br></span> <span
+ class="comment">					//check range</span>                <br>					pitchRange(pitch);<br>                			double rv = nextNote.getRhythmValue();<br></span> <span
+ class="comment">					//check rhythmic values</span>                <br>					rhythmRange(rv);<br></span> <span
+ class="comment">					//check melody length</span>                <br>					tempLength++;<br></span> <span
+ class="comment">					//check direction</span>                <br>					upOrDown(pitch);<br>            			}<br>        		}<br>    		}<br></span> <span
+ class="comment">		//update length extremes</span>    <br>		musicLength(tempLength);</span>
+            </pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>OK, there's lot's of work done in this code segment. basically we read 
+        every note in every phrase in every part of the score and update the analysis 
+        data after each. <br>
+        The Enumeration interface is used to help us with this task.<br>
+        It often looks complicated at first but is only so because of the number 
+        of layers we need to peel back from the score structure to get to the 
+        notes.<br>
+        The Enumeration gets the vector (a list) of the parts, phrases, notes 
+        (as the case may be) and loops through the list for each element while 
+        there are more elements. The use of Vectors and Enumeration helps us cope 
+        with the fact that there any be any number of notes, in any number of 
+        phrases, in any number of parts.</p>
+      <p>A series of methods (that we'll get to later), are called 
+        which update variables such as the highest and longest notes. You should 
+        be able to add more of your own methods to check other aspects of the 
+        notes which interest you.<br>
+        <br>
+      </p>
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre class="c7">	System.out.println("=========================");<br>	System.out.println("STATS after "+scoreCount+" files."+ <br>		           "Last score called "+s.getTitle());<br>	System.out.println("=========================");<br>	System.out.println("Lowest note is "+lowNote);<br>	System.out.println("Highest note is "+highNote);<br>	System.out.println("----------------------------------------");<br>	System.out.println("Shortest note is "+shortestRhythm);<br>	System.out.println("Longest note is "+longestRhythm);<br>	System.out.println("----------------------------------------");<br>	System.out.println("Smallest score contains " + shortLength + " notes");<br>	System.out.println("Largest score contains " + longLength + " notes");<br>	System.out.println("----------------------------------------");<br>	System.out.println("Upward movements were " + ascending);<br>	System.out.println("Downward movements were " + descending);<br>	System.out.println("----------------------------------------");<br></pre> 
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>After collecting the analysis information this section of the code prints 
+        it to the screen. <br>
+        This is done after each MIDI file is read. the data is accumulative, that 
+        is for example, the highest note after three MIDI files is the highest 
+        note in any of the three MIDI files.<br>
+        <br>
+      </p>
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>	public void pitchRange(int pitch) {<br></span><span
+ class="comment">		//check the range of the MIDI file</span>	       <br>		if(pitch &lt; lowNote) lowNote = pitch;<br>	       	if(pitch &gt; highNote) highNote = pitch;<br>	}</span>
+            </pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>This method does a simple check to see if the current note's 
+        pitch is higher or lower than any previous pitch has been, and if so updates 
+        the relevant variable.<br>
+        <br>
+      </p>
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre> 	public void rhythmRange(double rv) {<br></span> <span
+ class="comment">		//check the range of the MIDI file</span>	       <br>		if(rv &lt; shortestRhythm) shortestRhythm = rv;<br>	       	if(rv &gt; longestRhythm) longestRhythm = rv;<br>	}</span>
+            </pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>This method similarly checks the longest and shortest rhythmicValues.<br>
+        <br>
+      </p>
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>	public void musicLength(int temp) {<br>		if(temp &lt; shortLength) shortLength = temp;<br>		if(temp &gt; longLength) longLength = temp;<br>	}</span>
+            </pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>This method checks the number of notes in a score and updates 
+        the records of the longest and shortest values.<br>
+        <br>
+      </p>
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>	public void upOrDown(int pitch) {<br>	       if(pitch &lt; prev) descending++;<br>	       if(pitch &gt; prev) ascending++;<br>	       prev = pitch;<br>	}<br>}</span>
+            </pre> 
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>This method checks weather a pitch is higher or lower than the previous 
+        one, then updates the variables keeping stats on that info. (This is a 
+        little dodgy because it doesn't take into account part boundaries, but 
+        in large scores that is statistically negligible).</p>
+      <p>We encourage you to write you own analysis methods, then email 
+        them to us so we can post them for the whole jMusic community to use.</p>
+      <p>To do histograms of a score:</p>
+      <p>Use the following code segment after importing jm.util.View 
+        :</p>
+      <p>View.histogram(myScore);</p>
+   
+      </td>
+    <!-- InstanceEndEditable --></tr>
+  <tr> 
+    <td align="left"> <div align="left"></div></td>
+  </tr>
+  <tr> 
+    <td align="left">&nbsp;</td>
+  </tr>
+</table>
+<blockquote> 
+  <p name="Map"> 
+    <map name="Map">
+      <area shape="rect" coords="4,4,41,29" href="http://jmusic.ci.qut.edu" target="_blank" alt="jMusic">
+      <area shape="rect" coords="43,5,80,31" href="http://www.ozco.gov.au" target="_blank" alt="Australia Council">
+      <area shape="rect" coords="83,4,108,29" href="http://www.qut.com" target="_blank" alt="Queensland University of Technology">
+    </map>
+    <map name="Map2">
+      <area shape="rect" coords="702,1,758,12" href="../../extras/sitemap.html" target="_self" alt="Sitemap">
+      <area shape="rect" coords="629,1,687,12" href="../../extras/contact.html" target="_self" alt="Contact">
+      <area shape="rect" coords="574,1,615,14" href="../../index.html" target="_self" alt="Home">
+    </map>
+    <map name="Map3">
+      <area shape="rect" coords="553,5,601,18" href="#" alt="Home">
+      <area shape="rect" coords="612,4,671,18" href="#">
+      <area shape="rect" coords="683,3,735,19" href="#">
+      <area shape="rect" coords="9,8,227,59" href="#" target="index.html">
+    </map>
+    <map name="Map4">
+      <area shape="rect" coords="6,9,40,41" href="http://www.qut.com" target="_blank" alt="http://www.qut.com">
+      <area shape="rect" coords="44,14,87,42" href="http://explodingart.com/jmusic" target="_blank" alt="http://explodingart.com/jmusic">
+      <area shape="rect" coords="90,9,138,43" href="http://www.ozco.gov.au" target="_parent" alt="http://www.ozco.gov.au">
+      <area shape="rect" coords="313,13,512,36" href="../../contact.html">
+    </map>
+  </p>
+</blockquote>
+<map name="Map5">
+  <area shape="rect" coords="-7,4,228,51" href="../../index.htm" target="_self" alt="Digital Instrument making">
+  <area shape="rect" coords="599,1,658,18" href="../../index.htm" alt="Home">
+  <area shape="rect" coords="677,3,755,18" href="../../extras/contact.htm" target="extras">
+</map>
+</body>
+<!-- InstanceEnd --></html>

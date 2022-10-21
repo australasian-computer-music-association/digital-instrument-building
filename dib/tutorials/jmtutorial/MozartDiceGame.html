@@ -1,0 +1,342 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><!-- InstanceBegin template="/Templates/tutorial files.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="doctitle" --> 
+<title>Digital Instrument Building</title>
+<!-- InstanceEndEditable --> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<META NAME="DC.Creator" CONTENT="PersonalName= Andrew R. Brown  ">
+<META NAME="DC.Creator.Email" CONTENT="algorithmicmusic@gmail.com,">
+<META NAME="DC.Rights" CONTENT="Andrew R. Brown ">
+<META NAME="DC.Title" CONTENT="Digital Instrument Building - Music software development with jMusic">
+<META NAME="DC.Title.Alternative" content ="Music software development with jMusic">
+<META NAME="DC.Subject" CONTENT="music, java, composition, algorithmic, digital music, generative music, instrument building, music analysing software development, Australia">
+<META NAME="DC.Description" CONTENT="This site is a tutorial resource designed to assist in the training and self education of up-and-coming digital instrument developers. The tutorials cover topics including music software design, audio synthesis, digital signal processing, compositional systems, and computer programming concepts. ">
+<META NAME="DC.Language" SCHEME="rfc1766" CONTENT="en-au">
+<META NAME="DC.Audience" CONTENT="All">
+<META NAME="DC.Date.Created" CONTENT="06-04-2003">
+<META NAME="DC.Availability" CONTENT="PersonalName= Andrew R. Brown; email= algorithmicmusic@gmail.com">
+<!-- ImageReady Preload Script (menubanner2.psd) -->
+<SCRIPT TYPE="text/javascript">
+<!--
+
+function newImage(arg) {
+	if (document.images) {
+		rslt = new Image();
+		rslt.src = arg;
+		return rslt;
+	}
+}
+
+function changeImages() {
+	if (document.images && (preloadFlag == true)) {
+		for (var i=0; i<changeImages.arguments.length; i+=2) {
+			document[changeImages.arguments[i]].src = changeImages.arguments[i+1];
+		}
+	}
+}
+
+var preloadFlag = false;
+function preloadImages() {
+	if (document.images) {
+		Music_algorithms_over = newImage("images/Music-algorithms-over.jpg");
+		Interfaces_over = newImage("images/Interfaces-over.jpg");
+		Programming_over = newImage("images/Programming-over.jpg");
+		Acoustics_over = newImage("images/Acoustics-over.jpg");
+		context_over = newImage("images/context-over.jpg");
+		audio_over = newImage("images/audio-over.jpg");
+		MIDI_over = newImage("images/MIDI-over.jpg");
+		preloadFlag = true;
+	}
+}
+
+// -->
+</SCRIPT>
+<!-- End Preload Script -->
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+//-->
+</script>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+
+function MM_nbGroup(event, grpName) { //v6.0
+  var i,img,nbArr,args=MM_nbGroup.arguments;
+  if (event == "init" && args.length > 2) {
+    if ((img = MM_findObj(args[2])) != null && !img.MM_init) {
+      img.MM_init = true; img.MM_up = args[3]; img.MM_dn = img.src;
+      if ((nbArr = document[grpName]) == null) nbArr = document[grpName] = new Array();
+      nbArr[nbArr.length] = img;
+      for (i=4; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+        if (!img.MM_up) img.MM_up = img.src;
+        img.src = img.MM_dn = args[i+1];
+        nbArr[nbArr.length] = img;
+    } }
+  } else if (event == "over") {
+    document.MM_nbOver = nbArr = new Array();
+    for (i=1; i < args.length-1; i+=3) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = (img.MM_dn && args[i+2]) ? args[i+2] : ((args[i+1])? args[i+1] : img.MM_up);
+      nbArr[nbArr.length] = img;
+    }
+  } else if (event == "out" ) {
+    for (i=0; i < document.MM_nbOver.length; i++) {
+      img = document.MM_nbOver[i]; img.src = (img.MM_dn) ? img.MM_dn : img.MM_up; }
+  } else if (event == "down") {
+    nbArr = document[grpName];
+    if (nbArr)
+      for (i=0; i < nbArr.length; i++) { img=nbArr[i]; img.src = img.MM_up; img.MM_dn = 0; }
+    document[grpName] = nbArr = new Array();
+    for (i=2; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = img.MM_dn = (args[i+1])? args[i+1] : img.MM_up;
+      nbArr[nbArr.length] = img;
+  } }
+}
+//-->
+</script>
+<link href="../../style/main.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+</head>
+<body leftmargin="3" topmargin="3" marginwidth="0" marginheight="0"  onLoad="MM_preloadImages('../../images/banner/audio-over.jpg','../../images/banner/MIDI-over.jpg','../../images/banner/Music-algorithms-over.jpg','../../images/banner/Interfaces-over.jpg','../../images/banner/Programming-over.jpg','../../images/banner/Acoustics-over.jpg','../../images/banner/context-over.jpg','../../images/banner/banner_08.gif')">
+<table width="691" border="0" align="center">
+  <tr> 
+    <td colspan="5" align="left"> <div align="center"> 
+        <table border="0" align="left" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td colspan="8"><img src="../../images/banner.jpg" alt="" width=758 height=57 border="0" usemap="#Map5"></td>
+          </tr>
+          <tr> 
+            <td width="50"><a href="../../Audio/audio.htm" target="_top" onClick="MM_nbGroup('down','group1','Audio','../../images/banner/audio-over.jpg',1)" onMouseOver="MM_nbGroup('over','Audio','../../images/banner/audio-over.jpg','../../images/banner/audio-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/audio.jpg" alt="audio" name="Audio" width="50" height="24" border="0" onload=""></a></td>
+            <td width="47"><a href="../../midi/midi.htm" target="_top" onClick="MM_nbGroup('down','group1','MIDI','../../images/banner/MIDI-over.jpg',1)" onMouseOver="MM_nbGroup('over','MIDI','../../images/banner/MIDI-over.jpg','../../images/banner/MIDI-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/MIDI.jpg" alt="MIDI" name="MIDI" width="47" height="24" border="0" onload=""></a></td>
+            <td width="117"><a href="../../musalgo/musalgo.htm" target="_top" onClick="MM_nbGroup('down','group1','musalgorithms','../../images/banner/Music-algorithms-over.jpg',1)" onMouseOver="MM_nbGroup('over','musalgorithms','../../images/banner/Music-algorithms-over.jpg','../../images/banner/Music-algorithms-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Music-algorithms.jpg" alt="Music Algorithms" name="musalgorithms" width="117" height="24" border="0" onload=""></a></td>
+            <td width="88"><a href="../../interfaces/interface.htm" target="_top" onClick="MM_nbGroup('down','group1','Interfaces','../../images/banner/Interfaces-over.jpg',1)" onMouseOver="MM_nbGroup('over','Interfaces','../../images/banner/Interfaces-over.jpg','../../images/banner/Interfaces-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Interfaces.jpg" alt="Interfaces" name="Interfaces" width="88" height="24" border="0" onload=""></a></td>
+            <td width="103"><a href="../../programming/programming.htm" target="_top" onClick="MM_nbGroup('down','group1','Programming','../../images/banner/Programming-over.jpg',1)" onMouseOver="MM_nbGroup('over','Programming','../../images/banner/Programming-over.jpg','../../images/banner/Programming-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Programming.jpg" alt="Programming" name="Programming" width="103" height="24" border="0" onload=""></a></td>
+            <td width="81"><a href="../../acoustics/acoustics.htm" target="_top" onClick="MM_nbGroup('down','group1','Acoustics','../../images/banner/Acoustics-over.jpg',1)" onMouseOver="MM_nbGroup('over','Acoustics','../../images/banner/Acoustics-over.jpg','../../images/banner/Acoustics-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Acoustics.jpg" alt="Acoustics" name="Acoustics" width="81" height="24" border="0" onload=""></a></td>
+            <td width="100"><a href="../../context/context.htm" target="_top" onClick="MM_nbGroup('down','group1','Context','../../images/banner/context-over.jpg',1)" onMouseOver="MM_nbGroup('over','Context','../../images/banner/context-over.jpg','../../images/banner/context-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/context.jpg" alt="Context" name="Context" width="100" height="24" border="0" onload=""></a></td>
+            <td width="156"><img src="../../images/banner/banner_09.gif" width="172" height="24"></td>
+          </tr>
+        </table>
+      </div></td>
+  </tr>
+  <tr> 
+    <td width="3" align="left"> <div align="right"></div>
+      <div align="right"></div>
+      <div align="right"></div></td>
+    <!-- InstanceBeginEditable name="tracker" --> 
+    <td height="16" colspan="2" rowspan="2" align="left"><a href="../../musalgo/musalgo.htm">&gt; 
+      Music Algorithms </a>&gt; <a href="../../musalgo/generate.htm">Generating</a> 
+      &gt;<a href="RandomRhythmDemo.html"> </a> <a href="MozartDiceGame.html">Mozart 
+      Dice Game </a></td>
+    <!-- InstanceEndEditable -->
+    <td width="15" rowspan="2" align="left">&nbsp;</td>
+    <td width="214" rowspan="2" align="left">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="3" rowspan="3" align="left">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="66" align="left" valign="top">&nbsp;</td>
+    <td width="444" align="left" valign="top">&nbsp;</td>
+    <td colspan="2" align="left" valign="top"><strong></strong></td>
+  </tr>
+  <tr> <!-- InstanceBeginEditable name="content" --> 
+    <td colspan="4" rowspan="3" align="left" valign="top"> <h2>Mozart Dice Game 
+      </h2>
+      <p>Algorithmic recombinatorial music has a long heritage, even as far back 
+        as Mozart. <br>
+        His <i>Musikalisches W&uuml;rfelspiel</i> was a dice game where the results 
+        of throws choose amongst possible prewritten bars of music.<br>
+        Depending upon the numbers thrown, different, but similar, pieces can 
+        result. Read about it in the Computer Music Tutorial (Roads 1996) starting 
+        on page 823. The full music for it can be found in the Appendix of Schwanauer 
+        &amp; Levitt (1993) 'Machine Models of Music' The MIT press. <br>
+        There is also a discussion of it in Roads, C. 1996. 'The Computer Music 
+        Tutorial'.</p>
+        <p>This demo is a realisation of Mozart's design 
+          in jMusic by Andrew Troedson.</p>
+        
+      <p><a
+ href="../jmdemos/MozartDiceGame.java" target="_self">Click here to view source 
+        part 1</a></p>
+        
+      <p><a
+ href="../jmdemos/MozartPhraseList.java" target="_self">Click here to view source 
+        part 2</a></p>
+        <p>To hear the result play the MIDI file below.</p>
+        <p> 
+          <embed src="soundExamples/MozartDiceGame.mid" width="150"
+ height="60" controller="TRUE" loop="FALSE" autoplay="FALSE"></embed> </p>
+        <p><b>Andrew Troedson's comments:</b></p>
+        <p>An Overview</p>
+        
+      <p>W.A.Mozart's <i>Musikalisches Wurfelspiel</i> (Musical 
+        Dice Game) is one of the earliest examples of chance music.<br>
+        It sets out a series of short phrases which are selected randomly (based 
+        on the rolls of a dice), and combined to form a two-part waltz.<br>
+        This approach to the generation of music is known as the combinatorial 
+        approach because it involves the combination of a series of pre-composed<br>
+        musical elements.</p>
+        <p style="font-weight: bold;">Technicalities</p>
+        <p>Utilizing the jMusic structure, this realization 
+          of Mozart's Dice Game automates the dice rolling process, and allows 
+          waltzes to be generated using Mozart's original rules and phrases.</p>
+        
+      <p>It is set out in two classes - MozartDiceGame.java, and MozartPhraseList.java.<br>
+        The MozartPhraseList class holds all the phrases (actually stored as CPhrases) 
+        which are combined to form the finished waltz, <br>
+        and the MozartDiceGame class automates the dice rolling process which 
+        accomplishes this. The default name of the generated MIDI file is "mozart.mid".</p>
+        <p style="font-weight: bold;">Observations</p>
+        <p>There is no doubt that the process is effective 
+          - an (almost) infinite number of waltzes can be generated, and each 
+          one has the distinct sound that is attributed to Mozart. Unfortunately, 
+          this means that one cannot really take credit for the composition of 
+          a new work as each one is obviously a composition of Mozart.</p>
+        
+      <p>It is also disappointing to realize that, while each generated new work 
+        does have its subtle differences,<br>
+        nothing extraordinary or excitingly new will ever be produced. This is 
+        mainly because Mozart has composed the phrases to follow a strict harmonic 
+        structure that remains unchanged in every new generation. The reason that 
+        he has done this is obvious - it is the easiest way to guarantee that 
+        each generation will sound correct (however this does come at the cost 
+        of spontaneity).</p>
+        
+      <p>As well as the realization that Mozart made things easy for himself by 
+        enforcing this rigid harmonic structure on the phrases he composed,<br>
+        I was heartened to discover that such a great composer could be accused 
+        of "cheating" a little, and of "cutting corners".<br>
+        The last bar of the first part of the waltz (bar 8) is not in fact chosen 
+        by chance - this is because the eight options given by Mozart to fill 
+        this bar are identical! Mozart uses a similar tactic in the last bar of 
+        the second part (bar 16), and provides only three differing options for 
+        this bar.<br>
+        Again, the reasons behind this little deceit are obvious (as are the costs 
+        to the spontaneity of the music produced) - to guarantee that each generation 
+        will sound correct.</p>
+        <p> 
+        <hr>
+        <b>The code:</b>
+        <p></p>
+        <p>Let's have a closer look. 
+        <table border="0" width="100%" bgcolor="#e0e0e0">
+          <tbody>
+            <tr> 
+              <td> <h1 style="font-weight: normal;"> </h1>
+                
+              <pre><span class = "comment">/**<br> * A realization of Mozart's Dice Game<br> * @author Andrew Troedson<br> */</span><br>&nbsp;<br>import jm.music.data.*;<br>import jm.JMC;<br>import jm.util.*;<br>&nbsp;<br>public final class MozartDiceGame implements JMC{<br>	<br>    public static void main(String[] args){<br>			<br>  <span class = "comment">//the class in which all the phrases are stored</span><br>	MozartPhraseList MPL = new MozartPhraseList();<br><span class = "comment">	//Create the data objects we want to use</span><br>	Score score = new Score("DiceGame");<span class = "comment"><br>	//Parts can have a name, channel, and instrument.</span><br>	Part piano = new Part("Piano", 0, PIANO);<br> <span class = "comment">//repeates the full waltz twice (ie form ABAB)<br></span></pre> 
+              <pre>	for (int j=0; j&lt;4; j++){ <br>	   <span class = "comment"> //create the first part of the waltz<br></span></pre> <h1 style="font-weight: normal;"> 
+                </h1>
+                
+              <pre>	    for (int i=0; i&lt;8; i++){ <br>		<span class = "comment">//roll the dice</span><br>		int randNum = (int)rollDice(2); <br>		System.out.println("roll " + (i+1) + ": " + randNum);<br>		CPhrase nextBar = new CPhrase(0.0);<br><span
+ class = "comment">		//get the appropriate phrase<br></span>		nextBar = MPL.barArray[i][randNum-2].copy(); <br><span class = "comment">		//set the phrases start time<br></span>		nextBar.setStartTime((float)((i*3)+(j*24))); <br> <span class = "comment">		//add it to the main part</span><br>		piano.addCPhrase(nextBar); <br>	    }<br>	    <span class = "comment">//required to set the correct start times <br>	    //in the second section of the waltz</span>	<br>	    j++;<br>	    <span class = "comment">//create the second part of the waltz</span><br>	    for (int i=0; i&lt;8; i++){ <br>		int randNum = (int)rollDice(2);<br>		System.out.println("roll " + (i+1) + ": " + randNum);<br>		CPhrase nextBar = new CPhrase(0.0);<br></pre> 
+             
+                
+              <div align="left">
+                <pre>                <span class = "comment">//get the phrase from the second phrase table</span><br>		nextBar = MPL.barArray2[i][randNum-2].copy();<br>nextBar.setStartTime((float)((i*3)+(j*24)));<br>piano.addCPhrase(nextBar);<br>	    }	  		<br>}<br><br>	<span class = "comment">//add the main piano part (instrument) to the score</span><br>	score.addPart(piano);<br><br>Write.midi(score, "mozart.mid");<br>    }<br>	<span class = "comment"><br>    //method which automates the rolling of a specified number of die</span><br>    static int rollDice(int dieNum){<br>int roll = 0;<br>for (int i=0; i&lt;dieNum; i++){<br>roll += ((int)(java.lang.Math.random()*6)) + 1;<br>}<br>return roll;<br>}<br>}</pre>
+              </div></td>
+            </tr>
+          </tbody>
+        </table>
+        
+      <p>The code is adequately commented such that you should be able to follow 
+        it thorugh.<br>
+        The MPL (MozartPhraseList) variable is an instance of the other class 
+        with all the bars of music in it.<br>
+        The main part of this class consists of interative loops which step through 
+        each bar of the piece selecting a CPhrase from the eight availible for 
+        that bar. 
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+          <tbody>
+            <tr> 
+              <td> <pre>import jm.music.data.*;<br>import jm.JMC;<br>import jm.util.*<br>&nbsp;<br>public class MozartPhraseList implements JMC {<br>	<span class = "comment"><br>		//Phrase array which stores all the phrases</span><br>		CPhrase[][] barArray = new CPhrase[8][11];<br>		CPhrase[][] barArray2 = new CPhrase[8][11];<br>		<span class = "comment"><br>		//the phrase tables and individual phrases are <br>                //initialized upon the creation of a new instance</span><br>		public MozartPhraseList() {<br>			<span class = "comment"><br>			//bar 1</span><br>	 		int[] pitchArray1a = {f2,f4};<br>			CPhrase bar1 = new CPhrase(0.0);<br>			bar1.addChord(pitchArray1a, C);<br>			<br>			int[] pitchArray1b = {d2,d4};<br>			bar1.addChord(pitchArray1b, C);<br>&nbsp;<br>			int[] pitchArray1c = {g2,g4};<br>			bar1.addChord(pitchArray1c, C);<br>more . . . </pre> 
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+      <p>This is the first part of the data base class. It employs two dimensional 
+        arrays of Chord Phrases.<br>
+        The first bar is shsown and each other bar is filled similarly. There 
+        are 8x16 bars!! (minus some Mozart repeats).</p>
+        <p></p>
+        <table border="0" width="100%" bgcolor="#e0e0e0">
+          <tbody>
+            <tr> 
+              <td> <pre><span class = "comment">			// Add the phrases to the phrase tables <br>                        // (two-dimensional arrays) first part <br>                        // of the waltz)</span><br>			barArray[0][0] = 	bar96;<br>			barArray[0][1] = 	bar32;<br>			barArray[0][2] = 	bar69;<br>			barArray[0][3] = 	bar40;	<br>			barArray[0][4] = 	bar148;<br>			barArray[0][5] = 	bar104;<br>			barArray[0][6] = 	bar152;<br>			barArray[0][7] = 	bar119;<br>			barArray[0][8] = 	bar98;<br>			barArray[0][9] = 	bar3;	<br>			barArray[0][10] = bar54;<br>&nbsp;<br>more . . .</pre> 
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+      <p>Toward the end of the class the individual bars are instered into the 
+        arrays.</p>
+      <p> The main class makes an instance of this data and gets bars from the 
+        arrays.</p>
+        </td>
+    <!-- InstanceEndEditable --></tr>
+  <tr> 
+    <td align="left"> <div align="left"></div></td>
+  </tr>
+  <tr> 
+    <td align="left">&nbsp;</td>
+  </tr>
+</table>
+<blockquote> 
+  <p name="Map"> 
+    <map name="Map">
+      <area shape="rect" coords="4,4,41,29" href="http://jmusic.ci.qut.edu" target="_blank" alt="jMusic">
+      <area shape="rect" coords="43,5,80,31" href="http://www.ozco.gov.au" target="_blank" alt="Australia Council">
+      <area shape="rect" coords="83,4,108,29" href="http://www.qut.com" target="_blank" alt="Queensland University of Technology">
+    </map>
+    <map name="Map2">
+      <area shape="rect" coords="702,1,758,12" href="../../extras/sitemap.html" target="_self" alt="Sitemap">
+      <area shape="rect" coords="629,1,687,12" href="../../extras/contact.html" target="_self" alt="Contact">
+      <area shape="rect" coords="574,1,615,14" href="../../index.html" target="_self" alt="Home">
+    </map>
+    <map name="Map3">
+      <area shape="rect" coords="553,5,601,18" href="#" alt="Home">
+      <area shape="rect" coords="612,4,671,18" href="#">
+      <area shape="rect" coords="683,3,735,19" href="#">
+      <area shape="rect" coords="9,8,227,59" href="#" target="index.html">
+    </map>
+    <map name="Map4">
+      <area shape="rect" coords="6,9,40,41" href="http://www.qut.com" target="_blank" alt="http://www.qut.com">
+      <area shape="rect" coords="44,14,87,42" href="http://explodingart.com/jmusic" target="_blank" alt="http://explodingart.com/jmusic">
+      <area shape="rect" coords="90,9,138,43" href="http://www.ozco.gov.au" target="_parent" alt="http://www.ozco.gov.au">
+      <area shape="rect" coords="313,13,512,36" href="../../contact.html">
+    </map>
+  </p>
+</blockquote>
+<map name="Map5">
+  <area shape="rect" coords="-7,4,228,51" href="../../index.htm" target="_self" alt="Digital Instrument making">
+  <area shape="rect" coords="599,1,658,18" href="../../index.htm" alt="Home">
+  <area shape="rect" coords="677,3,755,18" href="../../extras/contact.htm" target="extras">
+</map>
+</body>
+<!-- InstanceEnd --></html>

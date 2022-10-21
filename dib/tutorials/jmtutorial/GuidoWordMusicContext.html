@@ -1,0 +1,392 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><!-- InstanceBegin template="/Templates/tutorial files.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Digital Instrument Building</title>
+<!-- InstanceEndEditable --> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<META NAME="DC.Creator" CONTENT="PersonalName= Andrew R. Brown  ">
+<META NAME="DC.Creator.Email" CONTENT="algorithmicmusic@gmail.com,">
+<META NAME="DC.Rights" CONTENT="Andrew R. Brown ">
+<META NAME="DC.Title" CONTENT="Digital Instrument Building - Music software development with jMusic">
+<META NAME="DC.Title.Alternative" content ="Music software development with jMusic">
+<META NAME="DC.Subject" CONTENT="music, java, composition, algorithmic, digital music, generative music, instrument building, music analysing software development, Australia">
+<META NAME="DC.Description" CONTENT="This site is a tutorial resource designed to assist in the training and self education of up-and-coming digital instrument developers. The tutorials cover topics including music software design, audio synthesis, digital signal processing, compositional systems, and computer programming concepts. ">
+<META NAME="DC.Language" SCHEME="rfc1766" CONTENT="en-au">
+<META NAME="DC.Audience" CONTENT="All">
+<META NAME="DC.Date.Created" CONTENT="06-04-2003">
+<META NAME="DC.Availability" CONTENT="PersonalName= Andrew R. Brown; email= algorithmicmusic@gmail.com">
+<!-- ImageReady Preload Script (menubanner2.psd) -->
+<SCRIPT TYPE="text/javascript">
+<!--
+
+function newImage(arg) {
+	if (document.images) {
+		rslt = new Image();
+		rslt.src = arg;
+		return rslt;
+	}
+}
+
+function changeImages() {
+	if (document.images && (preloadFlag == true)) {
+		for (var i=0; i<changeImages.arguments.length; i+=2) {
+			document[changeImages.arguments[i]].src = changeImages.arguments[i+1];
+		}
+	}
+}
+
+var preloadFlag = false;
+function preloadImages() {
+	if (document.images) {
+		Music_algorithms_over = newImage("images/Music-algorithms-over.jpg");
+		Interfaces_over = newImage("images/Interfaces-over.jpg");
+		Programming_over = newImage("images/Programming-over.jpg");
+		Acoustics_over = newImage("images/Acoustics-over.jpg");
+		context_over = newImage("images/context-over.jpg");
+		audio_over = newImage("images/audio-over.jpg");
+		MIDI_over = newImage("images/MIDI-over.jpg");
+		preloadFlag = true;
+	}
+}
+
+// -->
+</SCRIPT>
+<!-- End Preload Script -->
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+//-->
+</script>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+
+function MM_nbGroup(event, grpName) { //v6.0
+  var i,img,nbArr,args=MM_nbGroup.arguments;
+  if (event == "init" && args.length > 2) {
+    if ((img = MM_findObj(args[2])) != null && !img.MM_init) {
+      img.MM_init = true; img.MM_up = args[3]; img.MM_dn = img.src;
+      if ((nbArr = document[grpName]) == null) nbArr = document[grpName] = new Array();
+      nbArr[nbArr.length] = img;
+      for (i=4; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+        if (!img.MM_up) img.MM_up = img.src;
+        img.src = img.MM_dn = args[i+1];
+        nbArr[nbArr.length] = img;
+    } }
+  } else if (event == "over") {
+    document.MM_nbOver = nbArr = new Array();
+    for (i=1; i < args.length-1; i+=3) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = (img.MM_dn && args[i+2]) ? args[i+2] : ((args[i+1])? args[i+1] : img.MM_up);
+      nbArr[nbArr.length] = img;
+    }
+  } else if (event == "out" ) {
+    for (i=0; i < document.MM_nbOver.length; i++) {
+      img = document.MM_nbOver[i]; img.src = (img.MM_dn) ? img.MM_dn : img.MM_up; }
+  } else if (event == "down") {
+    nbArr = document[grpName];
+    if (nbArr)
+      for (i=0; i < nbArr.length; i++) { img=nbArr[i]; img.src = img.MM_up; img.MM_dn = 0; }
+    document[grpName] = nbArr = new Array();
+    for (i=2; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = img.MM_dn = (args[i+1])? args[i+1] : img.MM_up;
+      nbArr[nbArr.length] = img;
+  } }
+}
+//-->
+</script>
+<link href="../../style/main.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+</head>
+<body leftmargin="3" topmargin="3" marginwidth="0" marginheight="0"  onLoad="MM_preloadImages('../../images/banner/audio-over.jpg','../../images/banner/MIDI-over.jpg','../../images/banner/Music-algorithms-over.jpg','../../images/banner/Interfaces-over.jpg','../../images/banner/Programming-over.jpg','../../images/banner/Acoustics-over.jpg','../../images/banner/context-over.jpg','../../images/banner/banner_08.gif')">
+<table width="691" border="0" align="center">
+  <tr> 
+    <td colspan="5" align="left"> <div align="center"> 
+        <table border="0" align="left" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td colspan="8"><img src="../../images/banner.jpg" alt="" width=758 height=57 border="0" usemap="#Map5"></td>
+          </tr>
+          <tr> 
+            <td width="50"><a href="../../Audio/audio.htm" target="_top" onClick="MM_nbGroup('down','group1','Audio','../../images/banner/audio-over.jpg',1)" onMouseOver="MM_nbGroup('over','Audio','../../images/banner/audio-over.jpg','../../images/banner/audio-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/audio.jpg" alt="audio" name="Audio" width="50" height="24" border="0" onload=""></a></td>
+            <td width="47"><a href="../../midi/midi.htm" target="_top" onClick="MM_nbGroup('down','group1','MIDI','../../images/banner/MIDI-over.jpg',1)" onMouseOver="MM_nbGroup('over','MIDI','../../images/banner/MIDI-over.jpg','../../images/banner/MIDI-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/MIDI.jpg" alt="MIDI" name="MIDI" width="47" height="24" border="0" onload=""></a></td>
+            <td width="117"><a href="../../musalgo/musalgo.htm" target="_top" onClick="MM_nbGroup('down','group1','musalgorithms','../../images/banner/Music-algorithms-over.jpg',1)" onMouseOver="MM_nbGroup('over','musalgorithms','../../images/banner/Music-algorithms-over.jpg','../../images/banner/Music-algorithms-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Music-algorithms.jpg" alt="Music Algorithms" name="musalgorithms" width="117" height="24" border="0" onload=""></a></td>
+            <td width="88"><a href="../../interfaces/interface.htm" target="_top" onClick="MM_nbGroup('down','group1','Interfaces','../../images/banner/Interfaces-over.jpg',1)" onMouseOver="MM_nbGroup('over','Interfaces','../../images/banner/Interfaces-over.jpg','../../images/banner/Interfaces-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Interfaces.jpg" alt="Interfaces" name="Interfaces" width="88" height="24" border="0" onload=""></a></td>
+            <td width="103"><a href="../../programming/programming.htm" target="_top" onClick="MM_nbGroup('down','group1','Programming','../../images/banner/Programming-over.jpg',1)" onMouseOver="MM_nbGroup('over','Programming','../../images/banner/Programming-over.jpg','../../images/banner/Programming-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Programming.jpg" alt="Programming" name="Programming" width="103" height="24" border="0" onload=""></a></td>
+            <td width="81"><a href="../../acoustics/acoustics.htm" target="_top" onClick="MM_nbGroup('down','group1','Acoustics','../../images/banner/Acoustics-over.jpg',1)" onMouseOver="MM_nbGroup('over','Acoustics','../../images/banner/Acoustics-over.jpg','../../images/banner/Acoustics-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Acoustics.jpg" alt="Acoustics" name="Acoustics" width="81" height="24" border="0" onload=""></a></td>
+            <td width="100"><a href="../../context/context.htm" target="_top" onClick="MM_nbGroup('down','group1','Context','../../images/banner/context-over.jpg',1)" onMouseOver="MM_nbGroup('over','Context','../../images/banner/context-over.jpg','../../images/banner/context-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/context.jpg" alt="Context" name="Context" width="100" height="24" border="0" onload=""></a></td>
+            <td width="156"><img src="../../images/banner/banner_09.gif" width="172" height="24"></td>
+          </tr>
+        </table>
+      </div></td>
+  </tr>
+  <tr> 
+    <td width="3" align="left"> <div align="right"></div>
+      <div align="right"></div>
+      <div align="right"></div></td>
+    <!-- InstanceBeginEditable name="tracker" -->
+    <td height="16" colspan="2" rowspan="2" align="left"><a href="../../context/context.htm">&gt; 
+      Context </a> &gt; <a href="../../context/various.htm"> Various</a> &gt;<a href="GuidoWordMusicContext.html"> 
+      Guido Word Music</a></td>
+    <!-- InstanceEndEditable -->
+    <td width="15" rowspan="2" align="left">&nbsp;</td>
+    <td width="214" rowspan="2" align="left">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="3" rowspan="3" align="left">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="66" align="left" valign="top">&nbsp;</td>
+    <td width="444" align="left" valign="top">&nbsp;</td>
+    <td colspan="2" align="left" valign="top"><strong></strong></td>
+  </tr>
+  <tr> <!-- InstanceBeginEditable name="content" --> 
+    <td colspan="4" rowspan="3" align="left" valign="top"> <h2 >Guido 
+        Word Music</h2>
+      <p>This is an implementation of one of the oldest known algorithmic music 
+        processes.<br>
+        It is rule based, not recombinatorial. Each vowel is allocated a pitch.<br>
+        This implementation is not strict (as the original was designed for Latin 
+        texts) but has been adapter to Roman languages and modern tonal sensibilities.<br>
+        It is quite intriguing how close this process is the Arvo P&auml;rt's 
+        compositional processes! (Read about it in Hiller's book on P&auml;rt.)</p>
+      <p>The interface:<br>
+        <img src="Images/Guido.gif" title="" alt="Guido Interface"
+ style="width: 344px; height: 181px;"><br>
+        </p>
+      <p>This demo is a realisation of Mozart's design 
+        in jMusic by Andrew Troedson.</p>
+      <p><a
+ href="../jmdemos/wordMusic.java" target="_top">Click here to view source part 
+        1.</a> </p>
+      <p><a
+ href="../jmdemos/wordMusicMaker.java" target="_top">Click here to view source 
+        part 2.</a> </p>
+      <p>To hear the result play the Quicktime movie 
+        below.</p>
+      <p> 
+        <embed src="soundExamples/Guido.mid" width="150" height="60"
+ controller="TRUE" loop="FALSE" autoplay="FALSE"></embed></p>
+      <p><b>Andrew Troedson's comments:</b></p>
+      <p>An Overview</p>
+      <p>Based on Guido d'Arezzo's lookup chart for generating pitches from syllables 
+        (ca. 1000 A.D.), this melody generation tool creates a monophonic phrase 
+        by extrapolating from a given text. A set of rules (see Table 2.1 below) 
+        is used to select note pitches depending on the vowels found in the text. 
+        <br>
+        Although d'Arezzo's original intention was simply to provide an approximate 
+        guide from which a composer could make selections to fit his/her taste,<br>
+        this tool automates the process, and itself chooses from the given note 
+        options.<br>
+        As well as this, the wordMusic tool sets the selected notes to a rhythm 
+        dependant on the number of consonants between each vowel (see Table 2.2).</p>
+      <p>Table 2.1: The note pitch value options assigned 
+        by wordMusic to each vowel</p>
+      <p> 
+      <table border="1">
+        <tbody>
+          <tr> 
+            <td> <p>g2 </p></td>
+            <td> <p>a2 </p></td>
+            <td> <p>b2 </p></td>
+            <td> <p>c3 </p></td>
+            <td> <p>d3 </p></td>
+            <td> <p>e3 </p></td>
+            <td> <p>f3 </p></td>
+            <td> <p>g3 </p></td>
+            <td> <p>a3 </p></td>
+            <td> <p>b3 </p></td>
+            <td> <p>c4 </p></td>
+            <td> <p>d4 </p></td>
+            <td> <p>e4 </p></td>
+            <td> <p>f4 </p></td>
+            <td> <p>g4 </p></td>
+            <td> <p>a4 </p></td>
+          </tr>
+          <tr> 
+            <td> <p>A </p></td>
+            <td> <p>E </p></td>
+            <td> <p>I </p></td>
+            <td> <p>O </p></td>
+            <td> <p>U </p></td>
+            <td> <p>A </p></td>
+            <td> <p>E </p></td>
+            <td> <p>I </p></td>
+            <td> <p>O </p></td>
+            <td> <p>U </p></td>
+            <td> <p>A </p></td>
+            <td> <p>E </p></td>
+            <td> <p>I </p></td>
+            <td> <p>O </p></td>
+            <td> <p>U </p></td>
+            <td> <p>A </p></td>
+          </tr>
+        </tbody>
+      </table>
+      <p></p>
+      <p>Table 2.2: The rhythm values assigned by wordMusic 
+        dependant of the number of consonants between each vowel.</p>
+      <p> 
+      <table border="1">
+        <tbody>
+          <tr> 
+            <td> <p>&lt;2 </p></td>
+            <td> <p>2-3 </p></td>
+            <td> <p>4 </p></td>
+            <td> <p>&gt;4 </p></td>
+          </tr>
+          <tr> 
+            <td> <p>Quaver </p></td>
+            <td> <p>Crotchet </p></td>
+            <td> <p>Minim </p></td>
+            <td> <p>Dotted Minim </p></td>
+          </tr>
+        </tbody>
+      </table>
+      <p></p>
+      <p>Technicalities</p>
+      <p>This interpretation of d'Arezzo's lookup chart is set up in a single 
+        class, wordMusic.java.<br>
+        However, a GUI interface which utilizes this class and allows new text 
+        to be easily entered, has also been created and is called wordMusicMaker.java.<br>
+        The default name of the generated MIDI file is "wordMusic.mid", although 
+        this can be easily changed when using the GUI interface.</p>
+      <p>Observations</p>
+      <p>This melody generation tool, while based on a set of very simple rules, 
+        is quite effective in creating musically interesting phrases.<br>
+        Because the music it composes is generated entirely based on this set 
+        of rules, it can be said to be taking an algorithmic approach to the generation 
+        of music.</p>
+      <p>Initially, the simplicity of the rules used can be deceiving, however 
+        when looked at more closely, they do have some theoretical grounding. 
+        <br>
+        Most melodies that are written for specific texts do set notes to every 
+        syllable, and the rhythm of the text does in general have some relationship 
+        to the <br>
+        length of the words (and the distance between adjacent vowels).<br>
+        <br>
+        Although this is not an exact relationship (and problems occur with words 
+        that do not contain vowels, for example "sky"), the results produced by 
+        its <br>
+        implementation are very acceptable. It should also be noted that the original 
+        rhythm algorithm involved a greater variety of note lengths<br>
+        (ranging from semiquavers to semibrieves), however this was simplified 
+        as the resulting phrases tended to be somewhat disjointed.</p>
+      <p>Of course, the algorithm used could be extended further to take voice 
+        leading into account, or could even be developed to produce polyphonic 
+        phrases, <br>
+        however, in its current form, the wordMusic melody generation tool does 
+        provide a good example of the possibilities of algorithmically generating 
+        <br>
+        music - even with only the simplest of rules.</p>
+      <p> </p>
+      <hr> <b>The code:</b> <p>Let's 
+        have a closer look.  
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre><span class="comment">/*<br
+ >*  A class which creates a GUI interface for <br
+ >*  the wordMusic class - allowing for easy<br
+ >*  entry of different texts<br
+ >*  @author Andrew Troedson<br
+ >*/  <br></span><br>import java.awt.*;<br>import java.awt.event.*;<br><br>public class wordMusicMaker extends Frame implements ActionListener, WindowListener{<br><br>TextField fileName;<br>TextArea wordInput;<br>wordMusic musicMaker = new wordMusic();<br><br>	public void actionPerformed(ActionEvent ae){<br>		if(ae.getActionCommand() == "ActionCompose") {<br>			musicMaker.compose(wordInput.getText(), fileName.getText());<br>		}<br>	}<br>	<br>	<span class="comment">// Deal with the window closebox</span><br>	public void windowClosing(WindowEvent we) {<br>		System.exit(0);<br>	}<br>	<span class="comment">//other WindowListener interface methods</span><br
+ >	<span class="comment">//They do nothing but are required to be present</span><br>	public void windowActivated(WindowEvent we) {};<br>	public void windowClosed(WindowEvent we) {};<br>	public void windowDeactivated(WindowEvent we) {};<br>	public void windowIconified(WindowEvent we) {};<br>	public void windowDeiconified(WindowEvent we) {};<br>	public void windowOpened(WindowEvent we) {};<br>	<br>	public static void main(String args[]){<br>		wordMusicMaker wmm = new wordMusicMaker("Word Music");<br>	}<br>	<br>	public wordMusicMaker(String title){<br>		super(title);<br>		<br>		<span class="comment">//register the closebox event</span><br>		this.addWindowListener(this);<br>		<br>		<span class="comment">//assign the frame an icon (only seen in Windows OS)</span><br>		Image i = Toolkit.getDefaultToolkit().getImage("wmicon.gif");<br>		this.setIconImage(i);<br>		setLayout(new BorderLayout());<br>		Color lightGrey = new Color(240,240,240);<br>		this.setBackground(lightGrey);<br>		<br>		Label mainTitle = new Label("WORD MUSIC by Andrew Troedson", 1);<br>		add(mainTitle, "North");<br><br>		wordInput = new TextArea("Type text here...", 6, 40, 3);<br>		wordInput.setBackground(Color.white);<br>		add(wordInput, "Center");<br>		<br>		Panel windowBottom = new Panel();<br>		Label outputFile = new Label("Output File:",1);<br>		fileName = new TextField("wordMusic.mid",16);<br>		Button compose = new Button("Compose");<br>		compose.setBackground(Color.lightGray);<br>		compose.setForeground(Color.darkGray);<br>		compose.addActionListener(this);<br>		compose.setActionCommand("ActionCompose");<br>	<br>		windowBottom.add(outputFile);<br>		windowBottom.add(fileName);<br>		windowBottom.add(compose);<br>		add(windowBottom, "South");<br>		<br>		Panel eastBorder = new Panel();<br>		add(eastBorder, "East");<br>		Panel westBorder = new Panel();<br>		add(westBorder, "West");<br>		<br>		pack();<br>		show();<br>	}<br>}</pre> 
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      The code is adequately commented such that you should be able to follow 
+      it thorugh. <br>
+      It mainly implements a GUI which calls the wordMaker class whose code is 
+      below. 
+      <p></p>
+      <p> 
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre><span class="comment">/* A class which generates music from words<br
+ >*  Based on Guido d'Arezzo's lookup chart for generating <br
+ >*  pitches from syllabes (ca. 1000 A.D.)<br
+ >*  @author Andrew Troedson<br
+ >*  <br
+ >*  g2 a2 b2 c3 d3 e3 f3 g3 a3 b3 c4 d4 e4 f4 g4 a4<br
+ >*  A  E  I  O  U  A  E  I  O  U  A  E  I  O  U  A<br
+ >*/</span><br><br>import java.text.*;<span class="comment">	//contains the StringCharacterIterator</span><br>import jm.music.data.*;<span class="comment">	//the jMusic classes</span><br>import jm.JMC;<br>import jm.util.*;<br><br>public final class wordMusic implements JMC {<br><br><span class="comment">//the passage from which the melody will be generated</span><br>String passage;<br><span class="comment">//the name of the file produced</span><br>String fileName;<br><br>	public wordMusic() {	<br>	}<br>	<br>	public void setPassage(String passage) {<br>		this.passage = passage;<br>	}<br>	<br>	public void setFileName(String fileName) {<br>		this.fileName = fileName;<br>	}<br>	<br>	/<span class="comment">/compose method takes two args: the passage String and the fileName String</span><br>	public void compose(String p, String f) {<br>	<br>		passage = p;<br>		fileName = f;<br>		Score score = new Score("wordMusic", 120);<br>		Part piano = new Part("Piano", PIANO, 0);<br>		Phrase phrase = new Phrase(0.0);<br>		Note nextNote = new Note();<br>		<br>		<span class="comment">//set a default passage if none is given</span><br>		if (passage.length() == 0) {<br>			setPassage("twinkle twinkle little star,"+<br>					"how I wonder what you are,"+<br>					"&nbsp;up above the world so high,"+<br>					"&nbsp;like a diamond in the sky.");<br>		}<br>		<br>		<span class="comment">//set a default filename if none is given</span><br>		if (fileName.length() == 0) {<br>			setFileName("wordMusic.mid");<br>		}<br>		<br>		<span class="comment">//change all the letters in the passage variable to </span><br>		<span class="comment">//Upper Case to remove case sensitivity</span><br>		passage = passage.toUpperCase();<br>		<span class="comment">//assign a StringCharacterIterator to the passage</span><br>		StringCharacterIterator iter = new StringCharacterIterator(passage);<br><br>	<span class="comment">	//the variable used to count the number of non-vowels </span><br>		<span class="comment">//(ie consonants and symbols) between each vowel</span><br
+ >		<span class="comment">//this number is sent to setNoteLength() every time </span><br>		<span class="comment">//a new note is made	</span><br>		int nonVowelCounter = 0;<br>		<br>		<span class="comment">//this variable is set each new note is created, and </span><br>		<span class="comment">//sets the Pitch of the new note (this is chosen at </span><br>		<span class="comment">//random from the 3 or 4 options allowed for that vowel </span><br>		<span class="comment">//in d'Arezzo's lookup chart)</span><br>		int notePitch;<br>		<br>		<span class="comment">//the variable used to make the random pitch selection</span><br>		int randNum;	<br>		<br>		<span class="comment">//the main iteration loop which goes through passage </span><br>		<span class="comment">//and makes the notes these notes are then added to </span><br>		<span class="comment">//the Phrase phrase	</span>				<br>		for(int i=0; i&lt;passage.length(); i++) {<br>		<br>			iter.setIndex(i);<br>			char nextChar = iter.current();<br>			System.out.println(i + " " + nextChar);<br>	<br> 			switch (nextChar) {<br>				case 'A':<br>				<br>					randNum = ((int)(java.lang.Math.random()*4));<br>				<br>					if (randNum == 0){<br>						notePitch = G2;}<br>					else if (randNum == 1){<br>						notePitch = E3;}<br>					else if (randNum == 2){<br>						notePitch = C4;}<br>					else {<br>						notePitch = a4;}	<br>								<br>					nextNote = new Note(notePitch,setNoteLength(<br>						nonVowelCounter));<br>					phrase.addNote(nextNote);<br>					nonVowelCounter = 0;<br>					break;<br>						<br>				case 'E':<br>				<br>					randNum = ((int)(java.lang.Math.random()*3));<br>					<br>					if (randNum == 0){<br>						notePitch = A2;}<br>					else if (randNum == 1){<br>						notePitch = F3;}<br>					else {<br>						notePitch = D4;}<br>							<br>					nextNote = new Note(notePitch,setNoteLength(<br>						nonVowelCounter));<br>					phrase.addNote(nextNote);<br>					nonVowelCounter = 0;<br>					break;<br>						<br>				case 'I':<br>				<br>					randNum = ((int)(java.lang.Math.random()*3));<br>					<br>					if (randNum == 0){<br>						notePitch = B2;}<br>					else if (randNum == 1){<br>						notePitch = G3;}<br>					else {<br>						notePitch = E4;}<br>						<br>					nextNote = new Note(notePitch,setNoteLength(<br>						nonVowelCounter));<br>					phrase.addNote(nextNote);<br>					nonVowelCounter = 0;<br>					break;<br><br>				case 'O':<br>				<br>					randNum = ((int)(java.lang.Math.random()*3));<br>					<br>					if (randNum == 0){<br>						notePitch = C3;}<br>					else if (randNum == 1){<br>						notePitch = A3;}<br>					else {<br>						notePitch = F4;}<br>						<br>					nextNote = new Note(notePitch,setNoteLength(<br>						nonVowelCounter));<br>					phrase.addNote(nextNote);<br>					nonVowelCounter = 0;<br>					break;<br><br>				case 'U':<br>				<br>					randNum = ((int)(java.lang.Math.random()*3));<br>				<br>					if (randNum == 0){<br>						notePitch = D3;}<br>					else if (randNum == 1){<br>						notePitch = B3;}<br>					else {<br>						notePitch = G4;}<br>						<br>					nextNote = new Note(notePitch,setNoteLength(<br>						nonVowelCounter));<br>					phrase.addNote(nextNote);<br>					nonVowelCounter = 0;<br>					break;<br>			<br>				<span class="comment">//for all other letters (ie all the consonants) </span><br>				<span class="comment">//and syllables, no notes are created</span><br>				default:<br>					<span class="comment">//add 1 to the consonant counter</span><br>					nonVowelCounter++; <br>					break;<br>			}					<br>		}<br>		<br>		piano.addPhrase(phrase);<br>		View.print(piano);<br>		<br>		<span class="comment">//add part (instrument) to the score</span><br>		score.addPart(piano);<br>			<br>		<span class="comment">//OK now we test SMF write and read</span><br><br>		Write.midi(score, fileName);<br>	}<br><br
+ >	<span class="comment">//an internal method which decides on the length of each note </span><br
+ >	<span class="comment">//depending on the number of consonants (as well as spaces </span><br
+ >	<span class="comment">//and other symbols) between vowels	</span><br>	static double setNoteLength(int counter){<br>	<br>		double noteLength;<br>		switch (counter) {<br>			case (0):<br>				noteLength = Q;<br>				break;<br>			case (1):<br>				noteLength = Q;<br>				break;<br>			case (2):<br>				noteLength = C;<br>				break;<br>			case (3):<br>				noteLength = C;<br>				break;<br>			case (4):<br>				noteLength = M;<br>				break;<br>			default: //(ie more than 4 consonants)<br>				noteLength = MD;<br>				break;<br>		}<br>		return noteLength;<br>	}	<br>}</pre> 
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      This is the class which does all the work. <br>
+      The main thing to notice is the switch statement which checks to see if 
+      the nexts letter is a vowel. <br>
+      A switch statement is also used to select a duration based on the number 
+      of letters between vowels. </td>
+    <!-- InstanceEndEditable --></tr>
+  <tr> 
+    <td align="left"> <div align="left"></div></td>
+  </tr>
+  <tr> 
+    <td align="left">&nbsp;</td>
+  </tr>
+</table>
+<blockquote> 
+  <p name="Map"> 
+    <map name="Map">
+      <area shape="rect" coords="4,4,41,29" href="http://jmusic.ci.qut.edu" target="_blank" alt="jMusic">
+      <area shape="rect" coords="43,5,80,31" href="http://www.ozco.gov.au" target="_blank" alt="Australia Council">
+      <area shape="rect" coords="83,4,108,29" href="http://www.qut.com" target="_blank" alt="Queensland University of Technology">
+    </map>
+    <map name="Map2">
+      <area shape="rect" coords="702,1,758,12" href="../../extras/sitemap.html" target="_self" alt="Sitemap">
+      <area shape="rect" coords="629,1,687,12" href="../../extras/contact.html" target="_self" alt="Contact">
+      <area shape="rect" coords="574,1,615,14" href="../../index.html" target="_self" alt="Home">
+    </map>
+    <map name="Map3">
+      <area shape="rect" coords="553,5,601,18" href="#" alt="Home">
+      <area shape="rect" coords="612,4,671,18" href="#">
+      <area shape="rect" coords="683,3,735,19" href="#">
+      <area shape="rect" coords="9,8,227,59" href="#" target="index.html">
+    </map>
+    <map name="Map4">
+      <area shape="rect" coords="6,9,40,41" href="http://www.qut.com" target="_blank" alt="http://www.qut.com">
+      <area shape="rect" coords="44,14,87,42" href="http://explodingart.com/jmusic" target="_blank" alt="http://explodingart.com/jmusic">
+      <area shape="rect" coords="90,9,138,43" href="http://www.ozco.gov.au" target="_parent" alt="http://www.ozco.gov.au">
+      <area shape="rect" coords="313,13,512,36" href="../../contact.html">
+    </map>
+  </p>
+</blockquote>
+<map name="Map5">
+  <area shape="rect" coords="-7,4,228,51" href="../../index.htm" target="_self" alt="Digital Instrument making">
+  <area shape="rect" coords="599,1,658,18" href="../../index.htm" alt="Home">
+  <area shape="rect" coords="677,3,755,18" href="../../extras/contact.htm" target="extras">
+</map>
+</body>
+<!-- InstanceEnd --></html>

@@ -1,0 +1,93 @@
+[17-Feb-2017 21:48:23 UTC] PHP Fatal error:  Uncaught exception 'Services_Twilio_RestException' with message 'The From phone number +447481341879 is not a valid, SMS-capable inbound phone number or short code for your account.' in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php:226
+Stack trace:
+#0 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php(197): Services_Twilio->_processResponse(Array)
+#1 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio/ListResource.php(84): Services_Twilio->createData('/2010-04-01/Acc...', Array)
+#2 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio/Rest/SmsMessages.php(16): Services_Twilio_ListResource->_create(Array)
+#3 /home/acm49750/public_html/dib/aa.php(32): Services_Twilio_Rest_SmsMessages->create('+447481341879', '07397076270', 'xece')
+#4 {main}
+  thrown in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php on line 226
+[17-Feb-2017 21:49:29 UTC] PHP Fatal error:  Uncaught exception 'Services_Twilio_RestException' with message 'The 'To' number 07397076270 is not a valid phone number.' in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php:226
+Stack trace:
+#0 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php(197): Services_Twilio->_processResponse(Array)
+#1 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio/ListResource.php(84): Services_Twilio->createData('/2010-04-01/Acc...', Array)
+#2 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio/Rest/SmsMessages.php(16): Services_Twilio_ListResource->_create(Array)
+#3 /home/acm49750/public_html/dib/aa.php(32): Services_Twilio_Rest_SmsMessages->create('+19189924499', '07397076270', 'xece')
+#4 {main}
+  thrown in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php on line 226
+[17-Feb-2017 21:52:50 UTC] PHP Fatal error:  Uncaught exception 'Services_Twilio_RestException' with message 'A 'To' phone number is required.' in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php:226
+Stack trace:
+#0 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php(197): Services_Twilio->_processResponse(Array)
+#1 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio/ListResource.php(84): Services_Twilio->createData('/2010-04-01/Acc...', Array)
+#2 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio/Rest/SmsMessages.php(16): Services_Twilio_ListResource->_create(Array)
+#3 /home/acm49750/public_html/dib/twilio.php(77): Services_Twilio_Rest_SmsMessages->create('+19189924499', '', 'aaaaa')
+#4 /home/acm49750/public_html/dib/twilio.php(84): extractemail('+447397076270')
+#5 {main}
+  thrown in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php on line 226
+[17-Feb-2017 21:54:47 UTC] PHP Fatal error:  Cannot redeclare Services_Twilio_autoload() (previously declared in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php:3) in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php on line 10
+[17-Feb-2017 21:57:30 UTC] PHP Fatal error:  Uncaught exception 'Services_Twilio_RestException' with message 'The 'To' number +447397076270
++447397076270 is not a valid phone number.' in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php:226
+Stack trace:
+#0 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php(197): Services_Twilio->_processResponse(Array)
+#1 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio/ListResource.php(84): Services_Twilio->createData('/2010-04-01/Acc...', Array)
+#2 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio/Rest/SmsMessages.php(16): Services_Twilio_ListResource->_create(Array)
+#3 /home/acm49750/public_html/dib/aa.php(32): Services_Twilio_Rest_SmsMessages->create('+19189924499', '+447397076270\r\n...', 'example')
+#4 {main}
+  thrown in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php on line 226
+[17-Feb-2017 22:20:13 UTC] PHP Fatal error:  Cannot redeclare Services_Twilio_autoload() (previously declared in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php:3) in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php on line 10
+[17-Feb-2017 22:21:17 UTC] PHP Fatal error:  Cannot redeclare Services_Twilio_autoload() (previously declared in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php:3) in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php on line 10
+[17-Feb-2017 22:23:04 UTC] PHP Fatal error:  Uncaught exception 'Services_Twilio_RestException' with message 'A 'To' phone number is required.' in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php:226
+Stack trace:
+#0 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php(197): Services_Twilio->_processResponse(Array)
+#1 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio/ListResource.php(84): Services_Twilio->createData('/2010-04-01/Acc...', Array)
+#2 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio/Rest/SmsMessages.php(16): Services_Twilio_ListResource->_create(Array)
+#3 /home/acm49750/public_html/dib/twilio.php(81): Services_Twilio_Rest_SmsMessages->create('+19189924499', '', NULL)
+#4 /home/acm49750/public_html/dib/twilio.php(95): extractemail('+447397076270')
+#5 {main}
+  thrown in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php on line 226
+[17-Feb-2017 22:26:37 UTC] PHP Fatal error:  Uncaught exception 'Services_Twilio_RestException' with message 'A 'To' phone number is required.' in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php:226
+Stack trace:
+#0 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php(197): Services_Twilio->_processResponse(Array)
+#1 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio/ListResource.php(84): Services_Twilio->createData('/2010-04-01/Acc...', Array)
+#2 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio/Rest/SmsMessages.php(16): Services_Twilio_ListResource->_create(Array)
+#3 /home/acm49750/public_html/dib/twilio.php(81): Services_Twilio_Rest_SmsMessages->create('+19189924499', '', NULL)
+#4 /home/acm49750/public_html/dib/twilio.php(95): extractemail('+447397076270')
+#5 {main}
+  thrown in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php on line 226
+[17-Feb-2017 22:27:05 UTC] PHP Fatal error:  Uncaught exception 'Services_Twilio_RestException' with message 'A 'To' phone number is required.' in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php:226
+Stack trace:
+#0 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php(197): Services_Twilio->_processResponse(Array)
+#1 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio/ListResource.php(84): Services_Twilio->createData('/2010-04-01/Acc...', Array)
+#2 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio/Rest/SmsMessages.php(16): Services_Twilio_ListResource->_create(Array)
+#3 /home/acm49750/public_html/dib/twilio.php(81): Services_Twilio_Rest_SmsMessages->create('+19189924499', '', 'xxec')
+#4 /home/acm49750/public_html/dib/twilio.php(95): extractemail('+447397076270')
+#5 {main}
+  thrown in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php on line 226
+[17-Feb-2017 22:52:35 UTC] PHP Fatal error:  Uncaught exception 'Services_Twilio_RestException' with message 'A 'To' phone number is required.' in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php:226
+Stack trace:
+#0 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php(197): Services_Twilio->_processResponse(Array)
+#1 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio/ListResource.php(84): Services_Twilio->createData('/2010-04-01/Acc...', Array)
+#2 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio/Rest/SmsMessages.php(16): Services_Twilio_ListResource->_create(Array)
+#3 /home/acm49750/public_html/dib/twilio.php(81): Services_Twilio_Rest_SmsMessages->create('+19189924499', '', 'xxec')
+#4 /home/acm49750/public_html/dib/twilio.php(95): extractemail('+447397076270')
+#5 {main}
+  thrown in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php on line 226
+[17-Feb-2017 22:53:47 UTC] PHP Fatal error:  Cannot redeclare Services_Twilio_autoload() (previously declared in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php:3) in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php on line 10
+[17-Feb-2017 22:57:04 UTC] PHP Fatal error:  Uncaught exception 'Services_Twilio_RestException' with message 'A 'To' phone number is required.' in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php:226
+Stack trace:
+#0 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php(197): Services_Twilio->_processResponse(Array)
+#1 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio/ListResource.php(84): Services_Twilio->createData('/2010-04-01/Acc...', Array)
+#2 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio/Rest/SmsMessages.php(16): Services_Twilio_ListResource->_create(Array)
+#3 /home/acm49750/public_html/dib/twilio.php(81): Services_Twilio_Rest_SmsMessages->create('+19189924499', '', 'yong')
+#4 /home/acm49750/public_html/dib/twilio.php(95): extractemail('+447397076270')
+#5 {main}
+  thrown in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php on line 226
+[17-Feb-2017 22:58:08 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/acm49750/public_html/dib/twilio.php on line 73
+[17-Feb-2017 22:59:29 UTC] PHP Fatal error:  Uncaught exception 'Services_Twilio_RestException' with message 'A 'To' phone number is required.' in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php:226
+Stack trace:
+#0 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php(197): Services_Twilio->_processResponse(Array)
+#1 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio/ListResource.php(84): Services_Twilio->createData('/2010-04-01/Acc...', Array)
+#2 /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio/Rest/SmsMessages.php(16): Services_Twilio_ListResource->_create(Array)
+#3 /home/acm49750/public_html/dib/twilio.php(81): Services_Twilio_Rest_SmsMessages->create('+19189924499', '', 'yong')
+#4 /home/acm49750/public_html/dib/twilio.php(95): extractemail('+447397076270')
+#5 {main}
+  thrown in /home/acm49750/public_html/dib/twilio-php-master/Services/Twilio.php on line 226

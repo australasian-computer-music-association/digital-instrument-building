@@ -1,0 +1,464 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><!-- InstanceBegin template="/Templates/tutorial files.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Digital Instrument Building</title>
+<!-- InstanceEndEditable --> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<META NAME="DC.Creator" CONTENT="PersonalName= Andrew R. Brown  ">
+<META NAME="DC.Creator.Email" CONTENT="algorithmicmusic@gmail.com,">
+<META NAME="DC.Rights" CONTENT="Andrew R. Brown ">
+<META NAME="DC.Title" CONTENT="Digital Instrument Building - Music software development with jMusic">
+<META NAME="DC.Title.Alternative" content ="Music software development with jMusic">
+<META NAME="DC.Subject" CONTENT="music, java, composition, algorithmic, digital music, generative music, instrument building, music analysing software development, Australia">
+<META NAME="DC.Description" CONTENT="This site is a tutorial resource designed to assist in the training and self education of up-and-coming digital instrument developers. The tutorials cover topics including music software design, audio synthesis, digital signal processing, compositional systems, and computer programming concepts. ">
+<META NAME="DC.Language" SCHEME="rfc1766" CONTENT="en-au">
+<META NAME="DC.Audience" CONTENT="All">
+<META NAME="DC.Date.Created" CONTENT="06-04-2003">
+<META NAME="DC.Availability" CONTENT="PersonalName= Andrew R. Brown; email= algorithmicmusic@gmail.com">
+<!-- ImageReady Preload Script (menubanner2.psd) -->
+<SCRIPT TYPE="text/javascript">
+<!--
+
+function newImage(arg) {
+	if (document.images) {
+		rslt = new Image();
+		rslt.src = arg;
+		return rslt;
+	}
+}
+
+function changeImages() {
+	if (document.images && (preloadFlag == true)) {
+		for (var i=0; i<changeImages.arguments.length; i+=2) {
+			document[changeImages.arguments[i]].src = changeImages.arguments[i+1];
+		}
+	}
+}
+
+var preloadFlag = false;
+function preloadImages() {
+	if (document.images) {
+		Music_algorithms_over = newImage("images/Music-algorithms-over.jpg");
+		Interfaces_over = newImage("images/Interfaces-over.jpg");
+		Programming_over = newImage("images/Programming-over.jpg");
+		Acoustics_over = newImage("images/Acoustics-over.jpg");
+		context_over = newImage("images/context-over.jpg");
+		audio_over = newImage("images/audio-over.jpg");
+		MIDI_over = newImage("images/MIDI-over.jpg");
+		preloadFlag = true;
+	}
+}
+
+// -->
+</SCRIPT>
+<!-- End Preload Script -->
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+//-->
+</script>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+
+function MM_nbGroup(event, grpName) { //v6.0
+  var i,img,nbArr,args=MM_nbGroup.arguments;
+  if (event == "init" && args.length > 2) {
+    if ((img = MM_findObj(args[2])) != null && !img.MM_init) {
+      img.MM_init = true; img.MM_up = args[3]; img.MM_dn = img.src;
+      if ((nbArr = document[grpName]) == null) nbArr = document[grpName] = new Array();
+      nbArr[nbArr.length] = img;
+      for (i=4; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+        if (!img.MM_up) img.MM_up = img.src;
+        img.src = img.MM_dn = args[i+1];
+        nbArr[nbArr.length] = img;
+    } }
+  } else if (event == "over") {
+    document.MM_nbOver = nbArr = new Array();
+    for (i=1; i < args.length-1; i+=3) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = (img.MM_dn && args[i+2]) ? args[i+2] : ((args[i+1])? args[i+1] : img.MM_up);
+      nbArr[nbArr.length] = img;
+    }
+  } else if (event == "out" ) {
+    for (i=0; i < document.MM_nbOver.length; i++) {
+      img = document.MM_nbOver[i]; img.src = (img.MM_dn) ? img.MM_dn : img.MM_up; }
+  } else if (event == "down") {
+    nbArr = document[grpName];
+    if (nbArr)
+      for (i=0; i < nbArr.length; i++) { img=nbArr[i]; img.src = img.MM_up; img.MM_dn = 0; }
+    document[grpName] = nbArr = new Array();
+    for (i=2; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = img.MM_dn = (args[i+1])? args[i+1] : img.MM_up;
+      nbArr[nbArr.length] = img;
+  } }
+}
+//-->
+</script>
+<link href="../../../style/main.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+</head>
+<body leftmargin="3" topmargin="3" marginwidth="0" marginheight="0"  onLoad="MM_preloadImages('../../../images/banner/audio-over.jpg','../../../images/banner/MIDI-over.jpg','../../../images/banner/Music-algorithms-over.jpg','../../../images/banner/Interfaces-over.jpg','../../../images/banner/Programming-over.jpg','../../../images/banner/Acoustics-over.jpg','../../../images/banner/context-over.jpg','../../../images/banner/banner_08.gif')">
+<table width="691" border="0" align="center">
+  <tr> 
+    <td colspan="5" align="left"> <div align="center"> 
+        <table border="0" align="left" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td colspan="8"><img src="../../../images/banner.jpg" alt="" width=758 height=57 border="0" usemap="#Map5"></td>
+          </tr>
+          <tr> 
+            <td width="50"><a href="../../../Audio/audio.htm" target="_top" onClick="MM_nbGroup('down','group1','Audio','../../../images/banner/audio-over.jpg',1)" onMouseOver="MM_nbGroup('over','Audio','../../../images/banner/audio-over.jpg','../../../images/banner/audio-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../../images/banner/audio.jpg" alt="audio" name="Audio" width="50" height="24" border="0" onload=""></a></td>
+            <td width="47"><a href="../../../midi/midi.htm" target="_top" onClick="MM_nbGroup('down','group1','MIDI','../../../images/banner/MIDI-over.jpg',1)" onMouseOver="MM_nbGroup('over','MIDI','../../../images/banner/MIDI-over.jpg','../../../images/banner/MIDI-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../../images/banner/MIDI.jpg" alt="MIDI" name="MIDI" width="47" height="24" border="0" onload=""></a></td>
+            <td width="117"><a href="../../../musalgo/musalgo.htm" target="_top" onClick="MM_nbGroup('down','group1','musalgorithms','../../../images/banner/Music-algorithms-over.jpg',1)" onMouseOver="MM_nbGroup('over','musalgorithms','../../../images/banner/Music-algorithms-over.jpg','../../../images/banner/Music-algorithms-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../../images/banner/Music-algorithms.jpg" alt="Music Algorithms" name="musalgorithms" width="117" height="24" border="0" onload=""></a></td>
+            <td width="88"><a href="../../../interfaces/interface.htm" target="_top" onClick="MM_nbGroup('down','group1','Interfaces','../../../images/banner/Interfaces-over.jpg',1)" onMouseOver="MM_nbGroup('over','Interfaces','../../../images/banner/Interfaces-over.jpg','../../../images/banner/Interfaces-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../../images/banner/Interfaces.jpg" alt="Interfaces" name="Interfaces" width="88" height="24" border="0" onload=""></a></td>
+            <td width="103"><a href="../../../programming/programming.htm" target="_top" onClick="MM_nbGroup('down','group1','Programming','../../../images/banner/Programming-over.jpg',1)" onMouseOver="MM_nbGroup('over','Programming','../../../images/banner/Programming-over.jpg','../../../images/banner/Programming-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../../images/banner/Programming.jpg" alt="Programming" name="Programming" width="103" height="24" border="0" onload=""></a></td>
+            <td width="81"><a href="../../../acoustics/acoustics.htm" target="_top" onClick="MM_nbGroup('down','group1','Acoustics','../../../images/banner/Acoustics-over.jpg',1)" onMouseOver="MM_nbGroup('over','Acoustics','../../../images/banner/Acoustics-over.jpg','../../../images/banner/Acoustics-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../../images/banner/Acoustics.jpg" alt="Acoustics" name="Acoustics" width="81" height="24" border="0" onload=""></a></td>
+            <td width="100"><a href="../../../context/context.htm" target="_top" onClick="MM_nbGroup('down','group1','Context','../../../images/banner/context-over.jpg',1)" onMouseOver="MM_nbGroup('over','Context','../../../images/banner/context-over.jpg','../../../images/banner/context-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../../images/banner/context.jpg" alt="Context" name="Context" width="100" height="24" border="0" onload=""></a></td>
+            <td width="156"><img src="../../../images/banner/banner_09.gif" width="172" height="24"></td>
+          </tr>
+        </table>
+      </div></td>
+  </tr>
+  <tr> 
+    <td width="3" align="left"> <div align="right"></div>
+      <div align="right"></div>
+      <div align="right"></div></td>
+    <!-- InstanceBeginEditable name="tracker" -->
+    <td height="16" colspan="2" rowspan="2" align="left"><a href="../../../Audio/audio.htm">&gt; 
+      Audio</a> &gt; <a href="../../../Audio/synthesis.htm">Synthesis</a> &gt; 
+      <a href="Inside_Audio_Synthesis_1.html"> jMusic Instrument Architecture 
+      </a></td>
+    <!-- InstanceEndEditable -->
+    <td width="15" rowspan="2" align="left">&nbsp;</td>
+    <td width="214" rowspan="2" align="left">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="3" rowspan="3" align="left">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="66" align="left" valign="top">&nbsp;</td>
+    <td width="444" align="left" valign="top">&nbsp;</td>
+    <td colspan="2" align="left" valign="top"><strong></strong></td>
+  </tr>
+  <tr> <!-- InstanceBeginEditable name="content" --> 
+    <td colspan="4" rowspan="3" align="left" valign="top"> 
+      <div class="c1"> 
+        <h2>jMusic Instrument Architecture </h2>
+        <P>This tutorial reveals how a jMusic instrument 
+          class is structured.</P>
+        <P>jMusic instruments are used to render jMusic 
+          scores as audio files (or as real time audio output). Instruments are 
+          made up from audio objects (not unlike unit generators in Csound or 
+          audio objects in Max/MSP) arranged in a hierarchial structure called 
+          a chain. Typically the audio chain is a linear arrangement of audio 
+          objects, as in the class below, but more complex hierarchies of audio 
+          objects can be constructed to produce more complex timbres.</P>
+        <P>Hear the result of this tutorial's music below.</FONT></P>
+        <P><A HREF="../soundExamples/Gongs.mp3">Gongs.mp3</A>[492K]</P>
+        <P><A HREF="../../jmdemos/SimpleSineInst.java">View 
+          / Download source</A> - Instrument source code</P>
+        <P><A HREF="../../jmdemos/Gongs.java">View 
+          / Download source</A> - Composition source code</P>
+        <P>Let's have a closer look.&nbsp;
+        <TABLE BORDER=0 WIDTH="100%"
+         bgcolor="#E0E0E0">
+          <TR> 
+            <TD> <PRE>import jm.audio.io.*;
+import jm.audio.synth.*;
+import jm.music.data.Note;
+import jm.audio.AudioObject;
+&nbsp;
+<span class="comment">/**
+ * A basic wavtebable synthesis instrument implementation
+ * which implements envelope and volume control
+ * @author Andrew Sorensen
+ */
+&nbsp;</span>
+public final class SimpleSineInst extends jm.audio.Instrument{
+	<span class="comment">//----------------------------------------------</span>
+	<span class="comment">// Attributes</span>
+	<span class="comment">//----------------------------------------------</span>
+	<span class="comment">/** the sample rate passed to the instrument */</span>
+	private int sampleRate;
+    <span class="comment">/** the sample rate passed to the instrument */</span>
+	private int channels;
+&nbsp;
+	<span class="comment">//----------------------------------------------</span>
+	<span class="comment">// Constructor</span>
+	<span class="comment">//----------------------------------------------</span>
+	<span class="comment">/**</span>
+	 <span class="comment">* Basic default constructor to set an initial </span>
+	 <span class="comment">* sampling rate.</span>
+	 <span class="comment">* @param sampleRate </span>
+	 <span class="comment">*/</span>
+	public SimpleSineInst(int sampleRate){
+	    this.sampleRate = sampleRate;
+	    this.channels = 1;
+	}
+&nbsp;
+	<span class="comment">//----------------------------------------------</span>
+	<span class="comment">// Methods </span>
+	<span class="comment">//----------------------------------------------</span>
+	   
+	<span class="comment">/**</span>
+	 <span class="comment">* Initialisation method used to build the objects that</span>
+	 <span class="comment">* this instrument will use.</span>
+	 <span class="comment">* Declares the primary audio object array and the</span>
+	 <span class="comment">* audio object(s) in that array. (One array element per channel)</span>
+	 <span class="comment">*/</span>
+	public void createChain(){
+		WaveTable wt = new WaveTable(this, this.sampleRate, 
+			Oscillator.getSineWave(this.sampleRate), 1);
+		Envelope env = new Envelope(wt, new EnvPoint[] {
+			new EnvPoint((float)0.0, (float)0.0),
+			new EnvPoint((float)1.0, (float)0.1),
+			new EnvPoint((float)0.0, (float)1.0)
+		});
+		SampleOut sout = new SampleOut( env, "jmusic.tmp");
+	}	
+}</PRE> 
+            </TD>
+          </TR>
+        </TABLE>
+        <p></P>
+        <P><B>Instrument class overview</B></P>
+        <P>jMusic instruments, such as the SimpleSineInst 
+          above, extend the Instrument class.  </P>
+        <BLOCKQUOTE>
+          <PRE>public final class SimpleSineInst extends jm.audio.Instrument{</PRE>
+        </BLOCKQUOTE>
+        <P>This provides them with significant functionality and means that the 
+          instrument classes you create need only pay attention to the <br>
+          timbral aspects of the instruments, leaving the details of communication 
+          between audio objects and jMusic scores to the Instrument super class.</P>
+        <P>Class variables for sample rate and number 
+          of channels can be decalred with constant values or assigned with values 
+          from constructors.</P>
+        <PRE>	private int sampleRate;
+	private int channels;</TT></PRE>
+        <P>In the SimpleSineInst they are assigned from 
+          the constructor.</P>
+        <PRE>	public SimpleSineInst(int sampleRate){
+	    this.sampleRate = sampleRate;
+	    this.channels = 1;
+	}</PRE>
+        <P>jMusic instruments can be rendered at any sample rate. Having the rate 
+          passed in the constructor provides the chance to determine the quality 
+          <br>
+          and rendering speed at compile time. <br>
+          Note that to accomodate the Nyquist rule the sample rate must be at 
+          least twice the frequency of the highest note in the score.<br>
+          In practice using a sample rate of 8000 or above should cause few problems.</P>
+        <P><B>The createChain() method</B></P>
+        <P>The heart of the Instrument classes is the creatChain() method. <br>
+          All jMusic instrument classes must include this method. <br>
+          The createChain() method is where the synthesis process or signal processing 
+          process is defined.</P>
+        <PRE>	public void createChain(){
+		WaveTable wt = new WaveTable(this, this.sampleRate, 
+			Oscillator.getSineWave(this.sampleRate), 1);
+		Envelope env = new Envelope(wt, new EnvPoint[] {
+			new EnvPoint((float)0.0, (float)0.0),
+			new EnvPoint((float)1.0, (float)0.1),
+			new EnvPoint((float)0.0, (float)1.0)
+		});
+		SampleOut sout = new SampleOut( env, "jmusic.tmp");
+	}	</PRE>
+        <P>The createChain() method in the SimpleSineInst 
+          class (shown above) has a chain of three audio objects, Wavetable, Envelope, 
+          and SampleOut.</P>
+        <P>An audio object's position in the chain is indicated by the first constructor 
+          argument; the preceeding audio object is passed as the firt argument.<br>
+          For example, the SampleOut instance "sout" is passed the "env" object 
+          - this indicates that sout comes after env in the chain.<br>
+          The first object in the chain ( "wt" in this example) takes the instrument 
+          instance, "this", as an argument, as in; WaveTable wt = new WaveTable(this, 
+          . . . </P>
+        <P><B>Audio objects</B> </P>
+        <P>There are many audio objects provided with 
+          jMusic and you are encouraged to write your own. Some of the audio objects 
+          are:</P>
+        <P>Wavetable, Envelope, Volume, Panner, SampleIn, 
+          SampleOut, Filter, Add, Splitter, and WhiteNoise.</P>
+        <P>For a complete list see the jMusic documentation, 
+          or look in the jm/audio/synth directory of the jMusic source tree.</P>
+        <P>All audio objects take one or more arguments, 
+          the first of which is by convention the preceeding audio object in the 
+          chain, the other arguments vary depending upon the funtion of theaudio 
+          object class - check the documentation for details.</P>
+        <P>Constructing new Audio Objects is beyond 
+          the scope of this tutorial and is covered elsewhere.</P>
+        <P><B>Sample stream</FONT></B> </P>
+        <P>The hierarchial arrangment of objects is necessary because the Instrument 
+          is essentailly a class to generate and/or processes samples.<br>
+          The samples are passed from one object to another along the chain creating 
+          a sample stream, as indicated in the diagram below. </P>
+        <P>
+          <CENTER>
+            <IMG
+         SRC="SampleStream.gif" alt="Sample Stream" WIDTH=384 HEIGHT=60
+         ALIGN=bottom
+         X-SAS-UseImageWidth X-SAS-UseImageHeight> 
+          </CENTER>
+        </P>
+        <P>To visualise this imagine that the SimpleSineInst generates a raw sione 
+          wave in the wt object, then each sample amplitude is adjusted according 
+          <br>
+          to the envelope in the env object, and lastly each sample is written 
+          to disk by the sout object. This process is shown diagramatically below.</P>
+        <P>
+          <CENTER>
+            <IMG SRC="SineRaw.gif" alt="Sineraw"
+         WIDTH=164 HEIGHT=66 border="0"
+         ALIGN=bottom X-SAS-UseImageWidth X-SAS-UseImageHeight>changes into <IMG SRC="SineEnv.gif" alt="Sine env" WIDTH=164
+         HEIGHT=65
+         ALIGN=bottom X-SAS-UseImageWidth X-SAS-UseImageHeight>then data <IMG SRC="Data.gif" alt="Data" WIDTH=56
+         HEIGHT=72
+         ALIGN=bottom X-SAS-UseImageWidth X-SAS-UseImageHeight>is written to file 
+          </CENTER>
+        </P>
+        <P>One important, but counter intuitive, aspect of the sample progression 
+          through the chain is that the last object in the chain is the first 
+          object to be executed.<br>
+          In this case the sout (SampleOut) object runs first, it requests samples 
+          from the env (Envelope) object, which in turn requests samples from 
+          <br>
+          the wt (WaveTable) object which generates them using a call to the Oscilliator 
+          class.<br>
+          <br>
+          In practice then, samples are pulled through the chain from the bottom 
+          as required to render each note in the jMusic score.<br>
+          In this way only the number of samples required by each note (determined 
+          by it's length and the sample rate) are computed.</P>
+        <P>in theory, one sample at a time could be passed down the chain but 
+          this would be quite inefficient.<br>
+          in practice an array of samples is passed down the chain.<br>
+          By default, an array of 4096 samples are processed by each object at 
+          a time and passed on through the chain.</P>
+        <P><B>Gong Example</B></P>
+        <P>The code below uses multiple notes played 
+          by sine waves to create a gong-like timbre.</P>
+        <P>
+        <TABLE BORDER=0 WIDTH="100%" bgcolor="#E0E0E0">
+          <TR> 
+            <TD> <PRE>import jm.music.data.*;
+import jm.music.tools.*;
+import jm.JMC;
+import jm.audio.*;
+import jm.util.*;
+&nbsp;
+<span class="comment">// Gong-like timbres inspired by </span>
+<span class="comment">// Claude Risset's early computer music pieces</span>
+&nbsp;
+public class Gongs implements JMC {
+	
+	public static void main(String[] args) {
+		new Gongs();
+	}
+	
+	public Gongs() {
+		<span class="comment">// musical score construction</span>
+		CPhrase notes1 = new CPhrase();
+		
+		int[] pitches = {CS4, BF4, D5, E5, A5};
+		notes1.addChord(pitches, 8.0);
+		notes1.addChord(pitches, 8.0);
+		notes1.addChord(pitches, 8.0);
+		notes1.addChord(pitches, 8.0);
+		Part part0 = new Part("Gongs go here", 0);
+		part0.addCPhrase(notes1);
+		Score score = new Score(part0);
+		
+		View.show(score);
+		
+		<span class="comment">// instrument declaration</span>
+		int sampleRate = 22000;
+		Instrument sine = new SimpleSineInst(sampleRate);
+&nbsp;
+		<span class="comment">// render</span>
+		Write.au(score, "Gongs.au", sine);
+	}
+}</PRE> 
+            </TD>
+          </TR>
+        </TABLE>
+        <p></P>
+        <P>The SimpleSineInst is used by this example.<br>
+          After creating the score to play the gong sound four times and displaying 
+          it using the View.show() method, the Instrument is decalred.</P>
+        <PRE>
+		Instrument sine = new SimpleSineInst(sampleRate);</PRE>
+        <P>This is the only instrument required for this piece, so it is passed 
+          as an argument to the Write.au() method to render the score as a file 
+          named Gongs.au using the line;</P>
+        <PRE>		Write.au(score, "Gongs.au", sine);</PRE>
+        <P>You might like to experiment with editing the instrument by changing 
+          the envelope point values to change the charracteristic of the gong 
+          sound. 
+        <P>&nbsp;</div>
+      </td>
+    <!-- InstanceEndEditable --></tr>
+  <tr> 
+    <td align="left"> <div align="left"></div></td>
+  </tr>
+  <tr> 
+    <td align="left">&nbsp;</td>
+  </tr>
+</table>
+<blockquote> 
+  <p name="Map"> 
+    <map name="Map">
+      <area shape="rect" coords="4,4,41,29" href="http://jmusic.ci.qut.edu" target="_blank" alt="jMusic">
+      <area shape="rect" coords="43,5,80,31" href="http://www.ozco.gov.au" target="_blank" alt="Australia Council">
+      <area shape="rect" coords="83,4,108,29" href="http://www.qut.com" target="_blank" alt="Queensland University of Technology">
+    </map>
+    <map name="Map2">
+      <area shape="rect" coords="702,1,758,12" href="../../../extras/sitemap.html" target="_self" alt="Sitemap">
+      <area shape="rect" coords="629,1,687,12" href="../../../extras/contact.html" target="_self" alt="Contact">
+      <area shape="rect" coords="574,1,615,14" href="../../../index.html" target="_self" alt="Home">
+    </map>
+    <map name="Map3">
+      <area shape="rect" coords="553,5,601,18" href="#" alt="Home">
+      <area shape="rect" coords="612,4,671,18" href="#">
+      <area shape="rect" coords="683,3,735,19" href="#">
+      <area shape="rect" coords="9,8,227,59" href="#" target="index.html">
+    </map>
+    <map name="Map4">
+      <area shape="rect" coords="6,9,40,41" href="http://www.qut.com" target="_blank" alt="http://www.qut.com">
+      <area shape="rect" coords="44,14,87,42" href="http://explodingart.com/jmusic" target="_blank" alt="http://explodingart.com/jmusic">
+      <area shape="rect" coords="90,9,138,43" href="http://www.ozco.gov.au" target="_parent" alt="http://www.ozco.gov.au">
+      <area shape="rect" coords="313,13,512,36" href="../../../contact.html">
+    </map>
+  </p>
+</blockquote>
+<map name="Map5">
+  <area shape="rect" coords="-7,4,228,51" href="../../../index.htm" target="_self" alt="Digital Instrument making">
+  <area shape="rect" coords="599,1,658,18" href="../../../index.htm" alt="Home">
+  <area shape="rect" coords="677,3,755,18" href="../../../extras/contact.htm" target="extras">
+</map>
+</body>
+<!-- InstanceEnd --></html>

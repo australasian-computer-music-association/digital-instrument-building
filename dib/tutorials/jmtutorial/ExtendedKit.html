@@ -1,0 +1,499 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><!-- InstanceBegin template="/Templates/tutorial files.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Digital Instrument Building</title>
+<!-- InstanceEndEditable --> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<META NAME="DC.Creator" CONTENT="PersonalName= Andrew R. Brown  ">
+<META NAME="DC.Creator.Email" CONTENT="algorithmicmusic@gmail.com,">
+<META NAME="DC.Rights" CONTENT="Andrew R. Brown ">
+<META NAME="DC.Title" CONTENT="Digital Instrument Building - Music software development with jMusic">
+<META NAME="DC.Title.Alternative" content ="Music software development with jMusic">
+<META NAME="DC.Subject" CONTENT="music, java, composition, algorithmic, digital music, generative music, instrument building, music analysing software development, Australia">
+<META NAME="DC.Description" CONTENT="This site is a tutorial resource designed to assist in the training and self education of up-and-coming digital instrument developers. The tutorials cover topics including music software design, audio synthesis, digital signal processing, compositional systems, and computer programming concepts. ">
+<META NAME="DC.Language" SCHEME="rfc1766" CONTENT="en-au">
+<META NAME="DC.Audience" CONTENT="All">
+<META NAME="DC.Date.Created" CONTENT="06-04-2003">
+<META NAME="DC.Availability" CONTENT="PersonalName= Andrew R. Brown; email= algorithmicmusic@gmail.com">
+<!-- ImageReady Preload Script (menubanner2.psd) -->
+<SCRIPT TYPE="text/javascript">
+<!--
+
+function newImage(arg) {
+	if (document.images) {
+		rslt = new Image();
+		rslt.src = arg;
+		return rslt;
+	}
+}
+
+function changeImages() {
+	if (document.images && (preloadFlag == true)) {
+		for (var i=0; i<changeImages.arguments.length; i+=2) {
+			document[changeImages.arguments[i]].src = changeImages.arguments[i+1];
+		}
+	}
+}
+
+var preloadFlag = false;
+function preloadImages() {
+	if (document.images) {
+		Music_algorithms_over = newImage("images/Music-algorithms-over.jpg");
+		Interfaces_over = newImage("images/Interfaces-over.jpg");
+		Programming_over = newImage("images/Programming-over.jpg");
+		Acoustics_over = newImage("images/Acoustics-over.jpg");
+		context_over = newImage("images/context-over.jpg");
+		audio_over = newImage("images/audio-over.jpg");
+		MIDI_over = newImage("images/MIDI-over.jpg");
+		preloadFlag = true;
+	}
+}
+
+// -->
+</SCRIPT>
+<!-- End Preload Script -->
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+//-->
+</script>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+
+function MM_nbGroup(event, grpName) { //v6.0
+  var i,img,nbArr,args=MM_nbGroup.arguments;
+  if (event == "init" && args.length > 2) {
+    if ((img = MM_findObj(args[2])) != null && !img.MM_init) {
+      img.MM_init = true; img.MM_up = args[3]; img.MM_dn = img.src;
+      if ((nbArr = document[grpName]) == null) nbArr = document[grpName] = new Array();
+      nbArr[nbArr.length] = img;
+      for (i=4; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+        if (!img.MM_up) img.MM_up = img.src;
+        img.src = img.MM_dn = args[i+1];
+        nbArr[nbArr.length] = img;
+    } }
+  } else if (event == "over") {
+    document.MM_nbOver = nbArr = new Array();
+    for (i=1; i < args.length-1; i+=3) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = (img.MM_dn && args[i+2]) ? args[i+2] : ((args[i+1])? args[i+1] : img.MM_up);
+      nbArr[nbArr.length] = img;
+    }
+  } else if (event == "out" ) {
+    for (i=0; i < document.MM_nbOver.length; i++) {
+      img = document.MM_nbOver[i]; img.src = (img.MM_dn) ? img.MM_dn : img.MM_up; }
+  } else if (event == "down") {
+    nbArr = document[grpName];
+    if (nbArr)
+      for (i=0; i < nbArr.length; i++) { img=nbArr[i]; img.src = img.MM_up; img.MM_dn = 0; }
+    document[grpName] = nbArr = new Array();
+    for (i=2; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = img.MM_dn = (args[i+1])? args[i+1] : img.MM_up;
+      nbArr[nbArr.length] = img;
+  } }
+}
+//-->
+</script>
+<link href="../../style/main.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+</head>
+<body leftmargin="3" topmargin="3" marginwidth="0" marginheight="0"  onLoad="MM_preloadImages('../../images/banner/audio-over.jpg','../../images/banner/MIDI-over.jpg','../../images/banner/Music-algorithms-over.jpg','../../images/banner/Interfaces-over.jpg','../../images/banner/Programming-over.jpg','../../images/banner/Acoustics-over.jpg','../../images/banner/context-over.jpg','../../images/banner/banner_08.gif')">
+<table width="691" border="0" align="center">
+  <tr> 
+    <td colspan="5" align="left"> <div align="center"> 
+        <table border="0" align="left" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td colspan="8"><img src="../../images/banner.jpg" alt="" width=758 height=57 border="0" usemap="#Map5"></td>
+          </tr>
+          <tr> 
+            <td width="50"><a href="../../Audio/audio.htm" target="_top" onClick="MM_nbGroup('down','group1','Audio','../../images/banner/audio-over.jpg',1)" onMouseOver="MM_nbGroup('over','Audio','../../images/banner/audio-over.jpg','../../images/banner/audio-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/audio.jpg" alt="audio" name="Audio" width="50" height="24" border="0" onload=""></a></td>
+            <td width="47"><a href="../../midi/midi.htm" target="_top" onClick="MM_nbGroup('down','group1','MIDI','../../images/banner/MIDI-over.jpg',1)" onMouseOver="MM_nbGroup('over','MIDI','../../images/banner/MIDI-over.jpg','../../images/banner/MIDI-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/MIDI.jpg" alt="MIDI" name="MIDI" width="47" height="24" border="0" onload=""></a></td>
+            <td width="117"><a href="../../musalgo/musalgo.htm" target="_top" onClick="MM_nbGroup('down','group1','musalgorithms','../../images/banner/Music-algorithms-over.jpg',1)" onMouseOver="MM_nbGroup('over','musalgorithms','../../images/banner/Music-algorithms-over.jpg','../../images/banner/Music-algorithms-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Music-algorithms.jpg" alt="Music Algorithms" name="musalgorithms" width="117" height="24" border="0" onload=""></a></td>
+            <td width="88"><a href="../../interfaces/interface.htm" target="_top" onClick="MM_nbGroup('down','group1','Interfaces','../../images/banner/Interfaces-over.jpg',1)" onMouseOver="MM_nbGroup('over','Interfaces','../../images/banner/Interfaces-over.jpg','../../images/banner/Interfaces-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Interfaces.jpg" alt="Interfaces" name="Interfaces" width="88" height="24" border="0" onload=""></a></td>
+            <td width="103"><a href="../../programming/programming.htm" target="_top" onClick="MM_nbGroup('down','group1','Programming','../../images/banner/Programming-over.jpg',1)" onMouseOver="MM_nbGroup('over','Programming','../../images/banner/Programming-over.jpg','../../images/banner/Programming-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Programming.jpg" alt="Programming" name="Programming" width="103" height="24" border="0" onload=""></a></td>
+            <td width="81"><a href="../../acoustics/acoustics.htm" target="_top" onClick="MM_nbGroup('down','group1','Acoustics','../../images/banner/Acoustics-over.jpg',1)" onMouseOver="MM_nbGroup('over','Acoustics','../../images/banner/Acoustics-over.jpg','../../images/banner/Acoustics-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Acoustics.jpg" alt="Acoustics" name="Acoustics" width="81" height="24" border="0" onload=""></a></td>
+            <td width="100"><a href="../../context/context.htm" target="_top" onClick="MM_nbGroup('down','group1','Context','../../images/banner/context-over.jpg',1)" onMouseOver="MM_nbGroup('over','Context','../../images/banner/context-over.jpg','../../images/banner/context-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/context.jpg" alt="Context" name="Context" width="100" height="24" border="0" onload=""></a></td>
+            <td width="156"><img src="../../images/banner/banner_09.gif" width="172" height="24"></td>
+          </tr>
+        </table>
+      </div></td>
+  </tr>
+  <tr> 
+    <td width="3" align="left"> <div align="right"></div>
+      <div align="right"></div>
+      <div align="right"></div></td>
+    <!-- InstanceBeginEditable name="tracker" -->
+    <td height="16" colspan="2" rowspan="2" align="left"><a href="../../programming/programming.htm">&gt; 
+      Programming </a>&gt; <a href="../../programming/java.htm">Java</a> &gt;<a href="ExtendedKit.html"> 
+      Introducing classes with multiple methods </a></td>
+    <!-- InstanceEndEditable -->
+    <td width="15" rowspan="2" align="left">&nbsp;</td>
+    <td width="214" rowspan="2" align="left">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="3" rowspan="3" align="left">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="66" align="left" valign="top">&nbsp;</td>
+    <td width="444" align="left" valign="top">&nbsp;</td>
+    <td colspan="2" align="left" valign="top"><strong></strong></td>
+  </tr>
+  <tr> <!-- InstanceBeginEditable name="content" --> 
+    <td colspan="4" rowspan="3" align="left" valign="top"> <h2>Extended Drum Kit: 
+        Introducing classes with multiple methods </h2>
+      <p>This demo class enhances the <a href="kitDemo.html">simple drum kit</a> class in a number of ways. So hold on to your hat!</p>
+      <p>Firstly, the structure of the class is reorganised 
+        into a more object-oriented design where different sections are divided 
+        into separate methods (functions). In this way, the class is more reflective 
+        of a conventional Java program. This is a breakaway from what we have 
+        been doing in earlier tutorials where the entire process has been compacted 
+        into the 'main' method .... but more on this later.</p>
+      <p>Secondly, in order to make the drum patterns 
+        more interesting there are numerous random changes throughout.</p>
+      <p>Thirdly, rather than storing all the drum phrases in one part, in this 
+        class each drum type (snare, kick, etc.) are stored in their own part. 
+        <br>
+        Why? So far in these tutorials jMusic files have been exported as MIDI 
+        files.<br>
+        As MIDI files all drums share the one MIDI channel and so jMusic drum 
+        parts are combined during the conversion process into one MIDI track. 
+        <br>
+        However, jMusic can also output audio files and to do so each part needs 
+        to have a different instrument - snare is different to kick which is different 
+        to closed hihat which is different to open hihat. Hence, this class creates 
+        a jMusic score with each instrument having its own part so it can be written 
+        as either a MIDI or an audio file. In this tutorial we will only deal 
+        with the MIDI file exporting.</p>
+      <p>Have a listen to the MIDI playback below to 
+        hear the result.</p>
+      <p> 
+        <embed src="soundExamples/ExtendedKit.mid" width="150" height="60"
+ controller="TRUE" loop="FALSE" autoplay="FALSE"></embed></p>
+      <p><a
+ href="../jmdemos/ExtendedKit.java" target="_top">Click here to view source.</a></p>
+      <p>This class divides the work of the program into several sections. After 
+        the class declares its class variables we start by running the <font face="Courier New, Courier, mono">main() 
+        </font>method. It immediately calls the constructor which, in turn, calls 
+        methods to create the bass drum, snare and hi hat phrases. Next, the <font face="Courier New, Courier, mono">doScore() 
+        meth</font>od puts all the phrases into parts and into a score. Control 
+        passes back to the <font face="Courier New, Courier, mono">main() 
+        me</font>thod which sets the tempo and saves the score as a MIDI file. 
+        Here is a diagram of that passing of control between the methods.</p>
+      <p></p>
+      <center>
+        <img
+ src="Images/FlowOfControl.gif" alt="Flow of Control" width="467" height="200"
+ align="bottom"> 
+      </center>
+      <p></p>
+      <p>Let's have a closer look at the code.</p>
+      <p> 
+      <table bgcolor="#e0e0e0" width="100%" border="0">
+        <tbody>
+          <tr> 
+            <td> 
+              <pre>  import jm.JMC;<br>import jm.music.data.*;<br>import jm.util.Write;<br>import jm.music.tools.Mod;  </pre> 
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p></p>
+      <p>Lines 1-3 import useful packages that we need 
+        to use in the program. </p>
+      <p> 
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>  	private Score pattern1 = new Score("JMDemo - Kit");  <span
+  class = "comment"> 
+	// "kick" = title, 0 = instrument (kit), 9 = MIDI channel 10  </span>
+	private Part drumsBD = new Part("Kick",0, 9); 
+	private Part drumsSD = new Part("Snare",0, 9);
+        	private Part drumsHHC = new Part("Hats Closed",0, 9); 
+	private Part drumsHHO = new Part("Hats Open",0, 9); 
+	private Part drumsCY = new Part("Cymbal",0, 9);
+	private Phrase phrBD = new Phrase(0.0);
+	private Phrase phrSD = new Phrase(0.0);
+	private Phrase phrHHC = new Phrase(0.0);
+	private Phrase phrHHO = new Phrase(0.0); 
+	private Phrase end = new Phrase(64.0); <span
+  class = "comment"> 
+	//define repeatedly used rests  </span>
+	private Note restSQ = new Note(REST, SEMI_QUAVER);  <span
+  class = "comment"> //quater note rest  </span>
+	private Note restC = new Note(REST, CROTCHET);  <span
+  class = "comment"> //eight note rest </span> </pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      <p></p>
+      <p>The code above declares all the class variable for use in this program. 
+        <br>
+        Class variables, declared outside methods, can be used by any methods 
+        within the class. <br>
+        These variables are declared private because they only need to be accessed 
+        from within this class, not from other classes.<br>
+        They need to be static because the class is static, a result of having 
+        a static method; <font face="Courier New, Courier, mono">main() 
+        in th</font>is case.</p>
+      <p> 
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre> 	public static void main(String[] args){<br>		ExtendedKit ek = new ExtendedKit();<br>	} </pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      <p></p>
+      <p>The <font face="Courier New, Courier, mono">main() 
+        met</font>hod will be the first to be executed when the program runs.</p>
+      <p>  
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>  	public ExtendedKit() {		 <span
+  class = "comment"> 
+            //Let us know things have started  </span>
+            System.out.println("Creating drum patterns . . .");
+            this.doBassDrum();
+            this.doSnare();
+            this.doHiHats();
+            Note crashSB = new Note(49, SB); // crash
+            end.addNote(crashSB);
+            this.doScore();
+            Write.midi(pattern1, "ExtendedKit.mid");
+	}  </pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      <p></p>
+      <p>The constructor method always has the same name as the class. It also 
+        does not require a return type in the declaration (notice there is no 
+        void keyword as in the other methods). After printing a message to the 
+        standard output the constructor calls each of the other methods in the 
+        class one after another to do their bit of the job. The crash cymbal part 
+        is so trivial (one note) that the constructor does that itself rather 
+        than use a different method. After each part is created the <font face="Courier New, Courier, mono">doScore() 
+        meth</font>od packs all the parts into a score.</p>
+      <p>Notice that each of the method class begins with the word <font face="Courier New, Courier, mono">this. 
+        Th</font>at indicates that the method is in this class. Often the keyword  
+        <font face="Courier New, Courier, mono">this is l</font>eft off method 
+        calls - in which case it is assumed - but it is good practice to include 
+        it as it reminds you of exactly what is going on.</p>
+      <p> 
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>  	private void doBassDrum() {<br>            System.out.println("Doing kick drum. . .");<br>            for(int i=0;i&lt;4;i++){<br>                Note note = new Note(36, C);<br>                phrBD.addNote(note);<br>                phrBD.addNote(restC);<br>            }<br>            Mod.repeat(phrBD, 8);<br>	}  </pre> 
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p></p>
+      <p>The <font face="Courier New, Courier, mono">doBassDrum()</font> 
+        method first prints a message confirming that it has been called. There 
+        are two for-loops, one inside the other. We say the loops are nested. 
+        The outer loop, which uses the <font face="Courier New, Courier, mono">r 
+        index counter</font>, forces the inner loop to repeat 8 times over. The 
+        inner loop, whic uses the <font face="Courier New, Courier, mono">i 
+        index counter</font>, adds a note and a rest to the phrBD phrase each 
+        time around the loop. resulting in four note and rest pairs. A two bar 
+        pattern in all (assuming simple quadruple time), 16 bars in all.</p>
+      <p> 
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>  	private void doSnare() {<br>		System.out.println("Doing snare. . .");<br>		for(int j=0;j&lt;16;j++){	 <span
+  class = "comment"> //repeat for 16 bars of 4/4 </span> 
+			phrSD.addNote(restC);
+			Note snareC = new Note(38, CROTCHET);
+			phrSD.addNote(snareC);
+			phrSD.addNote(restC);
+			for(int i=0;i&lt;3;i++){	 <span
+  class = "comment"> //vary the last crotchet beat each bar  </span>
+				int rand = (int)(Math.random()*3);
+				if (rand &gt; 1) {
+					Note snareSEMI_QUAVER = new Note(<br>						38, SEMI_QUAVER);
+					phrSD.addNote(snareSEMI_QUAVER);
+				} else {
+					phrSD.addNote(restSQ);
+				}
+			}	
+			phrSD.addNote(restSQ);
+		}
+	}  </pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      <p></p>
+      <p>The <font face="Courier New, Courier, mono">doSnare()</font> 
+        method is a more involved version of the bass drum method. There are two 
+        loops, the i loop nested inside the j loop. The j loop repeats 16 times 
+        and the i loop produces a one bar phrase. The first three beats of the 
+        phrase are created in the j loop, a rest, a note, and another rest - each 
+        a crotchet (quarter note) long. </p>
+      <p>The first three semiquavers (16th notes) of the final beat are created 
+        in the i loop.<br>
+        There is a 1 in 3 chance (at random) of a note being generated on each 
+        semiquaver, otherwise a rest is used. </p>
+      <p>The final semiquaver pulse of the bar is always 
+        set as a rest after the i loop has completed.</p>
+      <p> 
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>  	private void doHiHats() {<br>		System.out.println("Doing Hi Hats. . .");<br>		for(int r = 0; r &lt; 8; r++){  <span
+  class = "comment"> //repeat for 8 two bar cycles </span> 
+			 <span
+  class = "comment"> //start with closed hat </span> 
+			Note note1 = new Note(42, SEMI_QUAVER, <br>				(int)Math.random()*80+45);
+			phrHHC.addNote(note1);<br><span
+ style="color: rgb(0, 175, 0);"><span
+  class = "comment">		//add a rest to the other HH part so they align </span><br>			phrHHO.addNote(restSQ);  
+			for(int i=0;i&lt;30;i++){ 
+				int rand = (int)(Math.random()*16);
+				if (rand &lt; 1) {  <span
+  class = "comment"> //select occasional open hi hat </span>  
+					Note note5 = new Note(46, SEMI_QUAVER, <br>						(int)Math.random()*80+45);<br>					phrHHO.addNote(note5);<br>					phrHHC.addNote(restSQ);<br>				} else {<br>					Note note2 = new Note(42, SEMI_QUAVER, <br>						(int)Math.random()*80+45);<br>					phrHHC.addNote(note2);<br>					phrHHO.addNote(restSQ);<br>				}<br>			}<br><span
+  class = "comment">         // open hi hat at the end of the pattern</span><br>			Note note6 = new Note(46, SEMI_QUAVER, 60); 
+			phrHHO.addNote(note6);
+			phrHHC.addNote(restSQ);
+		}
+	}  </pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      <p></p>
+      <p>Once you understand the snare method, the<font face="Courier New, Courier, mono">doHiHats() 
+        </font>method should look familiar. There are two loops, one nested inside 
+        the other.<br>
+        The outside loop, <font face="Courier New, Courier, mono">r,</font> repeats 
+        the inner process sight times. Inside the r loop a closed hihat is added 
+        at the start of each two bar group. </p>
+      <p>Notice, that this method does two phrases at once. It fills the closed 
+        and open hihat phrases at the same time. <br>
+        In order for them to be in sync (that is no open and closed hats together) 
+        rests are added to the alternate phrase for every note added to the primary 
+        phrase. </p>
+      <p>The next 30 semiquavers are determined inside the <font face="Courier New, Courier, mono">i 
+        loop </font>which chooses 
+        a closed (pitch 42) or open (pitch 46) hihat note.<br>
+        There is a one in sixteen chance of getting an open hihat - so mostly 
+        we will get closed hihats.<br>
+        Additionally, the dynamic value of each note is determined at random between 
+        45 and 125.</p>
+      <p>On completion of the <font face="Courier New, Courier, mono">i</font> 
+        loop control drops back out to the <font face="Courier New, Courier, mono">r 
+        lo</font>op where the last semiquaver of the group will always be a semiquaver 
+        note.</p>
+      <p> 
+      <table border="0" width="100%" bgcolor="#e0e0e0">
+        <tbody>
+          <tr> 
+            <td> <pre>  	private void doScore() { <span
+  class = "comment"> 
+		// add phrases to the parts </span> 
+		System.out.println("Assembling. . .");
+		drumsBD.addPhrase(phrBD);
+		drumsSD.addPhrase(phrSD);
+		drumsHHC.addPhrase(phrHHC);
+		drumsHHO.addPhrase(phrHHO);
+		drumsCY.addPhrase(end);
+		 <span
+  class = "comment"> 
+		// add the drum parts to a score.  </span>
+		pattern1.addPart(drumsBD);
+		pattern1.addPart(drumsSD);
+		pattern1.addPart(drumsHHC);
+		pattern1.addPart(drumsHHO);
+		pattern1.addPart(drumsCY);
+	}  </pre> </td>
+          </tr>
+        </tbody>
+      </table>
+      <p></p>
+      <p>Now its time to bring all the drum phases and parts together into a score. 
+        In this method each phrase is added to the appropriate part - one for 
+        each the instrument sound. Then each of the parts is added to the score, 
+        called <font face="Courier New, Courier, mono">pattern1.</font></p>
+      <p>After this method control passes back to the constructor method which, 
+        now also complete, passes control back to the <font face="Courier New, Courier, mono">main() 
+        </font>method for saving the now complete score as a MIDI file.</p>
+      <p><b>Audio:</b></p>
+      <p>For those of you who can't wait to get the 
+        audio version of this class working, below are links to the source and 
+        audio samples required.</p>
+      <p><a
+ href="../jmdemos/ExtendedKitAudio.java" target="_top">Click here to view source.</a></p>
+      <p>Drum samples required - download these files: 
+        <a
+ href="../jmdemos/Kick.au">Kick</a>, <a href="../jmdemos/Snare.au">Snare</a>, <a
+ href="../jmdemos/Hats.au">Hats</a>, <a href="../jmdemos/HHOpen.au">OpenHH</a> </p>
+      <h2>&nbsp;</h2>
+      </td>
+    <!-- InstanceEndEditable --></tr>
+  <tr> 
+    <td align="left"> <div align="left"></div></td>
+  </tr>
+  <tr> 
+    <td align="left">&nbsp;</td>
+  </tr>
+</table>
+<blockquote> 
+  <p name="Map"> 
+    <map name="Map">
+      <area shape="rect" coords="4,4,41,29" href="http://jmusic.ci.qut.edu" target="_blank" alt="jMusic">
+      <area shape="rect" coords="43,5,80,31" href="http://www.ozco.gov.au" target="_blank" alt="Australia Council">
+      <area shape="rect" coords="83,4,108,29" href="http://www.qut.com" target="_blank" alt="Queensland University of Technology">
+    </map>
+    <map name="Map2">
+      <area shape="rect" coords="702,1,758,12" href="../../extras/sitemap.html" target="_self" alt="Sitemap">
+      <area shape="rect" coords="629,1,687,12" href="../../extras/contact.html" target="_self" alt="Contact">
+      <area shape="rect" coords="574,1,615,14" href="../../index.html" target="_self" alt="Home">
+    </map>
+    <map name="Map3">
+      <area shape="rect" coords="553,5,601,18" href="#" alt="Home">
+      <area shape="rect" coords="612,4,671,18" href="#">
+      <area shape="rect" coords="683,3,735,19" href="#">
+      <area shape="rect" coords="9,8,227,59" href="#" target="index.html">
+    </map>
+    <map name="Map4">
+      <area shape="rect" coords="6,9,40,41" href="http://www.qut.com" target="_blank" alt="http://www.qut.com">
+      <area shape="rect" coords="44,14,87,42" href="http://explodingart.com/jmusic" target="_blank" alt="http://explodingart.com/jmusic">
+      <area shape="rect" coords="90,9,138,43" href="http://www.ozco.gov.au" target="_parent" alt="http://www.ozco.gov.au">
+      <area shape="rect" coords="313,13,512,36" href="../../contact.html">
+    </map>
+  </p>
+</blockquote>
+<map name="Map5">
+  <area shape="rect" coords="-7,4,228,51" href="../../index.htm" target="_self" alt="Digital Instrument making">
+  <area shape="rect" coords="599,1,658,18" href="../../index.htm" alt="Home">
+  <area shape="rect" coords="677,3,755,18" href="../../extras/contact.htm" target="extras">
+</map>
+</body>
+<!-- InstanceEnd --></html>

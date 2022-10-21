@@ -1,0 +1,387 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><!-- InstanceBegin template="/Templates/tutorial files.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Digital Instrument Building</title>
+<!-- InstanceEndEditable --> 
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<META NAME="DC.Creator" CONTENT="PersonalName= Andrew R. Brown  ">
+<META NAME="DC.Creator.Email" CONTENT="algorithmicmusic@gmail.com,">
+<META NAME="DC.Rights" CONTENT="Andrew R. Brown ">
+<META NAME="DC.Title" CONTENT="Digital Instrument Building - Music software development with jMusic">
+<META NAME="DC.Title.Alternative" content ="Music software development with jMusic">
+<META NAME="DC.Subject" CONTENT="music, java, composition, algorithmic, digital music, generative music, instrument building, music analysing software development, Australia">
+<META NAME="DC.Description" CONTENT="This site is a tutorial resource designed to assist in the training and self education of up-and-coming digital instrument developers. The tutorials cover topics including music software design, audio synthesis, digital signal processing, compositional systems, and computer programming concepts. ">
+<META NAME="DC.Language" SCHEME="rfc1766" CONTENT="en-au">
+<META NAME="DC.Audience" CONTENT="All">
+<META NAME="DC.Date.Created" CONTENT="06-04-2003">
+<META NAME="DC.Availability" CONTENT="PersonalName= Andrew R. Brown; email= algorithmicmusic@gmail.com">
+<!-- ImageReady Preload Script (menubanner2.psd) -->
+<SCRIPT TYPE="text/javascript">
+<!--
+
+function newImage(arg) {
+	if (document.images) {
+		rslt = new Image();
+		rslt.src = arg;
+		return rslt;
+	}
+}
+
+function changeImages() {
+	if (document.images && (preloadFlag == true)) {
+		for (var i=0; i<changeImages.arguments.length; i+=2) {
+			document[changeImages.arguments[i]].src = changeImages.arguments[i+1];
+		}
+	}
+}
+
+var preloadFlag = false;
+function preloadImages() {
+	if (document.images) {
+		Music_algorithms_over = newImage("images/Music-algorithms-over.jpg");
+		Interfaces_over = newImage("images/Interfaces-over.jpg");
+		Programming_over = newImage("images/Programming-over.jpg");
+		Acoustics_over = newImage("images/Acoustics-over.jpg");
+		context_over = newImage("images/context-over.jpg");
+		audio_over = newImage("images/audio-over.jpg");
+		MIDI_over = newImage("images/MIDI-over.jpg");
+		preloadFlag = true;
+	}
+}
+
+// -->
+</SCRIPT>
+<!-- End Preload Script -->
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+//-->
+</script>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+
+
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+
+function MM_nbGroup(event, grpName) { //v6.0
+  var i,img,nbArr,args=MM_nbGroup.arguments;
+  if (event == "init" && args.length > 2) {
+    if ((img = MM_findObj(args[2])) != null && !img.MM_init) {
+      img.MM_init = true; img.MM_up = args[3]; img.MM_dn = img.src;
+      if ((nbArr = document[grpName]) == null) nbArr = document[grpName] = new Array();
+      nbArr[nbArr.length] = img;
+      for (i=4; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+        if (!img.MM_up) img.MM_up = img.src;
+        img.src = img.MM_dn = args[i+1];
+        nbArr[nbArr.length] = img;
+    } }
+  } else if (event == "over") {
+    document.MM_nbOver = nbArr = new Array();
+    for (i=1; i < args.length-1; i+=3) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = (img.MM_dn && args[i+2]) ? args[i+2] : ((args[i+1])? args[i+1] : img.MM_up);
+      nbArr[nbArr.length] = img;
+    }
+  } else if (event == "out" ) {
+    for (i=0; i < document.MM_nbOver.length; i++) {
+      img = document.MM_nbOver[i]; img.src = (img.MM_dn) ? img.MM_dn : img.MM_up; }
+  } else if (event == "down") {
+    nbArr = document[grpName];
+    if (nbArr)
+      for (i=0; i < nbArr.length; i++) { img=nbArr[i]; img.src = img.MM_up; img.MM_dn = 0; }
+    document[grpName] = nbArr = new Array();
+    for (i=2; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = img.MM_dn = (args[i+1])? args[i+1] : img.MM_up;
+      nbArr[nbArr.length] = img;
+  } }
+}
+//-->
+</script>
+<link href="../../style/main.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+</head>
+<body leftmargin="3" topmargin="3" marginwidth="0" marginheight="0"  onLoad="MM_preloadImages('../../images/banner/audio-over.jpg','../../images/banner/MIDI-over.jpg','../../images/banner/Music-algorithms-over.jpg','../../images/banner/Interfaces-over.jpg','../../images/banner/Programming-over.jpg','../../images/banner/Acoustics-over.jpg','../../images/banner/context-over.jpg','../../images/banner/banner_08.gif')">
+<table width="691" border="0" align="center">
+  <tr> 
+    <td colspan="5" align="left"> <div align="center"> 
+        <table border="0" align="left" cellpadding="0" cellspacing="0">
+          <tr> 
+            <td colspan="8"><img src="../../images/banner.jpg" alt="" width=758 height=57 border="0" usemap="#Map5"></td>
+          </tr>
+          <tr> 
+            <td width="50"><a href="../../Audio/audio.htm" target="_top" onClick="MM_nbGroup('down','group1','Audio','../../images/banner/audio-over.jpg',1)" onMouseOver="MM_nbGroup('over','Audio','../../images/banner/audio-over.jpg','../../images/banner/audio-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/audio.jpg" alt="audio" name="Audio" width="50" height="24" border="0" onload=""></a></td>
+            <td width="47"><a href="../../midi/midi.htm" target="_top" onClick="MM_nbGroup('down','group1','MIDI','../../images/banner/MIDI-over.jpg',1)" onMouseOver="MM_nbGroup('over','MIDI','../../images/banner/MIDI-over.jpg','../../images/banner/MIDI-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/MIDI.jpg" alt="MIDI" name="MIDI" width="47" height="24" border="0" onload=""></a></td>
+            <td width="117"><a href="../../musalgo/musalgo.htm" target="_top" onClick="MM_nbGroup('down','group1','musalgorithms','../../images/banner/Music-algorithms-over.jpg',1)" onMouseOver="MM_nbGroup('over','musalgorithms','../../images/banner/Music-algorithms-over.jpg','../../images/banner/Music-algorithms-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Music-algorithms.jpg" alt="Music Algorithms" name="musalgorithms" width="117" height="24" border="0" onload=""></a></td>
+            <td width="88"><a href="../../interfaces/interface.htm" target="_top" onClick="MM_nbGroup('down','group1','Interfaces','../../images/banner/Interfaces-over.jpg',1)" onMouseOver="MM_nbGroup('over','Interfaces','../../images/banner/Interfaces-over.jpg','../../images/banner/Interfaces-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Interfaces.jpg" alt="Interfaces" name="Interfaces" width="88" height="24" border="0" onload=""></a></td>
+            <td width="103"><a href="../../programming/programming.htm" target="_top" onClick="MM_nbGroup('down','group1','Programming','../../images/banner/Programming-over.jpg',1)" onMouseOver="MM_nbGroup('over','Programming','../../images/banner/Programming-over.jpg','../../images/banner/Programming-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Programming.jpg" alt="Programming" name="Programming" width="103" height="24" border="0" onload=""></a></td>
+            <td width="81"><a href="../../acoustics/acoustics.htm" target="_top" onClick="MM_nbGroup('down','group1','Acoustics','../../images/banner/Acoustics-over.jpg',1)" onMouseOver="MM_nbGroup('over','Acoustics','../../images/banner/Acoustics-over.jpg','../../images/banner/Acoustics-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/Acoustics.jpg" alt="Acoustics" name="Acoustics" width="81" height="24" border="0" onload=""></a></td>
+            <td width="100"><a href="../../context/context.htm" target="_top" onClick="MM_nbGroup('down','group1','Context','../../images/banner/context-over.jpg',1)" onMouseOver="MM_nbGroup('over','Context','../../images/banner/context-over.jpg','../../images/banner/context-over.jpg',1)" onMouseOut="MM_nbGroup('out')"><img src="../../images/banner/context.jpg" alt="Context" name="Context" width="100" height="24" border="0" onload=""></a></td>
+            <td width="156"><img src="../../images/banner/banner_09.gif" width="172" height="24"></td>
+          </tr>
+        </table>
+      </div></td>
+  </tr>
+  <tr> 
+    <td width="3" align="left"> <div align="right"></div>
+      <div align="right"></div>
+      <div align="right"></div></td>
+    <!-- InstanceBeginEditable name="tracker" -->
+    <td height="16" colspan="2" rowspan="2" align="left"><a href="../../Audio/audio.htm">&gt; 
+      Audio</a> &gt; <a href="../../Audio/musicaldata.htm">Musical Data</a> &gt;<a href="Tuning_Systems.html"> 
+      Tuning Systems</a></td>
+    <!-- InstanceEndEditable -->
+    <td width="15" rowspan="2" align="left">&nbsp;</td>
+    <td width="214" rowspan="2" align="left">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="3" rowspan="3" align="left">&nbsp;</td>
+  </tr>
+  <tr> 
+    <td width="66" align="left" valign="top">&nbsp;</td>
+    <td width="444" align="left" valign="top">&nbsp;</td>
+    <td colspan="2" align="left" valign="top"><strong></strong></td>
+  </tr>
+  <tr> <!-- InstanceBeginEditable name="content" --> 
+    <td colspan="4" rowspan="3" align="left" valign="top"> 
+      <div class="c1"> 
+        <div class="c1">
+          <h2 class="c2">Tuning Systems</h2>
+        </div>
+        <p class="c3">In this tutorial we explore the use of different tuning 
+          systems. The example class allows a musical piece to be rendered in 
+          one of four tuning systems, the equal temperment system used in modern 
+          times, just intonation, pythagorean tuning, and mean-tone. This demonstrates 
+          that with the ability of jMusic to play audio notes at any frequency 
+          you are not limited to the chromatic tuning normally associated with 
+          MIDI systems. It is possible to implement tuning schemes that don't 
+          even follow the conventional pattern of 12 notes to the octave.</p>
+        <p class="c3">The differences in tunings sounds like this :<br>
+        </p>
+        <p class="c3"><a href="soundExamples/TuningSystemsCHOMATIC.au">Equal</a></p>
+        <p class="c3"><a href="soundExamples/TuningSystemsJUST.au">Just</a><br>
+        </p>
+        <p class="c5"><a class="c4" href="../jmdemos/Tuning_Systems.java"
+ target="_top">Click here to view source.</a></p>
+        <p class="c3">Lets have a closer look.</p>
+        <table border="0" width="100%" bgcolor="#e0e0e0">
+          <tbody>
+            <tr> 
+              <td> <pre class="c6">import jm.music.data.*;<br>import jm.JMC;<br>import jm.util.Write;<br>import jm.audio.Instrument;<br></pre> </td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="c3">Here we import the usual suspects for a jMusic piece, we 
+          need the Instrument class for the audio rendering.<br>
+          <br>
+        </p>
+        <table border="0" width="100%" bgcolor="#e0e0e0">
+          <tbody>
+            <tr> 
+              <td> <pre class="c6">public final class Tuning_Systems implements JMC{<br> <br>    public static void main(String[] args){<br>        new Tuning_Systems();<br>    }<br></pre> </td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="c3">The class is declared and implements the JMC which allows 
+          us to use the jMusic constatans such as C (crotchet) for a rhythm value 
+          of 1.0 etc.</p>
+        <p class="c3">The main method is quite simple, and simply calls the constructor 
+          to create an instance of the class.<br>
+          <br>
+        </p>
+        <table border="0" width="100%" bgcolor="#e0e0e0">
+          <tbody>
+            <tr> 
+              <td> <pre>public Tuning_Systems() {<br>      <span class="comment">  // Batok Mikrokosmos vol. IV</span><br>int[] pitchSop = {G4,A4,B4,BF4,A5,AS5,B4,A4,<br>            BF4,AF4,G4,A4,B4,BF4,C5,CS5,<br>            D5,CS5,B4,C5,BF4,C5,B4,A4,BF4,G4,D5,<br>            CS5,B4,C5,BF4,C5,B4,A4,BF4,G4,<br>            REST,E4,A4,BF4,REST,E4,A4,B4,REST,E4,A4,C5,REST};<br>        double[] rhythmSop = {Q,Q,Q,Q,Q,Q,Q,Q,Q,Q,Q,Q,Q,Q,Q,2.5,<br>            Q,Q,Q,Q,Q,Q,Q,Q,Q,Q,Q,Q,Q,Q,Q,Q,Q,Q,Q,Q,<br>            C,Q,Q,Q,C,Q,Q,Q,C,Q,Q,Q,2.5};<br>        int[] pitchAlto = {G4,D4,CS4,D4,G4,D4,A3, REST, E4,<br>            DS4,CS4,REST,D4,CS4,B3,<br>            FS4,CS4,REST,FS4,CS4,REST,FS4,CS4,REST,F3};<br>        double[] rhythmAlto = {DC,C,DC,C,DC,C,2.5,DC,C,<br>            DC,C,DC,C,DC,C,<br>            Q,Q,DC,Q,Q,DC,Q,Q,DC,2.5};<br>            </pre> 
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="c3">The constructor takes no argments.</p>
+        <p class="c3">The first task is to have some music to text the tuning 
+          systems with. We have used the first section of the one of Bela Bartok's 
+          simple but interesting piano works. The pitch and rhythm values are 
+          in separate arrays, because we need to process the pitches later on.<br>
+          <br>
+        </p>
+        <table border="0"
+ style="width: 100%; background-color: rgb(224, 224, 224);">
+          <tbody>
+            <tr> 
+              <td style="background-color: rgb(255, 255, 210);"> <pre>    public static final double []<br>                <br>                EQUAL = {1.0, 1.059, 1.122, 1.189, 1.26, 1.335, 1.414, <br>                              1.498, 1.587, 1.682, 1.782, 1.888},<br>                              <br>                JUST = {1.0, 1.067, 1.125, 1.2, 1.25, 1.333, 1.406, 1.5, 1.6, <br>                         1.667, 1.8, 1.875},<br>                <br>                PYTHAGOREAN = {1.0, 1.053, 1.125, 1.185, 1.265, 1.333, 1.404, <br>                                1.5, 1.58, 1.687, 1.778, 1.898},<br>                <br>                MEAN = {1.0, 1.07, 1.118, 1.196, 1.25, 1.337, 1.398, 1.496, <br>                         1.6, 1.672, 1.789, 1.869};<br>            </pre> 
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="c3">The above excerpt is not from Tuning_Systems.java, it is 
+          from JMC.java<br>
+          Because this class implements JMC, it has acess to all of the constants 
+          that are declared there.<br>
+        </p>
+        <p class="c3">In the current version of Tuning_Systems.java, EQUAL (equal 
+          temperment) is used. &nbsp;Equal temperment basically sacrifices portability 
+          (the ability to transpose) for authenticity (true intervals). &nbsp;<br>
+        </p>
+        <p class="c3">If transposition is not an issue, then it may be a good 
+          idea to use a tuning system that uses truer intervals.<br>
+        </p>
+        <p class="c3">These arrays hold the ratio values of each semitone scale 
+          degree as a multiple of the root of the scale. For example, C4 is the 
+          first (zeroth) scale degree and has a ration of 1:1.0 with itself, C# 
+          has a ration of 1:1.059 in the chromatic system, and so on.</p>
+        <div class="c9">Here is a table of all the values for these tuning systems.</div>
+        <br>
+        <br>
+        <div class="c9"><img src="Images/TuningRatios.jpg" alt="Tuning Ratios" width="360"
+ height="236"
+ align="bottom" x-sas-useimagewidth="" x-sas-useimageheight=""></div>
+        <br>
+        <br>
+        <table border="0" width="100%" bgcolor="#e0e0e0">
+          <tbody>
+            <tr> 
+              <td> <pre>       <span class="comment">	// current mode   </span>   <br>	double[] modeRatios = EQUAL;<br>            </pre> </td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="c3">As stated above, the currently active tuning system is assigned 
+          to the variable modeRatios. &nbsp;<br>
+          This is where you can experiment with the different tuning systems that 
+          are in JMC, or (even better) make you own up!<br>
+          <br>
+        </p>
+        <table border="0" width="100%" bgcolor="#e0e0e0">
+          <tbody>
+            <tr> 
+              <td> <pre>       <span class="comment">	//create a scor</span>e       <br>	Score score = new Score("Bartok", 130);               <br>	<span class="comment">//add the parts to the score   </span>    <br>	score.addPart(createPart(pitchSop, rhythmSop, 0, modeRatios));<br>        score.addPart(createPart(pitchAlto, rhythmAlto, 1, modeRatios));</span><br>            </pre> </td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="c3">A score is created and two parts are added, the soprano 
+          and alto parts. A separate method, creatPart, is used for this purpose. 
+          <br>
+          We will see more about this method below. For now we are only concerned 
+          that it returns a Part that is added to the score.<br>
+          <br>
+        </p>
+        <table border="0" width="100%" bgcolor="#e0e0e0">
+          <tbody>
+            <tr> 
+              <td> <pre>      <span class="comment">	//save the score as an audio file</span>
+       <br>	Instrument[] insts = new Instrument[2];<br>        for (int i=0; i&lt;2; i++) {<br>            insts[i] = new SquareLPFInst(22050, 500);<br>        }<br> <br>        Write.au(score, "TuningSystems.au", insts);<br>    }</span><br>            </pre> </td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="c3">Next, the score is rended as an audio file. This requires 
+          the declaration of a couple of jMusic audio instruments. We use instances 
+          of the SquareLPFinst that takes a sample rate and low pass filter cutoff 
+          frequency as arguments. These instruments are added to the instrument 
+          array, insts, which is passed to the Write() method.</p>
+        <p>If you don't have the Instrument it can be downloaded 
+          from the <a href="http://explodingart.com/jmusic/Instruments.html" target="_blank">jMusic 
+          web site</a>, via the instrument page. or you 
+          can simply use another instrument of your choice.<br>
+          <br>
+          </p>
+        <table border="0" width="100%" bgcolor="#e0e0e0">
+          <tbody>
+            <tr> 
+              <td> <pre>  <span class="comment">/*<br>    *This method converts the pitch and rhythm data into notes<br>    * and packs them into a part.<br>    */</span><br>private Part createPart(int[] pitches, double[] rhythms, <br> 			int instrument, double[] modeRatios) {<br>        Part part = new Part("", instrument);<br>        Phrase phrase = new Phrase();       <br>	<span class="comment">// add notes  </span>    <br>	for (int i=0; i&lt;pitches.length; i++) {<br>        	if (pitches[i] == REST ) {<br>                	int pitch = REST;<br>                	phrase.addNote(new Note(pitch, rhythms[i]));<br>            	} else {               <br>			<span class="comment">// assumes we're in C maj or A min    </span>          <br>			int degree = pitches[i]%12;<br>                	double pitch = FRQ[pitches[i] - degree] * modeRatios[degree];<br>                	phrase.addNote(new Note(pitch, rhythms[i]));<br>            	}<br>        }<br>        part.addPhrase(phrase);<br>        return part;<br>}</span><br>            </pre> </td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="c3">This method, mentioned earlier, is where all the interesting 
+          work of this example is done.<br>
+          Each of the pitches is turned into the appropriate frequency for the 
+          current tuning system. Notes are created using that pitch and added 
+          to a Phrase with is added to a Part and returned to the calling method.</p>
+        <p class="c3">In more detail, each pitch is processed in turn;</p>
+        <p class="code"><code>for (int i=0; i&lt;pitches.length; i++) {</code></p>
+        <p class="c3">If the pitch is a REST then a rest-note is created with 
+          the corresponding rhythm value and added to the phrase.</p>
+        <p class="c3">Otherwise the pitch's frequency needs to be calculated. 
+          First, we work out which semitone degree it is.</p>
+        <p class="code"><code>int degree = pitches[i]%12;</code></p>
+        <p class="c3">Next we calulate the frequency by looking up the appropriate 
+          ratio in the current tuning ratio array and multiplying the root frequency 
+          by that ration value.</p>
+        <p class="code"><code>double pitch = FRQ[pitches[i] - degree] * modeRatios[degree];</code></p>
+        <p class="c3">Finally, we create a note of that frequency with the corresponding 
+          rhythmValue and add it to the Phrase.</p>
+        <p class="c11"><code>phrase.addNote(new Note(pitch, rhythms[i]));</code></p>
+        <p class="c3">Now that the Phrase is created we add it to the Part which 
+          is then returned.</p>
+        <hr>
+        <b class="c12">Rending a retuned MIDI file</b><br>
+        <br>
+        <p class="c3">For those of you that don't want to go to the trouble of 
+          writing out your music as pitch and rhythm arrays, below is a link to 
+          a modified version of the above class that reads in a MIDI file and 
+          renders out an audio file in the specified tuning system. This should 
+          save you some time :)</p>
+        <p><a class="c4" href="../jmdemos/Tuning_Systems_MIDI.java">Tuning_Systems_MIDI.java</a></p>
+        <h5>&nbsp;</h5>
+      </div>
+      </td>
+    <!-- InstanceEndEditable --></tr>
+  <tr> 
+    <td align="left"> <div align="left"></div></td>
+  </tr>
+  <tr> 
+    <td align="left">&nbsp;</td>
+  </tr>
+</table>
+<blockquote> 
+  <p name="Map"> 
+    <map name="Map">
+      <area shape="rect" coords="4,4,41,29" href="http://jmusic.ci.qut.edu" target="_blank" alt="jMusic">
+      <area shape="rect" coords="43,5,80,31" href="http://www.ozco.gov.au" target="_blank" alt="Australia Council">
+      <area shape="rect" coords="83,4,108,29" href="http://www.qut.com" target="_blank" alt="Queensland University of Technology">
+    </map>
+    <map name="Map2">
+      <area shape="rect" coords="702,1,758,12" href="../../extras/sitemap.html" target="_self" alt="Sitemap">
+      <area shape="rect" coords="629,1,687,12" href="../../extras/contact.html" target="_self" alt="Contact">
+      <area shape="rect" coords="574,1,615,14" href="../../index.html" target="_self" alt="Home">
+    </map>
+    <map name="Map3">
+      <area shape="rect" coords="553,5,601,18" href="#" alt="Home">
+      <area shape="rect" coords="612,4,671,18" href="#">
+      <area shape="rect" coords="683,3,735,19" href="#">
+      <area shape="rect" coords="9,8,227,59" href="#" target="index.html">
+    </map>
+    <map name="Map4">
+      <area shape="rect" coords="6,9,40,41" href="http://www.qut.com" target="_blank" alt="http://www.qut.com">
+      <area shape="rect" coords="44,14,87,42" href="http://explodingart.com/jmusic" target="_blank" alt="http://explodingart.com/jmusic">
+      <area shape="rect" coords="90,9,138,43" href="http://www.ozco.gov.au" target="_parent" alt="http://www.ozco.gov.au">
+      <area shape="rect" coords="313,13,512,36" href="../../contact.html">
+    </map>
+  </p>
+</blockquote>
+<map name="Map5">
+  <area shape="rect" coords="-7,4,228,51" href="../../index.htm" target="_self" alt="Digital Instrument making">
+  <area shape="rect" coords="599,1,658,18" href="../../index.htm" alt="Home">
+  <area shape="rect" coords="677,3,755,18" href="../../extras/contact.htm" target="extras">
+</map>
+</body>
+<!-- InstanceEnd --></html>
